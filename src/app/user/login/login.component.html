@@ -1,0 +1,36 @@
+<div class="container" style="padding-top: 50px;">
+  <h1 class="d-flex justify-content-center display-4 fst-italic title-standee">Đăng nhập</h1>
+  <div class="d-flex justify-content-center">
+    <form class="example-form" [formGroup]="information" (ngSubmit)="login()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" [email]="true" required/>
+      </mat-form-field>
+  
+      <mat-form-field class="example-full-width">
+        <mat-label>Mật khẩu</mat-label>
+        <input matInput type="password" formControlName="password" required/>
+      </mat-form-field>
+      
+      <div class="example-button-row">
+        <button mat-raised-button type="submit" color="primary" [disabled]="!information.valid">
+          Đăng nhập
+        </button>
+      </div>
+      <div style="margin-top: 20px;">
+        <span class="forgetPass-login fst-italic">Quên mật khẩu???</span>
+        <span class="forgetPass-login fst-italic" [routerLink]="['/registration']" routerLinkActive="router-link-active" style="margin-left: 60px;">Đăng ký tài khoản.</span>
+      </div>
+    </form>
+  </div>
+  <div class="d-flex justify-content-center notify-status">
+    <div class="example-form">
+      <div *ngIf="statusLogin === 'SIGNIN_OK'; else elseBlock">
+        <h3>Đăng nhập thành công !!!</h3>
+      </div>
+      <ng-template #elseBlock>
+        <h3 *ngIf="statusLogin !== ''">{{ statusLogin.message }}</h3>
+      </ng-template>
+    </div>
+  </div>
+</div>

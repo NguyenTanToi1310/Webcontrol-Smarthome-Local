@@ -1,0 +1,48 @@
+<div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
+    <div class="device-name">
+        <div class="tag-header">
+            <h1>{{data.virtualDevice.ot_nickname}}</h1>
+            <h4>{{data.virtualDevice.deviceId}}</h4>
+        </div>
+        <hr>
+    </div>
+
+    <div class="control-device">
+        <div class="form-group">
+            <form action="" [formGroup]="editDeviceFormGroup">
+                <!-- PIN for lock -->
+                <small id="PINHelp" class="form-text text-muted" *ngIf="data.virtualDevice.type == 'lock'">Nhập mã PIN mới cho khóa</small>
+                <input type="password" class="form-control" formControlName="PINFormControl" for aria-describedby="PINHelp" *ngIf="data.virtualDevice.type == 'lock'">
+
+                <small id="ot_nicknameHelp" class="form-text text-muted">Nhập tên thiết bị tiếng Việt</small>
+                <input type="text" class="form-control" formControlName="ot_nicknameFormControl" for aria-describedby="ot_nicknameHelp">
+
+                <small id="en_nicknameHelp" class="form-text text-muted">Nhập tên thiết bị tiếng Anh</small>
+                <input type="text" class="form-control" formControlName="en_nicknameFormControl" for aria-describedby="en_nicknameHelp">
+
+                 <!-- switch_type for switch -->
+                <mat-radio-group aria-label="Select an option" formControlName="switchTypeFormControl" *ngIf="data.virtualDevice.type == 'switch'">
+                    <h4 style="margin-top : 20px">Thiết bị được kết nối với: </h4>
+                    <mat-radio-button value="light">Đèn</mat-radio-button>
+                    <mat-radio-button value="fan">Quạt</mat-radio-button>
+                    <mat-radio-button value="other">Khác</mat-radio-button>
+                </mat-radio-group>
+            </form>
+        </div>
+    </div>
+    <div class="notification-edit d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status" *ngIf="result.status == 'processing'; else resultTrue"></div>
+        <ng-template #resultTrue>
+            <h4 *ngIf="result.status == true; else resultFalse">Chỉnh sửa thành công</h4>
+            <ng-template #resultFalse>
+                <h4 *ngIf="result.status == false">Không thể chỉnh sửa, vui lòng thử lại <br> {{result.reason}}</h4>
+            </ng-template>
+        </ng-template>
+    </div>
+    <hr>
+</div>
+
+<div mat-dialog-actions style="float: right;">
+    <button mat-button (click)="onNoClick()">Hủy</button>
+    <button mat-button (click)="onAcceptClick()" cdkFocusInitial [disabled]="!editDeviceFormGroup.valid">Đồng ý</button>
+</div>

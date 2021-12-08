@@ -1,0 +1,44 @@
+.background-device-page {
+    height: 100%;
+    background-image: url("../../../assets/device-page/background.jpg");
+    background-size: cover;
+}
+
+.col {
+    margin-top: 30px;
+}
+
+.box {
+    max-width: 250px;
+    min-width: 230px;
+    width: 100%;
+    min-height: 360px;
+    border-radius: 10px;
+    box-shadow: -5px -5px 4px  rgba(255, 255, 255, 0.2),
+                10px 10px 6px  rgba(0, 0, 0, 0.15),
+                inset -5px -5px 5px  rgb(255, 255, 255, 0.2),
+                inset 1px 1px 1px  rgba(0, 0, 0, 0.15); 
+    text-align: center;
+    padding: 20px 10px 20px 10px;
+    background-color: aliceblue;
+} 
+
+.box:hover{
+    box-shadow: -5px -5px 4px  rgba(1, 255, 64, 0.5),
+                10px 10px 6px  rgba(0, 0, 0, 0.15),
+                inset -5px -5px 5px  rgba(1, 255, 64, 0.5),
+                inset 1px 1px 1px  rgba(0, 0, 0, 0.15); 
+    transition: 2s;
+}
+
+.box h1 {
+    font-weight: bold;
+    color: rgba(230, 70, 230, 0.8);
+    margin: 0px;
+}
+
+.tag-content {
+    text-align: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}

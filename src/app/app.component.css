@@ -1,0 +1,31 @@
+.navbar-brand-name {
+    margin-left: 20px;
+    color: aliceblue;
+    font-size: 35px;
+    font-weight: bold;
+    font-family: Impact;
+}
+
+a:-webkit-any-link {
+    text-decoration: underline;
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.example-button-row {
+    margin-right: 50px;
+}
+
+button .button-name {
+    outline: none;
+}
+  
+.button-hover{
+    font-size: 18px;
+    /* font-family: Tahoma; */
+}
+
+.button-hover:hover { 
+    color: yellow;
+}
+

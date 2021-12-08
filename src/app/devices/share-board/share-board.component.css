@@ -1,0 +1,20 @@
+.tag-header {
+  text-align: center;
+}
+
+.tag-header h1 {
+  font-weight: bold;
+  color: rgba(230, 70, 230, 0.8);
+  margin: 0px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+  margin-top : 20px; 
+  margin-bottom: 20px;
+}
+
+.notification-share h4 {
+  color: red;
+  font-style: italic;
+}

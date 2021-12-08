@@ -1,0 +1,166 @@
+.background-home {
+    background-image: url("../../../assets/home-page/background-9.jpg"); 
+    background-attachment: fixed !important;
+    background-position: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    transform:translatez(0);
+    -webkit-transform:translatez(0);
+    -webkit-transform: translate3d(0,0,0);
+    z-index: 0;
+    filter: blur(0px);
+    -webkit-filter: blur(0px); 
+}
+
+.body-content {
+    background-color: rgba(223, 213, 213, 0.2);
+    height: 100%;
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.jss01-content {
+    height: 100%;
+    min-height: 0px;
+    min-height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.jss01-content .jss01-content-001 {
+    min-height: 60%;
+    min-width: 30%;
+    max-width: 60%;
+    animation-name: jss01-content-001;
+    animation-duration: 3s;
+}
+@keyframes jss01-content-001 {
+    from {padding-top: 100px}
+    to {}
+}
+
+
+.jss01-content .jss01-content-001 h1 {
+    display: inline-block !important;
+    color: aliceblue;
+    font-size: 3.5rem;
+    font-family: Lora, Impact, Haettenschweiler, Arial, Helvetica, sans-serif , 'Arial Narrow Bold', sans-serif, Tahoma;
+}
+.jss01-content .jss01-content-001 h1 span {
+    color: #ffa000;
+}
+
+.jss01-content .jss01-content-001 h2 {
+    /* color: rgb(37, 133, 216); */
+    color: rgb(234, 11, 241);
+    font-size: 2rem;
+    text-align: justify;
+}
+
+.jss02-content {
+    text-align: center;
+    background-color: rgb(255,255,255);
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    min-height: 35vh;
+}
+
+.container-fluid {
+    padding: 0px;
+}
+
+.jss02-content-001 {
+    min-height: 100px;
+    padding-top: 50px;
+    background-color: #04a133;
+    background-image: linear-gradient(#6c8668, #07961a);
+}
+
+.jss02-content .row {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    --bs-gutter-x: 0 !important;   
+}
+.jss02-content .farm-information {
+    display: inline-block;
+    text-align: center;
+    background-color: rgba(209, 206, 203, 0.2);
+    min-height: 150px;
+    height: 350px;
+    width: 235px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px 1px;
+}
+.jss02-content .farm-information:hover {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    transition: 1s;
+}
+
+.jss02-content .farm-information .farm-information-001 {
+    height: 70%;
+}
+
+.jss02-content .farm-information .technology-title {
+    font-weight: bold;
+    font-size: 20px;
+    color: rgba(54, 49, 54, 0.8);
+}
+
+.footer-box {
+    text-align: left;
+    padding-left: 30px ;
+}
+
+#box-001 {
+    min-width: 100%;
+}
+
+#box-001 h1, #box-002 h1, #box-003 h1 {
+    font-family: Impact, Haettenschweiler, Arial, Helvetica, sans-serif , 'Arial Narrow Bold', sans-serif, Tahoma;
+    font-weight: 400;
+    font-size: 25px;
+    color: aliceblue;
+}
+#box-001 h1 span{
+    font-size: 25px;
+    font-family: Lora, Impact, Haettenschweiler, Arial, Helvetica, sans-serif , 'Arial Narrow Bold', sans-serif, Tahoma;
+    font-weight: 400;
+    color: #ffa000;
+}
+#box-001 span {
+    font-size: 18px;
+    color: rgb(222, 222, 223);
+}
+
+#box-002 ul li, a{
+    font-size: 18px;
+    color: rgb(222, 222, 223);
+    text-decoration: none;
+    padding: 2px;
+}
+
+#box-002 ul li:hover, a:hover {
+    color: #afa627;
+}
+
+#box-003 span {
+    margin-left: 10px;
+    font-size: 18px;
+    color: rgb(222, 222, 223);
+}
+
+#coppyright-warmhouse {
+    font-weight: bold;
+    margin-bottom: 20px; 
+    font-size: 18px; 
+    font-family: Arial, Helvetica, sans-serif, Tahoma;
+    color: #533c13;
+}

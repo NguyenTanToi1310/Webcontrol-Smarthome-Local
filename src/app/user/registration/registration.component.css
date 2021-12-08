@@ -1,0 +1,50 @@
+h1 {
+  color: blue;
+  font-weight: 600;
+  font-size: 40px;
+}
+.title-standee {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 50px;
+  font-weight: bold;
+}
+.example-form {
+  min-width: 100px;
+  max-width: 500px;
+  width: 100%;
+  /* background-color: aqua; */
+  text-align: center;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+section {
+  display: table;
+}
+
+.example-button-row {
+  display: table-cell;
+  width: 490px;
+}
+
+.example-button-row .mat-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.forgetPass-login {
+  font-style: italic;
+  font-size: 15px;
+}
+
+.forgetPass-login:hover {
+  color: red;
+  transition: 0.4s; /* tạo độ trễ cho hover */
+}
+
+.notify-status {
+  margin-top: 20px;
+  color: red;
+  font-family: Lora;
+}

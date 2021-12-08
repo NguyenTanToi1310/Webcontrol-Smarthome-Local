@@ -1,0 +1,67 @@
+<div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
+    <div class="device-name">
+        <div class="tag-header">
+            <h1>{{ data.virtualDevice.ot_nickname }}</h1>
+            <h4>{{ data.virtualDevice.deviceId }}</h4>
+        </div>
+        <hr>
+    </div>
+
+    <div class="control-device">
+        <div class="form-group">
+            <form action="" [formGroup]="shareFormGroup">
+                <small id="emailHelp" class="form-text text-muted">Nhập email người bạn muốn chia sẻ hoặc thu hồi.</small>
+                <input type="email" class="form-control" formControlName="emailFormControl" for aria-describedby="emailHelp" placeholder="Email">
+                <mat-radio-group aria-label="Select an option" formControlName="taskFormControl">
+                    <mat-radio-button value="Share-Device">Chia sẻ</mat-radio-button>
+                    <mat-radio-button value="Revoke-Device">Thu hồi</mat-radio-button>
+                </mat-radio-group>
+            </form>
+        </div>
+        <div class="notification-share d-flex justify-content-center" *ngIf="notification">
+            <h4 *ngIf="notification === 'Sharing'; else notifyRevoking">Đang chia sẻ, vui lòng chờ đợi!</h4>
+            <ng-template #notifyRevoking>
+                <h4 *ngIf="notification === 'Revoking'; else notifySharedSuccessful">Đang thu hồi, vui lòng chờ đợi!</h4>
+                <ng-template #notifySharedSuccessful>
+                    <h4 *ngIf="notification === 'Shared-Successful'; else notifySharedFailed">Chia sẻ thành công!</h4>
+                    <ng-template #notifySharedFailed>
+                        <h4 *ngIf="notification === 'Shared-Failed'; else notifyRevokedSuccessful">Chia sẻ thất bại!</h4>
+                        <ng-template #notifyRevokedSuccessful>
+                            <h4 *ngIf="notification === 'Revoked-Successful'; else notifyRevokedFailed">Thu hồi thành công!</h4>
+                            <ng-template #notifyRevokedFailed>
+                                <h4 *ngIf="notification === 'Revoked-Failed'; else notifySharedPersonal">Thu hồi thất bại!</h4>
+                                <ng-template #notifySharedPersonal>
+                                    <h4 *ngIf="notification === 'Shared-Personal'; else notifyNotShared">Người này đã được chia sẻ!</h4>
+                                    <ng-template #notifyNotShared>
+                                        <h4 *ngIf="notification === 'Not-Shared'; else notifyInvalidEmail">Người này chưa được chia sẻ!</h4>
+                                        <ng-template #notifyInvalidEmail>
+                                            <h4 *ngIf="notification === 'Invalid-Email'; else notifyInputEmail">Người nhận không hợp lệ hoặc chưa đăng ký!</h4>
+                                            <ng-template #notifyInputEmail>
+                                                <h4 *ngIf="notification === 'Input-Email'">Thông tin nhập chưa chính xác!</h4>
+                                            </ng-template>
+                                        </ng-template>
+                                    </ng-template>
+                                </ng-template>
+                            </ng-template>
+                        </ng-template>
+                    </ng-template>
+                </ng-template>
+            </ng-template>
+        </div>
+        <hr>
+    </div>
+
+    <div class="list-share" *ngIf="userEmailShare.length !== 0">
+        <div class="" >
+            <h2>Danh sách người được chia sẻ</h2>
+            <li *ngFor="let index of userEmailShare" >
+                {{ index }}
+            </li>
+        </div>
+    </div>
+</div>
+
+<div mat-dialog-actions style="float: right;">
+    <button mat-button (click)="onNoClick()">Hủy</button>
+    <button mat-button (click)="onAcceptClick(data.virtualDevice.deviceId)" cdkFocusInitial [disabled]="!shareFormGroup.valid">Đồng ý</button>
+</div>

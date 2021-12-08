@@ -1,0 +1,12 @@
+{
+  "posts": [
+    { "id": 1, "title": "json-server", "author": "typicode" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": [{ "deviceId": "normal-light-001", "status": true, "type": "normal-light" },
+		{ "deviceId": "switch-001", "status": true, "type": "switch" },
+		{ "deviceId": "sensor-001", "status": true, "type": "sensor" },
+		{ "deviceId": "color-light-001", "status": true, "type": "color-light" }]
+}
