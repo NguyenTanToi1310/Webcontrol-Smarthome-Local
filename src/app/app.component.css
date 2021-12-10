@@ -1,31 +1,66 @@
 .navbar-brand-name {
+    height: 10vh;
+    width:auto;
     margin-left: 20px;
-    color: aliceblue;
-    font-size: 35px;
-    font-weight: bold;
-    font-family: Impact;
 }
-
+.navbar-collapse{
+    color:#FF914D
+}
 a:-webkit-any-link {
     text-decoration: underline;
     text-decoration: none;
     color: aliceblue;
 }
 
-.example-button-row {
-    margin-right: 50px;
-}
-
 button .button-name {
     outline: none;
 }
-  
+.example-button-row{
+    padding-right: 10px;
+}
 .button-hover{
-    font-size: 18px;
+    font-size: 15px;
     /* font-family: Tahoma; */
 }
 
 .button-hover:hover { 
-    color: yellow;
+    color: black;
 }
 
+/* khi chưa đăng nhập */
+.loginButton{
+    color: #FF914D;
+    font-size: 15px;
+    width: 100%;
+    min-width: 16vw;
+    border: solid #FF914D;
+    border-radius: 20px;
+}
+.loginButton:hover{
+    background-color: #FF914D;
+    color: white;
+}
+
+/* khi đã đăng nhập */
+.Logined{
+    min-width: 16vw;
+    border:solid #FF914D;
+    text-align: center;
+}
+.Logined, .userName, .logoutButton{
+    background-color: #FF914D;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+}
+.userName{
+    min-width: 9vw; /*in case short username*/
+}
+.userName:hover, .userName>span{
+    background-color: white;
+    color: #FF914D;
+}
+.logoutButton:hover, .logoutButton>span{
+    background-color: white;
+    color: #FF914D;
+}

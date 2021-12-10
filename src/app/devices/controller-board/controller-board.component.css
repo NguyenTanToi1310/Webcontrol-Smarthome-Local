@@ -4,7 +4,7 @@
 
 .tag-header h1 {
   font-weight: bold;
-  color: rgba(230, 70, 230, 0.8);
+  color: #FF914D;
   margin: 0px;
 }
 
@@ -16,6 +16,23 @@ mat-slider {
   color: rgb(50, 50, 233);
 }
 
+.onOff{
+  width: 100%;
+  display: block;
+}
+.onOffDiv {
+  padding-left:0vw;
+  float: left;
+  width: 55%;
+  text-align: left;
+  /* color: rgb(255, 255, 255) */
+}
+.onOffButton {
+  overflow: hidden;
+  width: 45%;
+  text-align: left;
+
+}
 /* ------------------------------------- radio button -------------------------------- */
 * {
   box-sizing: border-box;
@@ -100,7 +117,7 @@ label.toggle-item2:before {
   left: 0.2em;
   transition: 0.6s ease;
 }
-.dog-rollover2 label .eyes2 {
+/* .dog-rollover2 label .eyes2 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -108,8 +125,8 @@ label.toggle-item2:before {
   border-radius: 50%;
   transform: translate(8px, 14px);
   box-shadow: 16px 0 0 #222, 22px -4px 0 12px #e4ac04;
-}
-.dog-rollover2 label .ear2 {
+} */
+/* .dog-rollover2 label .ear2 {
   width: 18px;
   height: 20px;
   position: absolute;
@@ -120,16 +137,16 @@ label.toggle-item2:before {
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
   box-shadow: inset 4px 0 0 0px #ffffff, inset -4px 0 0 0px #ffffff;
   transform: rotate(-40deg);
-}
-.dog-rollover2 label .ear2.right2 {
+} */
+/* .dog-rollover2 label .ear2.right2 {
   transform: rotate(60deg) scaleX(-1);
   left: auto;
   transform-origin: center bottom;
   transition: 0.4s ease-in-out;
   right: 0px;
-}
+} */
 .dog-rollover2 label .face2 {
-  overflow: hidden;
+  /* overflow: hidden; */
   border-radius: 50%;
   width: 2.5em;
   height: 2.5em;
@@ -137,7 +154,7 @@ label.toggle-item2:before {
   background: #fff;
   z-index: 8;
 }
-.dog-rollover2 label .mouth2 {
+/* .dog-rollover2 label .mouth2 {
   position: absolute;
   background: #222;
   width: 14px;
@@ -156,7 +173,7 @@ label.toggle-item2:before {
   background: #ec788d;
   border-radius: 0 0 50% 50%;
   transform: translate(3px, 5px);
-}
+} */
 .dog-rollover2 label:before {
   border-color: white;
   background: white;
@@ -166,13 +183,13 @@ label.toggle-item2:before {
   animation: 0.2s linear cup 1s forwards;
 }
 #doggo2:checked + label .dog2 {
-  left: 68px;
+  left: 60px;
   transform: rotate(360deg);
 }
-#doggo2:checked + label .mouth2 {
+/* #doggo2:checked + label .mouth2 {
   transform: scale(1);
   transition-delay: 0.7s;
-}
+} */
 #doggo2:checked + label .ear2.right2 {
   transform: scaleX(-1) rotate(-35deg);
   transition-delay: 0.6s;

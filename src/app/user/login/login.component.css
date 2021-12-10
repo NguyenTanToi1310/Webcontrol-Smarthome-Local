@@ -1,29 +1,23 @@
 .example-form {
   min-width: 100px;
-  max-width: 500px;
+  max-width: 300px;
   width: 100%;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .example-full-width {
   width: 100%;
 }
 
-h1 {
-  color: blue;
-  font-weight: 600;
-  font-size: 40px;
-}
-
 .title-standee {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 50px;
-  font-weight: bold;
+  /* font-family: 'Times New Roman', Times, serif; */
+  font-size: 35px;
+  width: 100%;
+  /* font-weight: bold; */
 }
 
 .example-button-row {
-  display: table-cell;
-  width: 490px;
+  width: 100%;
 }
 
 .example-button-row .mat-button-base {
@@ -43,5 +37,22 @@ h1 {
 .notify-status {
   margin-top: 20px;
   color: red;
-  font-family: Lora;
+  /* font-family: Lora; */
+}
+#content{
+  width: 50vw;
+  height: 50vh;
+  margin: 15vh auto;
+  
+}
+#left {
+  float: left;
+  width: 50%;
+  text-align: right;
+}
+#right {
+  overflow: hidden;
+  width: 50%;
+  padding-top: 40px;
+  padding-left: 50px;
 }

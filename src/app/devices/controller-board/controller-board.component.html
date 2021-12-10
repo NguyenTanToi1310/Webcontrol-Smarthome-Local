@@ -119,33 +119,35 @@
     </div>
   </div>
   <div class="control-device" *ngIf="data.virtualDevice.type !== 'sensor-th'">
-    <div class="row"><h2>Bật/Tắt thiết bị:</h2></div>
-    <div class="row">
-      <div class="col">
-        <div class="toggle-wrapper2">
-          <div class="toggle2 dog-rollover2">
-            <input
-              *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.state" [(ngModel)]="data.virtualDevice.state"/>
-            <ng-template #sensorType>
-              <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.active" [(ngModel)]="data.virtualDevice.active"/>
-            </ng-template>
-            <label class="toggle-item2" for="doggo2">
-              <div class="dog2">
-                <div class="ear2"></div>
-                <div class="ear2 right2"></div>
-                <div class="face2">
-                  <div class="eyes2"></div>
-                  <div class="mouth2"></div>
+    <div class="onOff">
+      <h2 class="onOffDiv">Bật/Tắt thiết bị:</h2>
+      <div class="row" class="onOffButton">
+        <div class="col">
+          <div class="toggle-wrapper2" >
+            <div class="toggle2 dog-rollover2">
+              <input
+                *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.state" [(ngModel)]="data.virtualDevice.state"/>
+              <ng-template #sensorType>
+                <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.active" [(ngModel)]="data.virtualDevice.active"/>
+              </ng-template>
+              <label class="toggle-item2" for="doggo2">
+                <div class="dog2">
+                  <!-- <div class="ear2"></div>
+                  <div class="ear2 right2"></div> -->
+                  <div class="face2">
+                    <!-- <div class="eyes2"></div>
+                    <div class="mouth2"></div> -->
+                  </div>
                 </div>
-              </div>
-            </label>
+              </label>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
+    <br>
     <div *ngIf="data.virtualDevice.type !== 'switch' && data.virtualDevice.type !== 'sensor-th' && data.virtualDevice.type !== 'fan' && data.virtualDevice.type !== 'lock'">
-      <div class="row">
+      <div>
         <h2>Điều chỉnh độ sáng:</h2>
       </div>
       <div class="row">
@@ -162,6 +164,7 @@
       <h2>Thiết lập màu đèn:</h2>
       <div style="text-align: center;">
         <input type="color" id="head" name="head" value="data.virtualDevice.color" [(ngModel)]="data.virtualDevice.color" style="width: 80%; height: 40px;">
+        <div>{{data.virtualDevice.color}}</div>
       </div>
       <h2>Chọn chế độ:</h2>
       <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-bottom: 20px;">

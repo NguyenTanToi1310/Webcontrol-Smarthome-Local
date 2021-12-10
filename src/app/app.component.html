@@ -1,7 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="min-height: 70px ;background-color: #3fa9f5 !important; color: aliceblue !important;;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="max-height: 10vh ;background-color: #ffffff !important; color: aliceblue !important;;">
   <div class="container-fluid">
-    <a class="navbar-brand-name" href="/home">Warm<span style="color: #ffa000;">House</span></a>
-
+    <a class="navbar-brand-name" href="/home"> 
+      <img class="navbar-brand-name" src = "../assets/logo/warmhouse.png">
+    </a>
     <button class="navbar-toggler button-name" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -13,37 +14,44 @@
         <div class="example-button-row">
           <button mat-button class="button-hover" [routerLink]="['/information-device']" routerLinkActive="router-link-active">Điều khiển</button>
           <button mat-button class="button-hover" [routerLink]="['/show-list-device']" routerLinkActive="router-link-active">Chỉnh sửa</button>
-          <button mat-button class="button-hover"><a href="#">Mua hàng</a></button>
-          <button mat-button class="button-hover" [routerLink]="['/about']" routerLinkActive="router-link-active">Thông tin liên hệ</button>
+          <button mat-button class="button-hover" [routerLink]="['/home']" routerLinkActive="router-link-active">Mua hàng</button>
+          <button mat-button class="button-hover" [routerLink]="['/about']" routerLinkActive="router-link-active">Liên hệ</button>
         </div>
       </section>
 
       <section>
-        <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" mat-button
+        <!-- <button mat-icon-button class="example-icon" class="button-hover" aria-label="Example icon-button with share icon" mat-button
           [matMenuTriggerFor]="menu">
           <mat-icon>account_circle</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item [routerLink]="['/personal-page']" routerLinkActive="router-link-active" *ngIf="!!userInfor">
-            <mat-icon style="color: green;">account_circle</mat-icon>
-            <span style="color: green;">Hello {{ userInfor.name }}</span>
+        </button> -->
+
+        <div class="notLogined" *ngIf="logined == false">
+        <!-- <mat-menu #menu="matMenu"> -->
+          <button class="loginButton" mat-flat-button [routerLink]="['/login']" routerLinkActive="router-link-active">
+            <!-- <mat-icon>subdirectory_arrow_right</mat-icon> -->
+            <span>Đăng nhập/Đăng ký</span>
           </button>
-          <button mat-menu-item [routerLink]="['/login']" routerLinkActive="router-link-active" *ngIf="logined == false">
-            <mat-icon>subdirectory_arrow_right</mat-icon>
-            <span>Đăng nhập</span>
-          </button>
-          <button mat-menu-item *ngIf="logined == true" (click)="logout()">
-            <mat-icon>subdirectory_arrow_left</mat-icon>
-            <span>Đăng xuất</span>
-          </button>
-          <button mat-menu-item [routerLink]="['/registration']" routerLinkActive="router-link-active" *ngIf="logined == false">
+          <!-- <button mat-menu-item [routerLink]="['/registration']" routerLinkActive="router-link-active" *ngIf="logined == false">
             <mat-icon>add</mat-icon>
             <span>Đăng ký</span>
+          </button> -->
+        </div>
+        <div class="Logined" *ngIf="logined == true">
+          <button class="userName" mat-flat-button [routerLink]="['/personal-page']" routerLinkActive="router-link-active" *ngIf="!!userInfor">
+            <!-- <mat-icon style="color: #FF914D;">account_circle</mat-icon> -->
+            <span>{{userInfor.name}}</span>
           </button>
-        </mat-menu>
-        <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+          <button class="logoutButton" mat-flat-button (click)="logout()">
+            <!-- <mat-icon>subdirectory_arrow_left</mat-icon> -->
+            <span>Đăng xuất</span>
+          </button>
+        </div>
+        <!-- </mat-menu> -->
+        
+
+        <!-- <button mat-icon-button class="button-hover" aria-label="Example icon-button with heart icon">
           <mat-icon>settings</mat-icon>
-        </button>
+        </button> -->
       </section>
     </div>
   </div>

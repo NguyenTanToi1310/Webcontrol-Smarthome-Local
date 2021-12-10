@@ -1,32 +1,23 @@
-h1 {
-  color: blue;
-  font-weight: 600;
-  font-size: 40px;
-}
-.title-standee {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 50px;
-  font-weight: bold;
-}
 .example-form {
   min-width: 100px;
-  max-width: 500px;
+  max-width: 300px;
   width: 100%;
-  /* background-color: aqua; */
-  text-align: center;
+  /* text-align: center; */
 }
 
 .example-full-width {
   width: 100%;
 }
 
-section {
-  display: table;
+.title-standee {
+  /* font-family: 'Times New Roman', Times, serif; */
+  font-size: 35px;
+  width: 100%;
+  /* font-weight: bold; */
 }
 
 .example-button-row {
-  display: table-cell;
-  width: 490px;
+  width: 100%;
 }
 
 .example-button-row .mat-button-base {
@@ -34,7 +25,7 @@ section {
 }
 
 .forgetPass-login {
-  font-style: italic;
+  /* font-style: italic; */
   font-size: 15px;
 }
 
@@ -46,5 +37,26 @@ section {
 .notify-status {
   margin-top: 20px;
   color: red;
-  font-family: Lora;
+  /* font-family: Lora; */
+}
+
+/* khung ở login sẽ margin 15vh => để nâng form đăng ký lên => nâng cả content lên thêm 10vh
+=> content bên này margin 5vh, để left sign up trùng left sign in thì left sign up phải hạ xuống 10vh */
+#content{
+  width: 50vw;
+  height: 50vh;
+  margin: 5vh auto;
+  
+}
+#left {
+  float: left;
+  width: 50%;
+  text-align: right;
+  margin: 10vh auto;
+}
+#right {
+  overflow: hidden;
+  width: 50%;
+  padding-top: 40px;
+  padding-left: 50px;
 }
