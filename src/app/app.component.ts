@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   
   public userInfor : any;
   public logined: boolean;
+  public numberDeviceShare: number;
 
   constructor(
     public auth: AuthServiceService,
@@ -25,6 +26,11 @@ export class AppComponent implements OnInit {
     } else {
       this.userInfor = ""
     }
+
+    this.common.getShareRequest()
+    this.common.numberDeviceShare$.subscribe(number =>{
+      this.numberDeviceShare = number
+    })
   }
 
   ngOnInit() {
@@ -35,7 +41,13 @@ export class AppComponent implements OnInit {
       } else {
         this.userInfor = ""
       }
-    });
+    })
+    
+    this.common.getShareRequest()
+    this.common.numberDeviceShare$.subscribe(number =>{
+      this.numberDeviceShare = number
+    })
+
   }
 
   public async logout() {

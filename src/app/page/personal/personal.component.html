@@ -1,14 +1,33 @@
-<div class="container">
-    <div class="hero-image">
+<div class="content">
+    <div class="left">
         <div class="hero-text">
-            <img src="../../../assets/about/nhu.jpg" width="100px" alt="Avatar" class="avatar">
+            <img src="../../../assets/about/toi.jpg" width="100px" alt="Avatar" class="avatar">
             <br><br>
-            <h1 class="name">Ngô Quốc Nhu</h1>
+            <div style="font-size: 30px; text-align: center;">{{userInfor.name}}</div>
+            <br>
+            <div style="font-size: 20px; text-align: center;">{{userInfor.email}}</div>
         </div>
     </div>
 
-    <div class="content">
-        
+    <div class="right" *ngIf="numberDeviceShare !== 0; else noNoti">
+        <div *ngFor="let index of listdeviceIdShareRequest; let emlement=index">
+            <div class="info-box">
+                <div style="margin-bottom: 10px; font-size: 15px;">
+                    <span style="color: #FF914D; font-weight: bold;">{{listEmailShareRequest[emlement]}}</span>
+                     đã chia sẻ thiết bị  
+                    <span style="color: #FF914D; font-weight: bold;">{{index}}</span> 
+                     với bạn
+                </div>
+                <div style="text-align: right;">
+                    <button class="decision-btn" mat-flat-button (click)="replyDemand(index, 'accept', 0)">Đồng ý</button>
+                    <button class="decision-btn" mat-flat-button (click)="replyDemand(index, 'refuse', emlement)">Từ chối</button>
+                </div>
+            </div>
+        </div>
     </div>
+    <ng-template #noNoti>
+        <div style="text-align: center; font-size: 18px;">Không có thông báo mới nào</div>
+    </ng-template>
 </div>
+
 

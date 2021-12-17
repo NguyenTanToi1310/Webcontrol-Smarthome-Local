@@ -41,24 +41,6 @@ export class ShowListDeviceComponent implements OnInit {
     this.deviceAction = this.devices
 
     this.common.getShareHistories()
-    this.common.getShareRequest()
-
-    this.common.listShareRequest.subscribe(res => {
-      this.listdeviceIdShareRequest = []
-      this.listEmailShareRequest = []
-      this.listUIDShareRequest = []
-      let list = Object.keys(res)
-      list.forEach(element => {
-        Object.keys(res[element]).forEach(async sharers => {
-          if ((res[element])[sharers].deviceId && (res[element])[sharers].status=="waiting") {
-            this.listdeviceIdShareRequest.push((res[element])[sharers].deviceId)
-            this.listUIDShareRequest.push((res[element])[sharers].from)
-            this.listEmailShareRequest.push((await this.common.searchByUID((res[element])[sharers].from)).email)
-          }
-        })
-      })
-      this.numberDeviceShare = this.listdeviceIdShareRequest.length;
-    })
   }
 
   private handleDevice(device: any){

@@ -33,13 +33,23 @@ export class CommonServiceService {
   reciveSharePerson = new BehaviorSubject<any>([])
   listShareRequest = this.reciveSharePerson.asObservable()
 
+  // lay so thiet bi duoc share den ai do /////////////////////////////////////////////////////////
+  numberDeviceShare$ = new BehaviorSubject<number>(0);
+  numberDeviceShare = 0;
+  listdeviceIdShareRequest: any[];
+  
+  // //////////////////////////////////////////////////////////////////////////////////////////////
+
   constructor(
     private router: Router,
     private db: AngularFireDatabase,
     private shareHistories: AngularFireDatabase,
     private shareRequest: AngularFireDatabase,
     private http: HttpClient,
-  ) { }
+    
+  ) { 
+    // this.numberDeviceShare$.next(10);
+  }
 
   public async loginPage() {         // chuyen huong den trang dang nhap
     this.router.navigate(['/login'])
@@ -231,10 +241,21 @@ export class CommonServiceService {
       let reciveSharePerson : any = []
       if(!!personShareRequest.payload.val()) {
         reciveSharePerson.push(Object(personShareRequest.payload.val()))
-      }
+        this.numberDeviceShare=0;
+        Object(personShareRequest.payload.val()).forEach(element => {
+          // console.log(element.status)
+          if(element.status=="waiting"){
+            this.numberDeviceShare = this.numberDeviceShare+1;
+            console.log(this.numberDeviceShare)
+          }
+        })          
+      }  
       this.reciveSharePerson.next(reciveSharePerson)
+      this.numberDeviceShare$.next(this.numberDeviceShare)
     })
-  }
+    // this.numberDeviceShare = this.listdeviceIdShareRequest.length
+    // this.numberDeviceShare$.next(this.numberDeviceShare)
+  }  
 }
 
 

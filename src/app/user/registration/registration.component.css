@@ -57,6 +57,17 @@
 #right {
   overflow: hidden;
   width: 50%;
-  padding-top: 40px;
+  padding-top: 30px;
   padding-left: 50px;
+}
+
+.login {
+  /* font-style: italic; */
+  font-size: 20px;
+}
+
+.login:hover {
+  color: red;
+  cursor: pointer;
+  transition: 0.4s; /* tạo độ trễ cho hover */
 }

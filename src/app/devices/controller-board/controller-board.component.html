@@ -1,11 +1,16 @@
-<h1 mat-dialog-title style="font-weight: bold;">Xin chào</h1>
+<div  style="text-align: right">
+  <button mat-button (click)="onNoClick()">X</button>
+</div>
+
+<div class="tag-header">
+  <h1>
+    {{data.virtualDevice.ot_nickname}}
+  </h1>
+  <h4>{{data.virtualDevice.deviceId}}</h4>
+</div>
 <div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
   <div class="device-name">
     <div *ngIf="data.virtualDevice.type === 'normal-light'">
-      <div class="tag-header">
-        <h1>{{data.virtualDevice.ot_nickname}}</h1>
-        <h4>{{data.virtualDevice.deviceId}}</h4>
-      </div>
       <hr>
       <div class="tag-content">
         <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
@@ -18,10 +23,6 @@
     </div>
 
     <div *ngIf="data.virtualDevice.type === 'switch'">
-      <div class="tag-header">
-        <h1>{{data.virtualDevice.ot_nickname}}</h1>
-        <h4>{{data.virtualDevice.deviceId}}</h4>
-      </div>
       <hr>
       <div class="tag-content">
         <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
@@ -41,10 +42,6 @@
     </div>
 
     <div *ngIf="data.virtualDevice.type === 'sensor-th'">
-      <div class="tag-header">
-        <h1>{{data.virtualDevice.ot_nickname}}</h1>
-        <h4>{{data.virtualDevice.deviceId}}</h4>
-      </div>
       <hr>
       <div class="tag-content">
         <h2 class="row d-flex" *ngIf="data.virtualDevice.stream.active; else elseStateDevice">Trạng thái: Kích hoạt</h2>
@@ -59,10 +56,6 @@
     </div>
 
     <div *ngIf="data.virtualDevice.type === 'color-light'">
-      <div class="tag-header">
-        <h1>{{data.virtualDevice.ot_nickname}}</h1>
-        <h4>{{data.virtualDevice.deviceId}}</h4>
-      </div>
       <hr>
       <div class="tag-content">
         <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
@@ -89,10 +82,6 @@
     </div>
 
     <div *ngIf="data.virtualDevice.type === 'fan'">
-      <div class="tag-header">
-        <h1>{{data.virtualDevice.ot_nickname}}</h1>
-        <h4>{{data.virtualDevice.deviceId}}</h4>
-      </div>
       <hr>
       <div class="tag-content">
         <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
@@ -104,10 +93,6 @@
       <hr>
     </div>
     <div *ngIf="data.virtualDevice.type === 'lock'">
-      <div class="tag-header">
-        <h1>{{data.virtualDevice.ot_nickname}}</h1>
-        <h4>{{data.virtualDevice.deviceId}}</h4>
-      </div>
       <hr>
       <div class="tag-content">
         <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang khóa</h2>

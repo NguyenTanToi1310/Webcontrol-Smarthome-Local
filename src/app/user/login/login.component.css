@@ -31,6 +31,7 @@
 
 .forgetPass-login:hover {
   color: red;
+  cursor: pointer;
   transition: 0.4s; /* tạo độ trễ cho hover */
 }
 

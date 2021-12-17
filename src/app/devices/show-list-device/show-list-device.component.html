@@ -1,34 +1,6 @@
 <div class="container">
     <table class="table">
         <thead>
-            <tr *ngIf="numberDeviceShare !== 0">
-                <th colspan="7">
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                              <button class="accordion-button collapsed" mat-raised-button type="button"matBadge="{{ numberDeviceShare }}" matBadgeColor="warn"  data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                <h3>Lời mời chia sẻ thiết bị</h3>
-                              </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                              <div class="accordion-body">
-                                <div *ngFor="let index of listdeviceIdShareRequest; let emlement=index">
-                                    <h3>Bạn nhận được lời mời chia sẻ thiết bị <span>{{index}}</span> từ email <span>{{listEmailShareRequest[emlement]}}</span> bạn có đồng ý hay không ?</h3>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <button mat-menu-item (click)="replyDemand(index, 'accept', 0)">Đồng ý</button>
-                                        </div>
-                                        <div class="col-6">
-                                            <button mat-menu-item (click)="replyDemand(index, 'refuse', emlement)">Từ chối</button>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                </th>
-            </tr>
             <tr>
                 <th colspan="7" class="title-table">Thông tin quản lý thiết bị</th>
             </tr>
@@ -71,18 +43,18 @@
                 </ng-template> -->
 
                 <td>
-                    <button *ngIf="ownerships[i] !== 'guest'; else elseBtnShare" class="btn btn-outline-primary" type="button" (click)="openDialog(device, 'share')">
+                    <button *ngIf="ownerships[i] !== 'guest'; else elseBtnShare" class="btn btn-outline-dark" type="button" (click)="openDialog(device, 'share')">
                         <mat-icon>share</mat-icon>
                     </button>
                     <ng-template #elseBtnShare>
-                        <button class="btn btn-outline-primary" type="button" (click)="openDialog(device, 'share')" disabled><mat-icon>share</mat-icon></button>
+                        <button class="btn btn-outline-dark" type="button" (click)="openDialog(device, 'share')" disabled><mat-icon>share</mat-icon></button>
                     </ng-template>
                 </td>
 
                 <td>
-                    <button *ngIf="ownerships[i] !=='guest'; else elseBtnEdit" class="btn btn-outline-primary" (click)="openDialog(device, 'edit')"><mat-icon>edit</mat-icon></button>
+                    <button *ngIf="ownerships[i] !=='guest'; else elseBtnEdit" class="btn btn-outline-dark" (click)="openDialog(device, 'edit')"><mat-icon>edit</mat-icon></button>
                     <ng-template #elseBtnEdit>
-                        <button class="btn btn-outline-primary" disabled><mat-icon>edit</mat-icon></button>
+                        <button class="btn btn-outline-dark" disabled><mat-icon>edit</mat-icon></button>
                     </ng-template>
                 </td>
 

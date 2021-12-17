@@ -15,7 +15,7 @@
           <button mat-button class="button-hover" [routerLink]="['/information-device']" routerLinkActive="router-link-active">Điều khiển</button>
           <button mat-button class="button-hover" [routerLink]="['/show-list-device']" routerLinkActive="router-link-active">Chỉnh sửa</button>
           <button mat-button class="button-hover" [routerLink]="['/home']" routerLinkActive="router-link-active">Mua hàng</button>
-          <button mat-button class="button-hover" [routerLink]="['/about']" routerLinkActive="router-link-active">Liên hệ</button>
+          <button mat-button class="button-hover" [routerLink]="['/about']" routerLinkActive="router-link-active">Giới thiệu</button>
         </div>
       </section>
 
@@ -39,7 +39,10 @@
         <div class="Logined" *ngIf="logined == true">
           <button class="userName" mat-flat-button [routerLink]="['/personal-page']" routerLinkActive="router-link-active" *ngIf="!!userInfor">
             <!-- <mat-icon style="color: #FF914D;">account_circle</mat-icon> -->
-            <span>{{userInfor.name}}</span>
+            <span *ngIf="numberDeviceShare == 0; else noti">{{userInfor.name}}</span>
+            <ng-template #noti>
+              <marquee style="width: 9vw;">{{userInfor.name}} có {{numberDeviceShare}} thông báo</marquee>
+            </ng-template>
           </button>
           <button class="logoutButton" mat-flat-button (click)="logout()">
             <!-- <mat-icon>subdirectory_arrow_left</mat-icon> -->

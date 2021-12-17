@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
       if (this.common.userInfor["email_verified"]) {
         this.router.navigate(['/home'])
         this.statusLogin = "SIGNIN_OK"
+        this.common.getShareRequest()
         this.auth.isLogin()
       } else {
         localStorage.removeItem("access_token")
