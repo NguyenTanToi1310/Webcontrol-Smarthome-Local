@@ -4,7 +4,7 @@
 
 .tag-header h1 {
   font-weight: bold;
-  color: rgba(230, 70, 230, 0.8);
+  color: #FF914D;
   margin: 0px;
 }
 
@@ -15,6 +15,7 @@
 }
 
 .notification-share h4 {
-  color: red;
-  font-style: italic;
+  color: #FF914D;
+  font-size: 16px;
+  /* font-style: italic; */
 }

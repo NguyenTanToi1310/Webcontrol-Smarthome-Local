@@ -2,7 +2,7 @@
     <div class="background-device-page">
         <div class="container">
             <div class="row">
-                <div class="col d-flex " *ngFor="let device of devices">
+                <div class="col d-flex " *ngFor="let device of devices; let i=index">
                     <div class="box">
                         <div *ngIf="device.type === 'normal-light'">
                             <div class="tag-header">
@@ -103,10 +103,50 @@
                             </div>
                         </div>
                         <div class="dieukhienBotton">
-                            <!-- control -->
-                            <button id="dieukhienBotton" mat-flat-button (click)="openDialog(device)">Điều khiển</button>
+                            <!-- share, edit, del button -->
+                            <div>
+                                <button *ngIf="ownerships[i] !== 'guest'; else elseBtnShare" class="btn btn-outline-dark" type="button" (click)="openDialogShareEdit(device, 'share')">
+                                    <mat-icon>share</mat-icon>
+                                </button>
+                                <ng-template #elseBtnShare>
+                                    <button class="btn btn-outline-dark" disabled><mat-icon>share</mat-icon></button>
+                                </ng-template>
+
+                                <button *ngIf="ownerships[i] !=='guest'; else elseBtnEdit" class="btn btn-outline-dark" (click)="openDialogShareEdit(device, 'edit')"><mat-icon>edit</mat-icon></button>
+                                <ng-template #elseBtnEdit>
+                                    <button class="btn btn-outline-dark" disabled><mat-icon>edit</mat-icon></button>
+                                </ng-template>
+
+                                <button *ngIf="ownerships[i] !=='guest'; else elseBtnDelete" class="btn btn-outline-dark" (click)="handleDevice(device)" data-bs-toggle="modal" data-bs-target="#exampleModalDeleteDevice"><mat-icon>delete</mat-icon></button>
+                                <ng-template #elseBtnDelete>
+                                    <button class="btn btn-outline-dark" disabled><mat-icon>delete</mat-icon></button>
+                                </ng-template>
+                                
+                                <!-- Modal, confirm delete -->
+                                <div class="modal fade" id="exampleModalDeleteDevice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title" id="exampleModalLabel">Bạn có muốn xóa thiết bị này không ?</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h2>Loại thiết bị: <span style="color: brown;">{{deviceAction.ot_nickname}}</span></h2>
+                                                <h2>Mã thiết bị: <span style="color: brown;">{{deviceAction.deviceId}}</span></h2>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" (click)="requestDeleteDevice()" data-bs-dismiss="modal">Có, hãy xóa</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Hủy</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- control button-->
+                            <button id="dieukhienBotton" mat-flat-button (click)="openDialogControl(device)">Điều khiển</button>
                             
                         </div>
+                        
                     </div>
                 </div>
             </div>

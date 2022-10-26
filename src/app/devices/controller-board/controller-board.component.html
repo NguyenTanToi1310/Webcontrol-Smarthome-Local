@@ -1,14 +1,11 @@
 <div  style="text-align: right">
   <button mat-button (click)="onNoClick()">X</button>
 </div>
-
 <div class="tag-header">
-  <h1>
-    {{data.virtualDevice.ot_nickname}}
-  </h1>
-  <h4>{{data.virtualDevice.deviceId}}</h4>
+  <h1>{{data.virtualDevice.ot_nickname}}</h1>
+  <h4>Tên tiếng anh: {{data.virtualDevice.en_nickname}}<br>Mã thiết bị: {{data.virtualDevice.deviceId}}</h4>
 </div>
-<div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
+<div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px">
   <div class="device-name">
     <div *ngIf="data.virtualDevice.type === 'normal-light'">
       <hr>
@@ -105,7 +102,7 @@
   </div>
   <div class="control-device" *ngIf="data.virtualDevice.type !== 'sensor-th'">
     <div class="onOff">
-      <h2 class="onOffDiv">Bật/Tắt thiết bị:</h2>
+      <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
       <div class="row" class="onOffButton">
         <div class="col">
           <div class="toggle-wrapper2" >
@@ -136,7 +133,8 @@
         <h2>Điều chỉnh độ sáng:</h2>
       </div>
       <div class="row">
-        <mat-slider
+        <mat-slider 
+          color="primary"
           thumbLabel [displayWith]="formatLabel"
           tickInterval="1" step="1" min="0" max="100" value="{{ data.virtualDevice.brightness }}"
           [(ngModel)]="data.virtualDevice.brightness"

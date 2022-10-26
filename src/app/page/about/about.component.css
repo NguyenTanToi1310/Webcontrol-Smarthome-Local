@@ -1,112 +1,55 @@
-.title-standee {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 50px;
+body{
+    height: 90vh;
+}
+.background-device-page {
+    height: 90vh;
+    background-image: url("../../../assets/about/bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-attachment: scroll;
+    
+}
+.intro{
+    font-size: 35px;
+    margin-left: 100px;
+    padding-top: 60px;
+    margin-right: 40%;
+    /* text-align: justify; */
+    /* color: #fff; */
     font-weight: bold;
 }
-
-.content-standee {
-    line-height: 2rem;
+.contact-us{
+    margin-left: 100px;
+    padding-top: 120px;
+    margin-right: 40%;
 }
-
-.jss02-content {
-    text-align: center;
-    background-color: rgb(255,255,255);
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-    min-height: 35vh;
+.info{
+    width: 100%;
+    /* text-align: left; */
+    background-color: white;
+    border-radius: 0 20px 20px 20px;
+    padding: 20px;
 }
-
-.container-fluid {
-    padding: 0px;
-}
-
-.jss02-content-001 {
-    min-height: 100px;
-    padding-top: 50px;
-    background-color: #04a133;
-    background-image: linear-gradient(#6c8668, #07961a);
-}
-
-.jss02-content .row {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    --bs-gutter-x: 0 !important;   
-}
-.jss02-content .farm-information {
-    display: inline-block;
-    text-align: center;
-    background-color: rgba(209, 206, 203, 0.2);
-    min-height: 150px;
-    height: 350px;
-    width: 235px;
-    margin-top: 50px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    box-shadow: 10px 10px 10px 1px;
-}
-.jss02-content .farm-information:hover {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    transition: 1s;
-}
-
-.jss02-content .farm-information .farm-information-001 {
-    height: 70%;
-}
-
-.jss02-content .farm-information .technology-title {
-    font-weight: bold;
-    font-size: 20px;
-    color: rgba(54, 49, 54, 0.8);
-}
-
-.footer-box {
-    text-align: left;
-    padding-left: 30px ;
-}
-
-#box-001 {
-    min-width: 100%;
-}
-
-#box-001 h1, #box-002 h1, #box-003 h1 {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-weight: 400;
-    font-size: 25px;
-    color: aliceblue;
-}
-#box-001 h1 span{
-    font-size: 25px;
-    font-family: Lora, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-weight: 400;
-    color: #ffa000;
-}
-#box-001 span {
-    font-size: 18px;
-    color: rgb(222, 222, 223);
-}
-
-#box-002 ul li,  #box-002 ul li a{
-    font-size: 18px;
-    color: rgb(222, 222, 223);
-    text-decoration: none;
-    padding: 2px;
-}
-
-#box-002 ul li:hover, #box-002 ul li a:hover {
-    color: #afa627;
-}
-
-#box-003 span {
-    margin-left: 10px;
-    font-size: 18px;
-    color: rgb(222, 222, 223);
-}
-
-#coppyright-warmhouse {
-    font-weight: bold;
-    margin-bottom: 20px; 
-    font-size: 18px; 
-    font-family: Arial, Helvetica, sans-serif;
-    color: #533c13;
+.Toi-info{
+    float: left;
+    width: 45%;
+    margin-right:3%;
+    text-align: justify;
+    /* color: rgb(255, 255, 255) */
+    background-image: url("../../../assets/about/toi.jpg");
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: right center;
+  }
+.Quoc-info{
+    overflow: hidden;
+    width: 52%;
+    padding-left: 20px;
+    text-align: justify;
+    background-image: url("../../../assets/about/toi.jpg");
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    border-left: solid #39a1ff;
 }

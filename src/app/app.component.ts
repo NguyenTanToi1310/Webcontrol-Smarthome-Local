@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.currentMessage.subscribe(message => {
+    this.auth.loginedCurrentMessage.subscribe(message => {
       this.logined = message
       if (this.logined) {
         this.userInfor = this.common.userInfor;
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
 
   public async logout() {
     this.auth.signOut()
-    await localStorage.removeItem("access_token")
+    // await localStorage.removeItem("access_token")
     this.logined = this.auth.isLogin()
     this.userInfor = ""
     location.reload()

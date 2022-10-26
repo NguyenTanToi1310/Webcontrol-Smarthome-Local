@@ -15,5 +15,11 @@ export const environment = {
     storageBucket: "smarthome-quoctoi-bfa7d.appspot.com",
     messagingSenderId: "772364253996",
     appId: "1:772364253996:web:d4a8b9a083d6beb8784a89",
+  },
+  cognito: {
+    region: 'ap-southeast-1',
+    userPoolId: 'ap-southeast-1_J7vJimaTM',
+    userPoolWebClientId: '2ahhouuiiu8eho8e041sifhtag',
+    identityPoolId: 'ap-southeast-1:d908bfe4-825c-44f2-ab08-675e39bfadd1',
   }
 };

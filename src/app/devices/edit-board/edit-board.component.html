@@ -1,8 +1,11 @@
+<div  style="text-align: right">
+    <button mat-button (click)="onNoClick()">X</button>
+</div>
 <div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
     <div class="device-name">
         <div class="tag-header">
             <h1>{{data.virtualDevice.ot_nickname}}</h1>
-            <h4>{{data.virtualDevice.deviceId}}</h4>
+            <h4>Tên tiếng anh: {{data.virtualDevice.en_nickname}}<br>Mã thiết bị: {{data.virtualDevice.deviceId}}</h4>
         </div>
         <hr>
     </div>
@@ -23,9 +26,9 @@
                  <!-- switch_type for switch -->
                 <mat-radio-group aria-label="Select an option" formControlName="switchTypeFormControl" *ngIf="data.virtualDevice.type == 'switch'">
                     <h4 style="margin-top : 20px">Thiết bị được kết nối với: </h4>
-                    <mat-radio-button value="light">Đèn</mat-radio-button>
-                    <mat-radio-button value="fan">Quạt</mat-radio-button>
-                    <mat-radio-button value="other">Khác</mat-radio-button>
+                    <mat-radio-button color="primary" value="light">Đèn</mat-radio-button>
+                    <mat-radio-button color="primary" value="fan">Quạt</mat-radio-button>
+                    <mat-radio-button color="primary" value="other">Khác</mat-radio-button>
                 </mat-radio-group>
             </form>
         </div>

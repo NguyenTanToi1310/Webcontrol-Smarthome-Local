@@ -1,51 +1,59 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-// import { AppComponent } from 'src/app/app.component';
-import { AuthServiceService } from 'src/app/services/auth-service.service';
-import { CommonServiceService } from 'src/app/services/common-service.service';
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+
+import { AuthServiceService } from "src/app/services/auth-service.service";
+import { CommonServiceService } from "src/app/services/common-service.service";
+
+import { IUser, CognitoService } from "../../services/cognito.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
-
   public information = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)])
-  })
+    email: new FormControl("", [Validators.required, Validators.email]),
+    password: new FormControl("", [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+  });
 
-  public statusLogin : any
+  public statusLogin: any;
+
+  user: IUser;
 
   constructor(
-    private auth: AuthServiceService, 
     private router: Router,
-    private common: CommonServiceService,
-  ) { }
+    private cognitoService: CognitoService,
+    private auth: AuthServiceService,
+    private common: CommonServiceService
+  ) {
+    this.user = {} as IUser;
+  }
 
   ngOnInit(): void {
     this.statusLogin = {
-      message : ""
-    }
+      message: "",
+    };
   }
 
   public async login() {
-    this.statusLogin = await this.auth.signIn(this.information)
-    if (!this.statusLogin.message) {
-      let access_token = await this.statusLogin.user.getIdToken()
-      await localStorage.setItem('access_token', access_token)
-      await this.common.decodeAccessToken(access_token)
-      if (this.common.userInfor["email_verified"]) {
-        this.router.navigate(['/home'])
-        this.statusLogin = "SIGNIN_OK"
-        this.common.getShareRequest()
-        this.auth.isLogin()
-      } else {
-        localStorage.removeItem("access_token")
-        this.router.navigate(['/confirm-email'])
-      }
+    this.user.email = this.information.value.email;
+    this.user.password = this.information.value.password;
+
+    // console.log(this.user.email)
+    // console.log(this.user.password)
+
+    this.statusLogin = await this.auth.signIn(this.user);
+    if (!this.statusLogin) {
+      this.router.navigate(["/home"]);
+      this.statusLogin = "SIGNIN_OK";
+      this.auth.isLogin();
     }
+    this.cognitoService.subscribe();
+    this.cognitoService.publish();
   }
 }
