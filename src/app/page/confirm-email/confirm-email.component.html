@@ -1,10 +1,33 @@
-<div class="box-email-css">
+<div class="box-email-css justify-content-center">
     <div class="d-flex justify-content-center">
-        <img src="../../../assets/email-page/email-check.png" width="20%" alt="">
+        <img src="../../../assets/email-page/email-check.png" width="25%" alt="">
     </div>
     <div class="box-email-content">
-        <p class="d-flex justify-content-center">Chúng tôi đã gửi đến bạn một thư xác nhận.</p>
-        <p class="d-flex justify-content-center">Vui lòng xác nhận qua hộp thư của bạn !</p>
+        <p class="d-flex justify-content-center">Mã xác nhận đã được gửi đến email {{user.email}}</p>
+        <p class="d-flex justify-content-center">Sau khi xác nhận, bạn có thể đăng nhập.</p>
     </div>
+
+    <div class="card-body">
+        <div class="row">
+          <div class="col mb-2">
+            <label for="code" class="form-label">Code:</label>
+            <input type="text" id="code" name="code" #code="ngModel" [(ngModel)]="user.code" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col d-grid">
+            <button type="button" (click)="confirmSignUp()" class="btn btn-sm btn-success">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+
+    <!-- <div class="login" [routerLink]="['/login']" routerLinkActive="router-link-active">
+        <button class="example-button-row" mat-flat-button type="submit" color="primary">
+            Đăng nhập
+        </button>
+    </div> -->
 </div>
 

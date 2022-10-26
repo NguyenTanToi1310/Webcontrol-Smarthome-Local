@@ -1,8 +1,11 @@
+<div  style="text-align: right">
+    <button mat-button (click)="onNoClick()">X</button>
+</div>
 <div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
     <div class="device-name">
         <div class="tag-header">
             <h1>{{ data.virtualDevice.ot_nickname }}</h1>
-            <h4>{{ data.virtualDevice.deviceId }}</h4>
+            <h4>Tên tiếng anh: {{data.virtualDevice.en_nickname}}<br>Mã thiết bị: {{data.virtualDevice.deviceId}}</h4>
         </div>
         <hr>
     </div>
@@ -13,8 +16,8 @@
                 <small id="emailHelp" class="form-text text-muted">Nhập email người bạn muốn chia sẻ hoặc thu hồi.</small>
                 <input type="email" class="form-control" formControlName="emailFormControl" for aria-describedby="emailHelp" placeholder="Email">
                 <mat-radio-group aria-label="Select an option" formControlName="taskFormControl">
-                    <mat-radio-button value="Share-Device">Chia sẻ</mat-radio-button>
-                    <mat-radio-button value="Revoke-Device">Thu hồi</mat-radio-button>
+                    <mat-radio-button color="primary" value="Share-Device">Chia sẻ</mat-radio-button>
+                    <mat-radio-button color="primary" value="Revoke-Device">Thu hồi</mat-radio-button>
                 </mat-radio-group>
             </form>
         </div>

@@ -150,8 +150,10 @@ export class CommonServiceService {
       const data = {
         commands: JSON.stringify(deviceArray)
       }
-      // console.log(typeof data)
-      // console.log(data)
+      //
+      console.log(typeof data)
+      console.log(data.commands)
+      //
       return await this.http.post<unknown>(controlURL, data).subscribe(res => { /* console.log(res) */ })
     } else if (device.type == 'sensor-th') {
       let controlURL = 'https://us-central1-smarthome-quoctoi-bfa7d.cloudfunctions.net/fulfillment/user/activesensor'

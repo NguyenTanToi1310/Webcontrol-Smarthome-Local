@@ -6,25 +6,34 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import * as qs from 'query-string';
 import { HttpClient } from '@angular/common/http';
 
+import { IUser, CognitoService } from "./cognito.service";
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthServiceService {
   logined = new BehaviorSubject<boolean>(false);
-  currentMessage = this.logined.asObservable();
+  loginedCurrentMessage = this.logined.asObservable();
+
+  userEmail = new BehaviorSubject<string>('');
+  userEmailCurrentMessage = this.userEmail.asObservable();
+
+  user = new BehaviorSubject<IUser>({} as IUser);
+  userCurrentData = this.user.asObservable();
 
   constructor(
     public afAuth: AngularFireAuth,
     public afdb: AngularFireDatabase,
+    private cognitoService: CognitoService,
     private common: CommonServiceService,
     private http: HttpClient,
   ) { }
 
-  public signUp(information){               // dang ky
+  public signUp(user){               // dang ky
     return new Promise<any>(async (resolve, reject) => {
-      await this.afAuth.createUserWithEmailAndPassword(information.value.email, information.value.password)
+      await this.cognitoService.signUp(user)
       .then(async res => {
-        await this.sendVerificationMail();
         resolve(res);
       })
       .catch(error => {
@@ -34,9 +43,9 @@ export class AuthServiceService {
     })
   }
 
-  public signIn(information){               // dang nhap
+  public signIn(user){               // dang nhap
     return new Promise<any>(async (resolve, reject) => {
-      await this.afAuth.signInWithEmailAndPassword(information.value.email, information.value.password)
+      await this.cognitoService.signIn(user)
       .then(async res => {
         resolve(res);
       })
@@ -49,7 +58,7 @@ export class AuthServiceService {
 
   public signOut(){                         // dang xuat
     return new Promise<any>(async (resolve, reject)=> {
-      this.afAuth.signOut()
+      this.cognitoService.signOut()
       .then(async res => {
         resolve(res);
       })
@@ -60,15 +69,26 @@ export class AuthServiceService {
   }
 
   public isLogin() {                        // co dang nhap hay chua
-    if (!!localStorage.getItem('access_token')) {
-      this.common.decodeAccessToken(localStorage.getItem('access_token'));
-      if (!this.common.isExpireDateToken && this.common.userInfor["email_verified"]) {
-        this.logined.next(true);
-        return true;
-      }
+    // this.cognitoService.currentSession()
+    // .then(res=>{
+    //   // console.log(res);
+    //   this.logined.next(true);
+    //   return true;
+    // })
+    // .catch(error => {
+    // })
+    // this.logined.next(false);
+    // return false;
+    if(this.cognitoService.isAuthenticated()){
+      this.logined.next(true);
+      return true;
     }
     this.logined.next(false);
     return false;
+  }
+
+  public confirmSignUp(user) : Promise<any> {
+    return this.cognitoService.confirmSignUp(user);
   }
 
   public async sendVerificationMail() {
@@ -103,5 +123,22 @@ export class AuthServiceService {
       return await res.updateProfile(information)
     })
     .catch((error) => { console.log("error: ", error) })
+  }
+
+  public changeUserEmailCurrentMessage(message: string) {
+    this.userEmail.next(message);
+  }
+
+  public changeUserCurrentData(user: IUser)
+  {
+    this.user.next(user)
+  }
+
+  public getIdentityID() {
+    this.cognitoService.getIdentityID();
+  }
+
+  public attach_Policy() {
+    this.cognitoService.attach_Policy();
   }
 }

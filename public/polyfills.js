@@ -1,13 +1,13 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["polyfills"],{
 
-/***/ 1:
+/***/ 3:
 /*!********************************!*\
   !*** multi ./src/polyfills.ts ***!
   \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\HocKi7\CE206-M11-DoAn2\Webcontrol-Smarthome\src\polyfills.ts */"hN/g");
+module.exports = __webpack_require__(/*! D:\KLTN\Webcontrol-Smarthome\src\polyfills.ts */"hN/g");
 
 
 /***/ }),
@@ -74,6 +74,7 @@ __webpack_require__.r(__webpack_exports__);
  *  (window as any).__Zone_enable_cross_context_check = true;
  *
  */
+window.global = window;
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
@@ -3053,5 +3054,5 @@ Zone.__load_patch('PromiseRejectionEvent', (global, Zone) => {
 
 /***/ })
 
-},[[1,"runtime"]]]);
+},[[3,"runtime"]]]);
 //# sourceMappingURL=polyfills.js.map

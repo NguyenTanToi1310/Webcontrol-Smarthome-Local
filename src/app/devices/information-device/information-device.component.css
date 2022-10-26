@@ -1,6 +1,7 @@
 body{
     height: 90vh;
 }
+
 .background-device-page {
     height: 90vh;
     background-image: url("../../../assets/device-page/background.jpg");
@@ -19,15 +20,17 @@ body{
     /* max-width: 250px; */
     min-width: 230px;
     width: 100%;
-    /* min-height: 250px; */
-    max-height: 350px;
+    max-height: 330px;
     border-radius: 10px;
     text-align: center;
-    padding-top: 20px;
-    padding-bottom: 40px;
+    padding-top: 10px;
+    padding-bottom: 100px;
     background-color: rgb(255, 255, 255);
 } 
-
+.box h2{
+    font-size: 16px;
+    margin: 0px;
+}
 .box h1 {
     font-weight: bold;
     color: #FF914D;
@@ -61,7 +64,7 @@ body{
     width: 100%;
 
 }
-#dieukhienBotton:hover{
+#dieukhienBotton:hover, .btn-outline-dark:hover{
     /* box-shadow: -5px -5px 4px  rgba(1, 255, 64, 0.5),
                 10px 10px 6px  rgba(0, 0, 0, 0.15),
                 inset -5px -5px 5px  rgba(1, 255, 64, 0.5),
@@ -71,4 +74,9 @@ body{
     transition: 0.5s;
 }
 
+.btn-outline-dark{
+    transform: scale(0.8);
+    outline: none;
+    border: none;
+}
 
