@@ -10,7 +10,7 @@ import { Stringifiable } from "query-string";
 export interface IUser {
   email: string;
   password: string;
-  repassword: string;
+  repassword: string; //confirm_password in signUp(); new_password in forgotPasswordSubmit when forgot password
   firstname: string;
   lastname: string;
   phonenumber: string;
@@ -54,18 +54,32 @@ export class CognitoService {
     }).then(() => {});
   }
 
-  // confirm user sign up, then send Cognito Identity Id to the AWS backend and attach IoT Policy 
   public confirmSignUp(user: IUser): Promise<any> {
-    return Auth.confirmSignUp(user.email, user.code).then(() => {
-    });
+    return Auth.confirmSignUp(user.email, user.code).then(() => {});
+  }
+
+  public resendSignUpCode(user) {
+    return Auth.resendSignUp(user.email);
   }
 
   public signIn(user: IUser): Promise<any> {
     return Auth.signIn(user.email, user.password).then(() => {
       this.authenticationSubject.next(true);
-      console.log("signIn() ");
-      this.getIdentityID();
     });
+  }
+
+  public forgotPassword(user: IUser): Promise<any> {
+    // Send confirmation code to user's email
+    return Auth.forgotPassword(user.email)
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  }
+
+  public forgotPasswordSubmit(user: IUser): Promise<any> {
+    // Collect confirmation code and new password, then
+    return Auth.forgotPasswordSubmit(user.email, user.code, user.repassword)
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
   }
 
   public signOut(): Promise<any> {
@@ -117,18 +131,15 @@ export class CognitoService {
 
     const policyName = "angularCognito";
     const target = credentials.identityId;
-    console.log(target);
 
     const { policies } = await iot.listAttachedPolicies({ target }).promise();
     if (!policies.find((policy) => policy.policyName === policyName)) {
       await iot.attachPolicy({ policyName, target }).promise();
-      console.log(policyName);
     }
   }
 
   public getIdentityID() {
     Auth.currentCredentials().then((info) => {
-      console.log("getIdentityID() ");
       console.log(info.identityId);
     });
   }

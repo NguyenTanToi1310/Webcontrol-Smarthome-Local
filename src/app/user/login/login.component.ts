@@ -44,9 +44,6 @@ export class LoginComponent implements OnInit {
     this.user.email = this.information.value.email;
     this.user.password = this.information.value.password;
 
-    // console.log(this.user.email)
-    // console.log(this.user.password)
-
     this.statusLogin = await this.auth.signIn(this.user);
     if (!this.statusLogin) {
       this.router.navigate(["/home"]);

@@ -46,7 +46,7 @@ export class RegistrationComponent implements OnInit {
     this.user.password = this.information.value.password;
     this.user.firstname = this.information.value.firstname;
     this.user.lastname = this.information.value.lastname;
-    this.user.phonenumber = "0" + String(this.information.value.phone);
+    this.user.phonenumber = this.information.value.phone;
 
     this.auth.changeUserEmailCurrentMessage(this.user.email)    // 
     this.auth.changeUserCurrentData(this.user);

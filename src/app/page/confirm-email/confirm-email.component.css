@@ -1,9 +1,39 @@
-.box-email-content {
-    font-size: 25px;
+.title-content {
+    font-size: 35px;
     padding-top: 25px;
+    font-weight: bold;
+}
+.box-email-content {
+    font-size: 20px;
+    padding-top: 20px;
+    color: rgb(66, 66, 66);
 }
 .login{
     min-width: 25vw;
     text-align: center;
     padding-top: 25px;
+}
+.box-code-content {
+    font-size: 25px;
+    width: 25vh;
+    margin:0 auto;
+}
+
+.confirm-code-form {
+    min-width: 100px;
+    max-width: 300px;
+    width: 100%;
+    margin: 35px auto 0 auto;
+  }
+  
+.confirm-code-full-width {
+    width: 100%;
+}
+.example-button-row {
+    width: 100%;
+}
+.resend-code:hover {
+    color: red;
+    cursor: pointer;
+    transition: 0.4s; /* tạo độ trễ cho hover */
 }
