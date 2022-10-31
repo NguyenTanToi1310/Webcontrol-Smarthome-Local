@@ -4,21 +4,22 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from "@angular/router";
 import { AuthServiceService } from "src/app/services/auth-service.service";
 import { IUser, CognitoService } from "../../services/cognito.service";
+import { threadId } from "worker_threads";
 
 @Component({
-  selector: "app-registration",
-  templateUrl: "./registration.component.html",
-  styleUrls: ["./registration.component.css"],
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.css']
 })
-export class RegistrationComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit {
   public statusRegistration: any;
+  public isCodeSent: boolean; //verification code is sent ???
   
   user: IUser;
 
   public information = new FormGroup({
-    firstname: new FormControl("", [Validators.required]),
-    lastname: new FormControl("", [Validators.required]),
     email: new FormControl("", [Validators.required, Validators.email]),
+    code: new FormControl("", [Validators.required]),
     password: new FormControl("", [
       Validators.required,
       Validators.minLength(6),
@@ -27,7 +28,6 @@ export class RegistrationComponent implements OnInit {
       Validators.required,
       Validators.minLength(6),
     ]),
-    phone: new FormControl("", [Validators.required]),
   });
 
 
@@ -36,28 +36,40 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isCodeSent = false;
+
     this.statusRegistration = {
       message: "",
     };
+    if(this.user.email == undefined) {
+      this.user.email = "USER_EMAIL_NOT_FOUND!!!";
+    }
   }
 
-  public async registration() {
+  public async forgotPassword(){
     this.user.email = this.information.value.email;
-    this.user.password = this.information.value.password;
-    this.user.firstname = this.information.value.firstname;
-    this.user.lastname = this.information.value.lastname;
-    this.user.phonenumber = this.information.value.phone;
 
-    this.auth.changeUserCurrentData(this.user);
+    this.statusRegistration = await this.auth.forgotPassword(this.user);
+    if (!this.statusRegistration.message) {
+      this.isCodeSent = true;
+    }
+  }
+
+  public async forgotPasswordSubmit(){
+    this.user.password = this.information.value.password;
+    this.user.code = this.information.value.code;
     
     if (this.information.value.password == this.information.value.repassword) {
-      this.statusRegistration = await this.auth.signUp(this.user);
-      if (!this.statusRegistration) {
-        this.router.navigate(["/confirm-email"]);
+      this.statusRegistration = await this.auth.forgotPasswordSubmit(this.user);
+      if (!this.statusRegistration.message) {
+        this.router.navigate(['/login']);
       }
     } else {
       this.statusRegistration.message = "Xác nhận mật khẩu không trùng khớp";
     }
   }
 
+  public async changeEmail(): Promise<void> {
+    this.isCodeSent = false;
+  }
 }

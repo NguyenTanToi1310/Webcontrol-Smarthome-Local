@@ -15,9 +15,6 @@ export class AuthServiceService {
   logined = new BehaviorSubject<boolean>(false);
   loginedCurrentMessage = this.logined.asObservable();
 
-  userEmail = new BehaviorSubject<string>("");
-  userEmailCurrentMessage = this.userEmail.asObservable();
-
   user = new BehaviorSubject<IUser>({} as IUser);
   userCurrentData = this.user.asObservable();
 
@@ -178,10 +175,6 @@ export class AuthServiceService {
       .catch((error) => {
         console.log("error: ", error);
       });
-  }
-
-  public changeUserEmailCurrentMessage(message: string) {
-    this.userEmail.next(message);
   }
 
   public changeUserCurrentData(user: IUser) {

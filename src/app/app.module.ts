@@ -65,6 +65,7 @@ import { ConfirmEmailComponent } from './page/confirm-email/confirm-email.compon
 import { PersonalComponent } from './page/personal/personal.component';
 import { ShareBoardComponent } from './devices/share-board/share-board.component';
 import { EditBoardComponent } from './devices/edit-board/edit-board.component';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import { EditBoardComponent } from './devices/edit-board/edit-board.component';
     PersonalComponent,
     ShareBoardComponent,
     EditBoardComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

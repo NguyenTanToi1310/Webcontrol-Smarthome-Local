@@ -56,6 +56,5 @@ export class ConfirmEmailComponent implements OnInit {
   public async resendSignUpCode(): Promise<void> {
     this.isResent = true;
     this.auth.resendSignUpCode(this.user);
-    // this.isResent = false;
   }
 }

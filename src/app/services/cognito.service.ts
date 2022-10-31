@@ -71,15 +71,15 @@ export class CognitoService {
   public forgotPassword(user: IUser): Promise<any> {
     // Send confirmation code to user's email
     return Auth.forgotPassword(user.email)
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
+      // .then((data) => console.log(data))
+      // .catch((err) => console.log(err));
   }
 
   public forgotPasswordSubmit(user: IUser): Promise<any> {
     // Collect confirmation code and new password, then
-    return Auth.forgotPasswordSubmit(user.email, user.code, user.repassword)
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
+    return Auth.forgotPasswordSubmit(user.email, user.code, user.password)
+      // .then((data) => console.log(data))
+      // .catch((err) => console.log(err));
   }
 
   public signOut(): Promise<any> {
