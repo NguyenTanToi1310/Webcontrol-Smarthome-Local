@@ -48,6 +48,9 @@ export class LoginComponent implements OnInit {
     if (!this.statusLogin) {
       this.router.navigate(["/home"]);
       this.statusLogin = "SIGNIN_OK";
+
+      this.common.getShareRequest() //sadfgvdsfvregfergreg
+
       this.auth.isLogin();
     }
     this.cognitoService.subscribe();

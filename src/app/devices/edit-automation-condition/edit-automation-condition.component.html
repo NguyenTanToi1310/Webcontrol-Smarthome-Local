@@ -1,0 +1,25 @@
+<div style="text-align: right">
+    <button mat-button (click)="onNoClick()">X</button>
+</div>
+<div class="tag-header">
+    <h1>"condition.name"</h1>
+</div>
+<div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px">
+    <div>
+        <hr />
+        <div class="tag-content">
+            <form class="example-form" [formGroup]="formGroup" (ngSubmit)="alertFormValues(formGroup)" ngNativeValidate>
+                <mat-slide-toggle formControlName="whiteLight">Đèn trắng</mat-slide-toggle><br>
+                <mat-slide-toggle formControlName="colorLight">Đèn màu</mat-slide-toggle><br>
+                <mat-slide-toggle formControlName="switch1">Công tắc 1</mat-slide-toggle><br>
+                <mat-slide-toggle formControlName="switch2">Công tắc 2</mat-slide-toggle><br>
+                <mat-slide-toggle formControlName="switch3">Công tắc 3</mat-slide-toggle><br>
+                <button mat-raised-button type="submit">Save Settings</button>
+              </form>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions style="float: right">
+    <button mat-button (click)="onNoClick()">Hủy</button>
+    <button mat-button (click)="onYesClick()">Lưu</button>
+</div>

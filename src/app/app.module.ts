@@ -66,6 +66,9 @@ import { PersonalComponent } from './page/personal/personal.component';
 import { ShareBoardComponent } from './devices/share-board/share-board.component';
 import { EditBoardComponent } from './devices/edit-board/edit-board.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { ShortcutComponent } from './devices/shortcut/shortcut.component';
+import { AutomationBoardComponent } from './devices/automation-board/automation-board.component';
+import { EditAutomationConditionComponent } from './devices/edit-automation-condition/edit-automation-condition.component';
 
 
 @NgModule({
@@ -83,6 +86,9 @@ import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.
     ShareBoardComponent,
     EditBoardComponent,
     ForgotPasswordComponent,
+    ShortcutComponent,
+    AutomationBoardComponent,
+    EditAutomationConditionComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

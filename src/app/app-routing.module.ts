@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InformationDeviceComponent } from './devices/information-device/information-device.component';
+import { ShortcutComponent } from './devices/shortcut/shortcut.component';
 import { ShowListDeviceComponent } from './devices/show-list-device/show-list-device.component';
 import { AboutComponent } from './page/about/about.component';
 import { ConfirmEmailComponent } from './page/confirm-email/confirm-email.component';
@@ -21,8 +22,11 @@ const routes: Routes = [
     { path: 'confirm-email', component: ConfirmEmailComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'personal-page', component: PersonalComponent, canActivate: [AuthGuard] },
-    { path: 'information-device', component: InformationDeviceComponent, canActivate: [AuthGuard] },
+    // { path: 'information-device', component: InformationDeviceComponent, canActivate: [AuthGuard] },
+    { path: 'information-device', component: InformationDeviceComponent},
     { path: 'show-list-device', component: ShowListDeviceComponent, canActivate: [AuthGuard] },
+    // { path: 'shortcut', component: ShortcutComponent, canActivate: [AuthGuard] },
+    { path: 'shortcut', component: ShortcutComponent}
 ];
 
 @NgModule({

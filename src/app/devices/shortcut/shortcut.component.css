@@ -1,0 +1,171 @@
+body {
+  height: 90vh;
+}
+
+.container {
+  background-color: rgba(245, 245, 220, 0.486);
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  border-radius: 10px;
+}
+.background-device-page {
+  /* height: 90vh; */
+  background-image: url("../../../assets/device-page/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-attachment: fixed;
+  overflow: auto;
+  height: 90vh;
+  width: 100vw;
+  padding-bottom: 30px;
+}
+
+.buttons-wrapper {
+  position: relative;
+  width: 200px;
+  height: 50px;
+}
+
+.seemingly-outer-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 80%;
+}
+
+.seemingly-inner-button {
+  position: absolute;
+  top: 5%;
+  bottom: 5%;
+  left: 134px;
+  max-width: 50px;
+  padding: 0;
+  text-align: center !important;
+}
+
+.seemingly-inner-button:hover {
+  color: white;
+  background-color: #ff914d;
+  transition: 0.5s;
+}
+
+.container2 .row .col {
+  margin-top: 20px;
+  margin-right: 20px;
+  max-width: 200px;
+  min-width: 200px;
+}
+
+.container2 .row .col button {
+  text-align: left;
+  border-radius: 10px;
+  width: 200px;
+  margin-right: 0px;
+  padding-right: 0px;
+}
+
+.container2 .row .col .button .settingIcon{
+  float: right;
+  width: 30px;
+  margin-left: 150px;
+  border: solid;  
+  margin-right: 0px;
+  padding-right: 0px;
+  scale: 0.8;
+}
+
+.container1 .row .col {
+  max-width: 260px;
+  height: 100px;
+  margin-top: 20px;
+}
+
+.box {
+  position: relative;
+  /* max-width: 250px; */
+  /* min-width: 150px; */
+  /* max-height: 150px; */
+  width: 240px;
+  height: 100px;
+  border-radius: 10px;
+  text-align: center;
+  padding-top: 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+.box:hover {
+  cursor: pointer;
+}
+
+.box h2 {
+  font-size: 18px;
+  margin: 0px;
+}
+
+.box h1 {
+  /* font-weight: bold; */
+  color: #ff914d;
+  margin: 0px;
+}
+.color-state {
+  display: inline-block;
+}
+.color-state-box {
+  display: inline-block;
+  bottom: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+}
+
+.tag-header {
+  text-align: left;
+  margin-left: 10%;
+}
+.tag-content {
+  text-align: left;
+  margin-left: 10%;
+}
+
+.dieukhienBotton {
+  text-align: right;
+  width: 100%;
+  bottom: 0px;
+  position: absolute;
+}
+
+#dieukhienBotton {
+  border-radius: 10px;
+  transform: scale(0.9);
+  margin-bottom: 5px;
+}
+
+#dieukhienBotton:hover,
+.btn-outline-dark:hover {
+  color: white;
+  background-color: #ff914d;
+  transition: 0.5s;
+}
+
+#dieukhienBotton:active,
+.btn-outline-dark:active {
+  pointer-events: none;
+}
+
+.btn-outline-dark {
+  transform: scale(0.8);
+  outline: none;
+  border: none;
+}
+
+::ng-deep .mat-button-focus-overlay {
+  display: none;
+}
+
+
+

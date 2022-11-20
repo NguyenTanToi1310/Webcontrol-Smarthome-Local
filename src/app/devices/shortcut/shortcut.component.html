@@ -1,0 +1,164 @@
+<body>
+    <div class="background-device-page">
+        <div class="container container2">
+            Câu lệnh
+            <div class="row">
+                <div class="col d-flex flow">
+                    <div class="buttons-wrapper">
+                        <button mat-flat-button class="seemingly-outer-button button" id="outer" (click)="openDialogControl(1)"> <!-- thay ham nay thanh ham khac de run cua lenh -->
+                            Chào buổi sáng
+                        </button>
+                        <button mat-flat-button class="seemingly-inner-button button" id="inner" (click)="openDialogAutomationBoard()">
+                            <mat-icon>settings</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="col d-flex flow">
+                    <div class="buttons-wrapper">
+                        <button mat-flat-button class="seemingly-outer-button button" id="outer" (click)="openDialogControl(1)">
+                            Ra khỏi nhà
+                        </button>
+                        <button mat-flat-button class="seemingly-inner-button button" id="inner" (click)="openDialogAutomationBoard()">
+                            <mat-icon>settings</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="col d-flex flow">
+                    <div class="buttons-wrapper">
+                        <button mat-flat-button class="seemingly-outer-button button" id="outer" (click)="openDialogControl(1)">
+                            Về nhà
+                        </button>
+                        <button mat-flat-button class="seemingly-inner-button button" id="inner" (click)="openDialogAutomationBoard()">
+                            <mat-icon>settings</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <!-- <div class="col d-flex flow">
+                    <button mat-flat-button (click)="openDialogControl(1)">
+                        <mat-icon>add_circle</mat-icon>
+                        thêm câu lệnh
+                    </button>
+                </div> -->
+            </div>
+        </div>
+
+        <div *ngFor="let room of ['room1', 'room2']; let j = index">
+            <div class="container container1">
+                <div class="row">
+                    <div>Room abc</div>
+                    <!-- <div class="col d-flex " *ngFor="let device of devices; let i=index"> -->
+                    <div class="col d-flex" *ngFor="let device of ['1', '2', '3', '6', '4', '3', '5']; let i = index">
+                        <div class="box" (click)="openDialogControl(device)">
+                            <!-- <div *ngIf="device.type === 'normal-light'"> -->
+                            <div *ngIf="device == '1'">
+                                <div class="tag-header">
+                                    <h2>device.ot_nickname</h2>
+                                </div>
+                                <div class="tag-content">
+                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Đang bật</h2> -->
+                                    <!-- <ng-template #elseStateDevice><h2 class="row d-flex"> Đang tắt</h2></ng-template> -->
+                                    <!-- <h2 class="row d-flex">Độ sáng: {{device.brightness}}</h2> -->
+                                    <h4 class="row d-flex" *ngIf="0; else elseStateDevice">
+                                        Đang bật
+                                    </h4>
+                                    <ng-template #elseStateDevice>
+                                        <h4 class="row d-flex">Đang tắt</h4>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- <div *ngIf="device.type === 'switch'"> -->
+                            <div *ngIf="device == '2'">
+                                <div class="tag-header">
+                                    <h2>device.ot_nickname</h2>
+                                </div>
+                                <div class="tag-content">
+                                    <!--  -->
+                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Đang bật</h2>
+                                        <ng-template #elseStateDevice><h2 class="row d-flex"> Đang tắt</h2></ng-template>
+            
+                                        <h2 class="row d-flex" *ngIf="device.switch_type==='light'; else elseSwitchType_1">Sử dụng cho: Đèn</h2> -->
+                                    <h4 class="row d-flex" *ngIf="1; else elseStateDevice">
+                                        Đang bật
+                                    </h4>
+                                    <ng-template #elseStateDevice>
+                                        <h4 class="row d-flex">Đang tắt</h4>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- <div *ngIf="device.type === 'sensor-th'"> -->
+                            <div *ngIf="device == '3'">
+                                <div class="tag-header">
+                                    <h2>device.ot_nickname</h2>
+                                </div>
+                                <div class="tag-content">
+                                    <!-- <h2 class="row d-flex" *ngIf="device.stream.active; else elseStateDevice"> Kích hoạt</h2>
+                                        <ng-template #elseStateDevice><h2 class="row d-flex"> Đang tắt</h2></ng-template>
+                                        <h2 class="row d-flex">Nhiệt độ: {{device.temp}}&ordm;C</h2>
+                                        <h2 class="row d-flex">Độ ẩm: {{device.humi}}%</h2> -->
+                                    <h4 class="row d-flex">temp&ordm;C humi%</h4>
+                                </div>
+                            </div>
+
+                            <!-- <div *ngIf="device.type === 'color-light'"> -->
+                            <div *ngIf="device == '4'">
+                                <div class="tag-header">
+                                    <h2>device.ot_nickname</h2>
+                                </div>
+                                <div class="tag-content">
+                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Đang bật</h2>
+                                        <ng-template #elseStateDevice><h4 class="row d-flex "> Đang tắt</h4></ng-template> -->
+                                    <h4 class="row d-flex" *ngIf="1; else elseStateDevice">
+                                        Đang bật
+                                    </h4>
+                                    <ng-template #elseStateDevice>
+                                        <h4 class="row d-flex">Đang tắt</h4>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- <div *ngIf="device.type === 'fan'"> -->
+                            <div *ngIf="device == '5'">
+                                <div class="tag-header">
+                                    <h2>device.ot_nickname</h2>
+                                </div>
+                                <div class="tag-content">
+                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Đang bật</h2>
+                                        <ng-template #elseStateDevice><h2 class="row d-flex"> Đang tắt</h2></ng-template> -->
+                                    <h4 class="row d-flex" *ngIf="1; else elseStateDevice">
+                                        Đang bật
+                                    </h4>
+                                    <ng-template #elseStateDevice>
+                                        <h4 class="row d-flex">Đang tắt</h4>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- <div *ngIf="device.type === 'lock'"> -->
+                            <div *ngIf="device == '6'">
+                                <div class="tag-header">
+                                    <h2>device.ot_nickname</h2>
+                                </div>
+                                <div class="tag-content">
+                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice"> Đang khóa</h2> -->
+                                    <h4 class="row d-flex" *ngIf="1; else elseStateDevice">
+                                        Đang bật
+                                    </h4>
+                                    <ng-template #elseStateDevice>
+                                        <h4 class="row d-flex">Đang tăt</h4>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class="dieukhienBotton">
+                                <button id="dieukhienBotton" mat-flat-button (click)="openDialogControl(device)">
+                                    <mat-icon id="dieukhienBotton">info</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
