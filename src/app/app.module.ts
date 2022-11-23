@@ -48,7 +48,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 
 // Service
 import { AuthServiceService } from './services/auth-service.service';
-import { CommonServiceService } from './Services/common-service.service';
+import { CommonServiceService } from './services/common-service.service';
 
 //Interceptor
 import { HttpInterceptorInterceptor } from './services/http-interceptor.interceptor'
