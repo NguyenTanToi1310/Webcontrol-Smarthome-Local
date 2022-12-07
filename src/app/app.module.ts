@@ -45,6 +45,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
 
 // Service
 import { AuthServiceService } from './services/auth-service.service';
@@ -131,7 +133,8 @@ import { EditAutomationConditionComponent } from './devices/edit-automation-cond
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatBadgeModule
+    MatBadgeModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [
     // AuthServiceService,

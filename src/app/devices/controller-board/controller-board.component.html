@@ -99,7 +99,39 @@
       </div>
       <hr>
     </div>
+
+    <div *ngIf="data.virtualDevice.type === 'smart-plug'">
+      <hr>
+      <div class="tag-content">
+          <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Đang bật</h2>
+          <ng-template #elseStateDevice>
+              <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
+          </ng-template>
+          <h2 class="row d-flex">Đếm ngược: </h2>
+          <h2 class="row d-flex">Lịch trình bật: </h2>
+          <h2 class="row d-flex">Lịch trình tắt: </h2>
+      </div>
+      <hr>
+    </div>
+    <!-- <div *ngIf="device.type === 'smart-door-sensor'"> -->
+    <div *ngIf="1">
+      <hr>
+      <div class="tag-content">
+          <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Đang bật</h2>
+          <ng-template #elseStateDevice>
+              <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
+          </ng-template>
+          <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái cửa: Đang mở</h2>
+          <ng-template #elseStateDevice>
+              <h2 class="row d-flex ">Trạng thái cửa: Đang đóng</h2>
+          </ng-template>
+          <h2 class="row d-flex">Lịch trình bật: </h2>
+          <h2 class="row d-flex">Lịch trình tắt: </h2>
+      </div>
+      <hr>
+    </div>
   </div>
+
   <div class="control-device" *ngIf="data.virtualDevice.type !== 'sensor-th'">
     <div class="onOff">
       <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
@@ -114,11 +146,7 @@
               </ng-template>
               <label class="toggle-item2" for="doggo2">
                 <div class="dog2">
-                  <!-- <div class="ear2"></div>
-                  <div class="ear2 right2"></div> -->
                   <div class="face2">
-                    <!-- <div class="eyes2"></div>
-                    <div class="mouth2"></div> -->
                   </div>
                 </div>
               </label>
@@ -128,7 +156,8 @@
       </div>
     </div>
     <br>
-    <div *ngIf="data.virtualDevice.type !== 'switch' && data.virtualDevice.type !== 'sensor-th' && data.virtualDevice.type !== 'fan' && data.virtualDevice.type !== 'lock'">
+    <!-- <div *ngIf="data.virtualDevice.type !== 'switch' && data.virtualDevice.type !== 'sensor-th' && data.virtualDevice.type !== 'fan' && data.virtualDevice.type !== 'lock' && data.virtualDevice.type !== 'smart-door-sensor' && data.virtualDevice.type !== 'smart-plug'"> -->
+    <div *ngIf="data.virtualDevice.type === 'normal-light' || data.virtualDevice.type === 'color-light'">
       <div>
         <h2>Điều chỉnh độ sáng:</h2>
       </div>
@@ -158,6 +187,23 @@
         <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('none')">Theo màu</button>
       </div>
     </div>
+
+    <!-- <div *ngIf="data.virtualDevice.type === 'smart-plug' || data.virtualDevice.type === 'smart-door-sensor'""> -->
+    <div *ngIf="1">
+      <h2>Đặt lịch bật:</h2>
+      <div class="ngx-material-timepicker-example__form-group">
+        <input placeholder="12:00 am" aria-label="default time"
+            [ngxTimepicker]="On_picker" readonly>
+        <ngx-material-timepicker #On_picker [defaultTime]="'12:00 am'"></ngx-material-timepicker>
+      </div>
+      <h2>Đặt lịch tắt:</h2>
+      <div class="ngx-material-timepicker-example__form-group">
+        <input placeholder="12:00 am" aria-label="default time"
+            [ngxTimepicker]="Off_picker" readonly>
+        <ngx-material-timepicker #Off_picker [defaultTime]="'12:00 am'"></ngx-material-timepicker>
+      </div>
+    </div>
+
   </div>
 </div>
 <div mat-dialog-actions style="float: right;">

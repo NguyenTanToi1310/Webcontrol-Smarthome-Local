@@ -6,7 +6,7 @@ import { CommonServiceService } from 'src/app/services/common-service.service';
 @Component({
   selector: 'app-controller-board',
   templateUrl: './controller-board.component.html',
-  styleUrls: ['./controller-board.component.css']
+  styleUrls: ['./controller-board.component.css'],
 })
 
 export class ControllerBoardComponent implements OnInit {

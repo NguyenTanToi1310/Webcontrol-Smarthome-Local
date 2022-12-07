@@ -4,7 +4,7 @@
             <div class="row">
                 <!-- <div class="col d-flex " *ngFor="let device of devices; let i=index"> -->
                 <div class="col d-flex"
-                    *ngFor="let device of ['1','2','3','4','5','6','1','2', '3', '4', '5', '5']; let i = index">
+                    *ngFor="let device of ['1','2','3','4','5','6','1','2', '3', '4', '5', '5', '7', '8']; let i = index">
                     <div class="box">
                         <!-- <div *ngIf="device.type === 'normal-light'"> -->
                         <div *ngIf="device == '1'">
@@ -164,6 +164,48 @@
                                 </ng-template>
                             </div>
                         </div>
+                        <!-- <div *ngIf="device.type === 'smart-plug'"> -->
+                        <div *ngIf="device == '7'">
+                            <div class="tag-header">
+                                <!-- <h1>{{device.ot_nickname}}</h1>
+                                <h4>{{device.deviceId}}</h4> -->
+                                <h1>smart-plug</h1>
+                                <h4>device.deviceId</h4>
+                            </div>
+                            <hr>
+                            <div class="tag-content">
+                                <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Đang bật</h2>
+                                <ng-template #elseStateDevice>
+                                    <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
+                                </ng-template>
+                                <!-- <h2 class="row d-flex">Đếm ngược: </h2> -->
+                                <h2 class="row d-flex">Lịch trình bật: </h2>
+                                <h2 class="row d-flex">Lịch trình tắt: </h2>
+                            </div>
+                        </div>
+                        <!-- <div *ngIf="device.type === 'smart-door-sensor'"> -->
+                        <div *ngIf="device == '8'">
+                            <div class="tag-header">
+                                <!-- <h1>{{device.ot_nickname}}</h1>
+                                <h4>{{device.deviceId}}</h4> -->
+                                <h1>smart-door-sensor</h1>
+                                <h4>device.deviceId</h4>
+                            </div>
+                            <hr>
+                            <div class="tag-content">
+                                <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Đang bật</h2>
+                                <ng-template #elseStateDevice>
+                                    <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
+                                </ng-template>
+                                <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái cửa: Đang mở</h2>
+                                <ng-template #elseStateDevice>
+                                    <h2 class="row d-flex ">Trạng thái cửa: Đang đóng</h2>
+                                </ng-template>
+                                <h2 class="row d-flex">Lịch trình bật: </h2>
+                                <h2 class="row d-flex">Lịch trình tắt: </h2>
+                            </div>
+                        </div>
+
                         <div class="dieukhienBotton">
                             <!-- share, edit, del button -->
                             <div>
