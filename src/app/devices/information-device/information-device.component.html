@@ -3,8 +3,7 @@
         <div class="container">
             <div class="row">
                 <!-- <div class="col d-flex " *ngFor="let device of devices; let i=index"> -->
-                <div class="col d-flex"
-                    *ngFor="let device of ['1','2','3','4','5','6','1','2', '3', '4', '5', '5', '7', '8']; let i = index">
+                <div class="col d-flex" *ngFor="let device of devicesData; let i = index">
                     <div class="box">
                         <!-- <div *ngIf="device.type === 'normal-light'"> -->
                         <div *ngIf="device == '1'">
@@ -59,56 +58,40 @@
                         </div>
 
                         <!-- <div *ngIf="device.type === 'sensor-th'"> -->
-                        <div *ngIf="device == '3'">
+                        <div *ngIf="device.topic === '0x00124b00234c8c58'">
                             <div class="tag-header">
-                                <!-- <h1>{{device.ot_nickname}}</h1>
-                                <h4>{{device.deviceId}}</h4> -->
-                                <h1>device.ot_nickname</h1>
-                                <h4>device.deviceId</h4>
+                                <h1>sensor-th</h1>
                             </div>
                             <hr>
                             <div class="tag-content">
-                                <!-- <h2 class="row d-flex" *ngIf="device.stream.active; else elseStateDevice">Trạng thái: Kích hoạt</h2>
-                                <ng-template #elseStateDevice><h2 class="row d-flex">Trạng thái: Đang tắt</h2></ng-template>
-                                <h2 class="row d-flex">Nhiệt độ: {{device.temp}}&ordm;C</h2>
-                                <h2 class="row d-flex">Độ ẩm: {{device.humi}}%</h2> -->
-                                <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Kích hoạt</h2>
-                                <ng-template #elseStateDevice>
-                                    <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
-                                </ng-template>
-                                <h2 class="row d-flex">Nhiệt độ: device.temp&ordm;C</h2>
-                                <h2 class="row d-flex">Độ ẩm: device.humi%</h2>
+                                <h2 class="row d-flex">Pin: {{device.battery}}%</h2>
+                                <h2 class="row d-flex">Cường độ tín hiệu: {{device.linkquality}}</h2>
+                                <h2 class="row d-flex">Nhiệt độ: {{device.temperature}}&ordm;C</h2>
+                                <h2 class="row d-flex">Độ ẩm: {{device.humidity}}%</h2>
                             </div>
                         </div>
 
                         <!-- <div *ngIf="device.type === 'color-light'"> -->
-                        <div *ngIf="device == '4'">
+                        <div *ngIf="device.topic === '0x00124b00234c9228'">
                             <div class="tag-header">
-                                <!-- <h1>{{device.ot_nickname}}</h1>
-                                <h4>{{device.deviceId}}</h4> -->
-                                <h1>device.ot_nickname</h1>
-                                <h4>device.deviceId</h4>
+                                <h1>color-light</h1>
                             </div>
                             <hr>
                             <div class="tag-content">
-                                <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Trạng thái: Đang bật</h2>
-                                <ng-template #elseStateDevice><h2 class="row d-flex ">Trạng thái: Đang tắt</h2></ng-template>
-                                <h2 class="row d-flex">Độ sáng: {{device.brightness}}</h2>
-                                <h2 class="row d-flex" class="color-state">Màu đèn: 
-                                    <div class="color-state-box" [ngStyle]="{'background-color': device.color}">{{device.color}}</div>
-                                </h2>
-                                <h2 class="row d-flex" *ngIf="device.sleep; else elseSleep">Chế độ: Giấc ngủ</h2> -->
-                                <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Đang bật</h2>
+                                <h2 class="row d-flex" *ngIf="device.state === 'ON'; else elseStateDevice">Trạng thái:
+                                    Đang bật</h2>
                                 <ng-template #elseStateDevice>
                                     <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
                                 </ng-template>
-                                <h2 class="row d-flex">Độ sáng: device.brightness</h2>
+                                <h2 class="row d-flex">Cường độ tín hiệu: {{device.linkquality}}</h2>
+                                <h2 class="row d-flex">Độ sáng: {{device.brightness}}</h2>
                                 <h2 class="row d-flex" class="color-state">Màu đèn:
-                                    <div class="color-state-box" [ngStyle]="{'background-color': 1}"> device.color</div>
+                                    <div class="color-state-box" [ngStyle]="{'background-color': device.hex}">
+                                        {{device.hex}}</div>
                                 </h2>
-                                <h2 class="row d-flex" *ngIf="1; else elseSleep">Chế độ: Giấc ngủ</h2>
-                                <!--  -->
+                                <h2 class="row d-flex">Chế độ: không gian màu {{device.color_mode}}</h2>
 
+                                <!-- <h2 class="row d-flex" *ngIf="1; else elseSleep">Chế độ: Giấc ngủ</h2>
                                 <ng-template #elseSleep>
                                     <h2 class="row d-flex" *ngIf="device.burning; else elseBurning">Chế độ: Lửa cháy
                                     </h2>
@@ -123,7 +106,7 @@
                                             </ng-template>
                                         </ng-template>
                                     </ng-template>
-                                </ng-template>
+                                </ng-template> -->
                             </div>
                         </div>
                         <!-- <div *ngIf="device.type === 'fan'"> -->
@@ -243,10 +226,10 @@
                                     </button>
                                 </ng-template>
 
+
                                 <!-- Modal, confirm delete -->
                                 <div class="modal fade" id="exampleModalDeleteDevice" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static"
-                                    data-bs-keyboard="false">
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -257,15 +240,12 @@
                                             </div>
                                             <div class="modal-body">
                                                 <h2>Loại thiết bị: <span
-                                                        style="color: brown;">{{deviceAction.ot_nickname}}</span></h2>
-                                                <h2>Mã thiết bị: <span
-                                                        style="color: brown;">{{deviceAction.deviceId}}</span></h2>
+                                                        style="color: brown;">{{deviceAction.topic}}</span></h2>
                                             </div>
                                             <div class="modal-footer">
-                                                <!-- <button type="button" class="btn btn-danger" (click)="requestDeleteDevice()" data-bs-dismiss="modal">Có, hãy xóa</button> -->
-                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Có,
-                                                    hãy xóa</button>
-
+                                                <button type="button" class="btn btn-danger"
+                                                    (click)="requestDeleteDevice()" data-bs-dismiss="modal">Có, hãy
+                                                    xóa</button>
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Hủy</button>
                                             </div>

@@ -1,68 +1,98 @@
-<div  style="text-align: right">
+<div style="text-align: right">
   <button mat-button (click)="onNoClick()">X</button>
 </div>
-<div class="tag-header">
-  <h1>{{data.virtualDevice.ot_nickname}}</h1>
-  <h4>Tên tiếng anh: {{data.virtualDevice.en_nickname}}<br>Mã thiết bị: {{data.virtualDevice.deviceId}}</h4>
-</div>
+
 <div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px">
   <div class="device-name">
     <div *ngIf="data.virtualDevice.type === 'normal-light'">
-      <hr>
+      <div class="tag-header">
+        <h1>{{ data.virtualDevice.topic }}</h1>
+      </div>
+      <hr />
       <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
+          Trạng thái: Đang bật
+        </h2>
         <ng-template #elseStateDevice>
           <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
         </ng-template>
-        <h2 class="row d-flex">Độ sáng: {{data.virtualDevice.brightness}}</h2>
+        <h2 class="row d-flex">Độ sáng: {{ data.virtualDevice.brightness }}</h2>
       </div>
-      <hr>
+      <hr />
     </div>
 
     <div *ngIf="data.virtualDevice.type === 'switch'">
-      <hr>
+      <hr />
       <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
+          Trạng thái: Đang bật
+        </h2>
         <ng-template #elseStateDevice>
           <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
         </ng-template>
 
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.switch_type==='light'; else elseSwitchType_1">Sử dụng cho: Đèn</h2>
+        <h2 class="row d-flex" *ngIf="
+            data.virtualDevice.switch_type === 'light';
+            else elseSwitchType_1
+          ">
+          Sử dụng cho: Đèn
+        </h2>
         <ng-template #elseSwitchType_1>
-          <h2 class="row d-flex" *ngIf="data.virtualDevice.switch_type==='fan'; else elseSwitchType_2">Sử dụng cho: Quạt</h2>
+          <h2 class="row d-flex" *ngIf="
+              data.virtualDevice.switch_type === 'fan';
+              else elseSwitchType_2
+            ">
+            Sử dụng cho: Quạt
+          </h2>
           <ng-template #elseSwitchType_2>
             <h2 class="row d-flex">Sử dụng cho: Thiết bị khác</h2>
           </ng-template>
         </ng-template>
       </div>
-      <hr>
+      <hr />
     </div>
 
-    <div *ngIf="data.virtualDevice.type === 'sensor-th'">
-      <hr>
-      <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.stream.active; else elseStateDevice">Trạng thái: Kích hoạt</h2>
-        <ng-template #elseStateDevice>
-          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
-        </ng-template>
-        <h2 class="row d-flex">Nhiệt độ: {{data.virtualDevice.temp}}</h2>
-        <h2 class="row d-flex">Độ ẩm: {{data.virtualDevice.humi}}</h2>
+    <div *ngIf="data.virtualDevice.topic === '0x00124b00234c8c58'">
+      <div class="tag-header">
+        <h1>sensor-th</h1>
       </div>
-      <hr>
-      <h4 class="sensor-notify">Chọn kích hoạt để lấy dữ liệu mới nhất!</h4>
+      <hr />
+      <div class="tag-content">
+        <!-- <h2 class="row d-flex" *ngIf="data.virtualDevice.stream.active; else elseStateDevice">Trạng thái: Kích hoạt</h2>
+        <ng-template #elseStateDevice>
+          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
+        </ng-template> -->
+        <h2 class="row d-flex">Pin: {{ data.virtualDevice.battery }}%</h2>
+        <h2 class="row d-flex">Cường độ tín hiệu: {{ data.virtualDevice.linkquality }}</h2>
+        <h2 class="row d-flex">
+          Nhiệt độ: {{ data.virtualDevice.temperature }}&ordm;C
+        </h2>
+        <h2 class="row d-flex">Độ ẩm: {{ data.virtualDevice.humidity }}%</h2>
+      </div>
+      <hr />
+      <!-- <h4 class="sensor-notify">Chọn kích hoạt để lấy dữ liệu mới nhất!</h4> -->
     </div>
 
-    <div *ngIf="data.virtualDevice.type === 'color-light'">
-      <hr>
+    <div *ngIf="data.virtualDevice.topic === '0x00124b00234c9228'">
+      <div class="tag-header">
+        <h1>color-light</h1>
+      </div>
+      <hr />
       <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
+          Trạng thái: Đang bật
+        </h2>
         <ng-template #elseStateDevice>
           <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
         </ng-template>
-        <h2 class="row d-flex">Độ sáng: {{data.virtualDevice.brightness}}</h2>
-        <h2 class="row d-flex">Mã màu: {{data.virtualDevice.color}}</h2>
-        <h2 class="row d-flex" *ngIf="modeColorLight === 'sleep'; else elseSleep">Chế độ: Giấc ngủ</h2>
-        <ng-template #elseSleep>
+        <h2 class="row d-flex">Cường độ tín hiệu: {{data.virtualDevice.linkquality}}</h2>
+        <h2 class="row d-flex">Độ sáng: {{ data.virtualDevice.brightness }}</h2>
+        <h2 class="row d-flex">Mã màu: {{ data.virtualDevice.hex }}</h2>
+        <h2 class="row d-flex">
+          Chế độ: không gian màu {{ data.virtualDevice.color_mode }}
+        </h2>
+        <!-- <h2 class="row d-flex" *ngIf="modeColorLight === 'sleep'; else elseSleep">Chế độ: Giấc ngủ</h2> -->
+        <!-- <ng-template #elseSleep>
           <h2 class="row d-flex" *ngIf="modeColorLight === 'burning'; else elseBurning">Chế độ: Lửa cháy</h2>
           <ng-template #elseBurning>
             <h2 class="row d-flex" *ngIf="modeColorLight === 'party'; else elseParty">Chế độ: Bửa tiệc</h2>
@@ -73,81 +103,91 @@
               </ng-template>
             </ng-template>
           </ng-template>
-        </ng-template>
+        </ng-template> -->
       </div>
-      <hr>
+      <hr />
     </div>
 
     <div *ngIf="data.virtualDevice.type === 'fan'">
-      <hr>
+      <hr />
       <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
+          Trạng thái: Đang bật
+        </h2>
         <ng-template #elseStateDevice>
           <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
         </ng-template>
-        <h2 class="row d-flex">Mức độ: {{data.virtualDevice.fanspeed}}</h2>
+        <h2 class="row d-flex">Mức độ: {{ data.virtualDevice.fanspeed }}</h2>
       </div>
-      <hr>
+      <hr />
     </div>
     <div *ngIf="data.virtualDevice.type === 'lock'">
-      <hr>
+      <hr />
       <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">Trạng thái: Đang khóa</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
+          Trạng thái: Đang khóa
+        </h2>
         <ng-template #elseStateDevice>
           <h2 class="row d-flex">Trạng thái: Đang mở</h2>
         </ng-template>
       </div>
-      <hr>
+      <hr />
     </div>
 
     <div *ngIf="data.virtualDevice.type === 'smart-plug'">
-      <hr>
+      <hr />
       <div class="tag-content">
-          <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Đang bật</h2>
-          <ng-template #elseStateDevice>
-              <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
-          </ng-template>
-          <h2 class="row d-flex">Đếm ngược: </h2>
-          <h2 class="row d-flex">Lịch trình bật: </h2>
-          <h2 class="row d-flex">Lịch trình tắt: </h2>
+        <h2 class="row d-flex" *ngIf="1; else elseStateDevice">
+          Trạng thái: Đang bật
+        </h2>
+        <ng-template #elseStateDevice>
+          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
+        </ng-template>
+        <h2 class="row d-flex">Đếm ngược:</h2>
+        <h2 class="row d-flex">Lịch trình bật:</h2>
+        <h2 class="row d-flex">Lịch trình tắt:</h2>
       </div>
-      <hr>
+      <hr />
     </div>
-    <!-- <div *ngIf="device.type === 'smart-door-sensor'"> -->
-    <div *ngIf="1">
-      <hr>
+
+    <div *ngIf="data.virtualDevice.type === 'smart-door-sensor'">
+      <hr />
       <div class="tag-content">
-          <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái: Đang bật</h2>
-          <ng-template #elseStateDevice>
-              <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
-          </ng-template>
-          <h2 class="row d-flex" *ngIf="1; else elseStateDevice">Trạng thái cửa: Đang mở</h2>
-          <ng-template #elseStateDevice>
-              <h2 class="row d-flex ">Trạng thái cửa: Đang đóng</h2>
-          </ng-template>
-          <h2 class="row d-flex">Lịch trình bật: </h2>
-          <h2 class="row d-flex">Lịch trình tắt: </h2>
+        <h2 class="row d-flex" *ngIf="1; else elseStateDevice">
+          Trạng thái: Đang bật
+        </h2>
+        <ng-template #elseStateDevice>
+          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
+        </ng-template>
+        <h2 class="row d-flex" *ngIf="1; else elseStateDevice">
+          Trạng thái cửa: Đang mở
+        </h2>
+        <ng-template #elseStateDevice>
+          <h2 class="row d-flex">Trạng thái cửa: Đang đóng</h2>
+        </ng-template>
+        <h2 class="row d-flex">Lịch trình bật:</h2>
+        <h2 class="row d-flex">Lịch trình tắt:</h2>
       </div>
-      <hr>
+      <hr />
     </div>
   </div>
 
-  <div class="control-device" *ngIf="data.virtualDevice.type !== 'sensor-th'">
+  <div class="control-device" *ngIf="data.virtualDevice.topic !== '0x00124b00234c8c58'">
     <div class="onOff">
       <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
       <div class="row" class="onOffButton">
         <div class="col">
-          <div class="toggle-wrapper2" >
+          <div class="toggle-wrapper2">
             <div class="toggle2 dog-rollover2">
-              <input
-                *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.state" [(ngModel)]="data.virtualDevice.state"/>
+              <input *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox"
+                class="inputCheckbox" checked="data.virtualDevice.state" [(ngModel)]="data.virtualDevice.state" />
               <ng-template #sensorType>
-                <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.active" [(ngModel)]="data.virtualDevice.active"/>
+                <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.active"
+                  [(ngModel)]="data.virtualDevice.active" />
               </ng-template>
               <label class="toggle-item2" for="doggo2">
                 <div class="dog2">
-                  <div class="face2">
-                  </div>
+                  <div class="face2"></div>
                 </div>
               </label>
             </div>
@@ -155,36 +195,46 @@
         </div>
       </div>
     </div>
-    <br>
+    <br />
     <!-- <div *ngIf="data.virtualDevice.type !== 'switch' && data.virtualDevice.type !== 'sensor-th' && data.virtualDevice.type !== 'fan' && data.virtualDevice.type !== 'lock' && data.virtualDevice.type !== 'smart-door-sensor' && data.virtualDevice.type !== 'smart-plug'"> -->
-    <div *ngIf="data.virtualDevice.type === 'normal-light' || data.virtualDevice.type === 'color-light'">
+    <div *ngIf="
+        data.virtualDevice.type === 'normal-light' ||
+        data.virtualDevice.topic === '0x00124b00234c9228'
+      ">
       <div>
         <h2>Điều chỉnh độ sáng:</h2>
       </div>
       <div class="row">
-        <mat-slider 
-          color="primary"
-          thumbLabel [displayWith]="formatLabel"
-          tickInterval="1" step="1" min="0" max="100" value="{{ data.virtualDevice.brightness }}"
-          [(ngModel)]="data.virtualDevice.brightness"
-          aria-label="units">
+        <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
+          value="{{ data.virtualDevice.brightness }}" [(ngModel)]="data.virtualDevice.brightness" aria-label="units">
         </mat-slider>
       </div>
     </div>
 
-    <div *ngIf="data.virtualDevice.type === 'color-light'">
+    <div *ngIf="data.virtualDevice.topic === '0x00124b00234c9228'">
       <h2>Thiết lập màu đèn:</h2>
-      <div style="text-align: center;">
-        <input type="color" id="head" name="head" value="data.virtualDevice.color" [(ngModel)]="data.virtualDevice.color" style="width: 80%; height: 40px;">
-        <div>{{data.virtualDevice.color}}</div>
+      <div style="text-align: center">
+        <input type="color" id="head" name="head" value="data.virtualDevice.color"
+          [(ngModel)]="data.virtualDevice.hex" style="width: 80%; height: 40px" />
+        <div>{{ data.virtualDevice.hex }}</div>
       </div>
       <h2>Chọn chế độ:</h2>
-      <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-bottom: 20px;">
-        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('rainbow')">Cầu vòng</button>
-        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('burning')">Lửa cháy</button>
-        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('party')">Bữa tiệc</button>
-        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('sleep')">Giấc ngủ</button>
-        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('none')">Theo màu</button>
+      <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-bottom: 20px">
+        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('rainbow')">
+          Cầu vòng
+        </button>
+        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('burning')">
+          Lửa cháy
+        </button>
+        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('party')">
+          Bữa tiệc
+        </button>
+        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('sleep')">
+          Giấc ngủ
+        </button>
+        <button type="button" class="btn btn-outline-primary" (click)="setModeColorLight('none')">
+          Theo màu
+        </button>
       </div>
     </div>
 
@@ -192,21 +242,18 @@
     <div *ngIf="1">
       <h2>Đặt lịch bật:</h2>
       <div class="ngx-material-timepicker-example__form-group">
-        <input placeholder="12:00 am" aria-label="default time"
-            [ngxTimepicker]="On_picker" readonly>
+        <input placeholder="12:00 am" aria-label="default time" [ngxTimepicker]="On_picker" readonly />
         <ngx-material-timepicker #On_picker [defaultTime]="'12:00 am'"></ngx-material-timepicker>
       </div>
       <h2>Đặt lịch tắt:</h2>
       <div class="ngx-material-timepicker-example__form-group">
-        <input placeholder="12:00 am" aria-label="default time"
-            [ngxTimepicker]="Off_picker" readonly>
+        <input placeholder="12:00 am" aria-label="default time" [ngxTimepicker]="Off_picker" readonly />
         <ngx-material-timepicker #Off_picker [defaultTime]="'12:00 am'"></ngx-material-timepicker>
       </div>
     </div>
-
   </div>
 </div>
-<div mat-dialog-actions style="float: right;">
+<div mat-dialog-actions style="float: right">
   <button mat-button (click)="onNoClick()">Hủy</button>
 
   <button mat-button (click)="onYesClick()" [mat-dialog-close]="data.virtualDevice.state" cdkFocusInitial>

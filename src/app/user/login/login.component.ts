@@ -53,7 +53,11 @@ export class LoginComponent implements OnInit {
 
       this.auth.isLogin();
     }
-    this.cognitoService.subscribe();
-    this.cognitoService.publish();
+    this.cognitoService.startConnection();
+    // this.cognitoService.subscribe();
+    // this.cognitoService.publish();
+    this.cognitoService.getDeviceListAndEachDeviceData();
+    this.cognitoService.getGroupsData();
+
   }
 }

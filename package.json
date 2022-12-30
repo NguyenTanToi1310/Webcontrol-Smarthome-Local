@@ -11,7 +11,7 @@
     "dev:ssr": "ng run WebControl:serve-ssr",
     "serve:ssr": "node dist/WebControl/server/main.js",
     "build:ssr": "ng build --prod && ng run WebControl:server:production",
-    "prerender": "ng run WebControl:prerender", 
+    "prerender": "ng run WebControl:prerender",
     "build-serve": "sudo node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve --host 0.0.0.0"
   },
   "private": true,
@@ -34,6 +34,7 @@
     "aws-sdk": "^2.1238.0",
     "bootstrap": "^5.0.0-beta3",
     "child_process": "^1.0.2",
+    "cie-rgb-color-converter": "^1.0.6",
     "express": "^4.15.2",
     "firebase": "^8.3.3",
     "jquery": "^3.6.0",

@@ -22,11 +22,11 @@ const routes: Routes = [
     { path: 'confirm-email', component: ConfirmEmailComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'personal-page', component: PersonalComponent, canActivate: [AuthGuard] },
-    // { path: 'information-device', component: InformationDeviceComponent, canActivate: [AuthGuard] },
-    { path: 'information-device', component: InformationDeviceComponent},
+    { path: 'information-device', component: InformationDeviceComponent, canActivate: [AuthGuard] },
+    // { path: 'information-device', component: InformationDeviceComponent},
     { path: 'show-list-device', component: ShowListDeviceComponent, canActivate: [AuthGuard] },
-    // { path: 'shortcut', component: ShortcutComponent, canActivate: [AuthGuard] },
-    { path: 'shortcut', component: ShortcutComponent}
+    { path: 'shortcut', component: ShortcutComponent, canActivate: [AuthGuard] },
+    // { path: 'shortcut', component: ShortcutComponent}
 ];
 
 @NgModule({

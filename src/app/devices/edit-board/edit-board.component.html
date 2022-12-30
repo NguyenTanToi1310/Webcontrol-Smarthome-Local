@@ -4,8 +4,7 @@
 <div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
     <div class="device-name">
         <div class="tag-header">
-            <h1>{{data.virtualDevice.ot_nickname}}</h1>
-            <h4>Tên tiếng anh: {{data.virtualDevice.en_nickname}}<br>Mã thiết bị: {{data.virtualDevice.deviceId}}</h4>
+            <h1>{{data.virtualDevice.topic}}</h1>
         </div>
         <hr>
     </div>
@@ -17,11 +16,11 @@
                 <small id="PINHelp" class="form-text text-muted" *ngIf="data.virtualDevice.type == 'lock'">Nhập mã PIN mới cho khóa</small>
                 <input type="password" class="form-control" formControlName="PINFormControl" for aria-describedby="PINHelp" *ngIf="data.virtualDevice.type == 'lock'">
 
-                <small id="ot_nicknameHelp" class="form-text text-muted">Nhập tên thiết bị tiếng Việt</small>
-                <input type="text" class="form-control" formControlName="ot_nicknameFormControl" for aria-describedby="ot_nicknameHelp">
+                <small id="friendly_nameHelp" class="form-text text-muted">Nhập tên mới cho thiết bị</small>
+                <input type="text" class="form-control" formControlName="friendly_nameFormControl" for aria-describedby="friendly_nameHelp">
 
-                <small id="en_nicknameHelp" class="form-text text-muted">Nhập tên thiết bị tiếng Anh</small>
-                <input type="text" class="form-control" formControlName="en_nicknameFormControl" for aria-describedby="en_nicknameHelp">
+                <!-- <small id="en_nicknameHelp" class="form-text text-muted">Nhập tên thiết bị tiếng Anh</small>
+                <input type="text" class="form-control" formControlName="en_nicknameFormControl" for aria-describedby="en_nicknameHelp"> -->
 
                  <!-- switch_type for switch -->
                 <mat-radio-group aria-label="Select an option" formControlName="switchTypeFormControl" *ngIf="data.virtualDevice.type == 'switch'">
@@ -46,6 +45,8 @@
 </div>
 
 <div mat-dialog-actions style="float: right;">
-    <button mat-button (click)="onNoClick()">Hủy</button>
-    <button mat-button (click)="onAcceptClick()" cdkFocusInitial [disabled]="!editDeviceFormGroup.valid">Đồng ý</button>
+    <button *ngIf="result.status == 'waitting_for_input' || result.status == false" mat-button (click)="onNoClick()">Hủy</button>
+    <button *ngIf="result.status == 'waitting_for_input' || result.status == false" mat-button (click)="onAcceptClick()" cdkFocusInitial [disabled]="!editDeviceFormGroup.valid">Đồng ý</button>
+    <button *ngIf="result.status == 'processing'" disabled mat-button>Đồng ý</button>
+    <button *ngIf="result.status == true" mat-button (click)="onNoClick()">Đóng</button>
 </div>
