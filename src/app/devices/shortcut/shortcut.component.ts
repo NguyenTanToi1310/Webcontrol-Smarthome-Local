@@ -6,11 +6,11 @@ import {
 } from "@angular/material/dialog";
 import { CommonServiceService } from "src/app/services/common-service.service";
 import { ControllerBoardComponent } from "../controller-board/controller-board.component";
-import { ShareBoardComponent } from "../share-board/share-board.component";
-import { EditBoardComponent } from "../edit-board/edit-board.component";
 import { AutomationBoardComponent } from "../automation-board/automation-board.component";
 import { CognitoService } from "src/app/services/cognito.service";
 import { BoundText } from "@angular/compiler/src/render3/r3_ast";
+import { PubSub } from "aws-amplify";
+import { RenameGroupBoardComponent } from "../rename-group-board/rename-group-board.component";
 
 @Component({
   selector: "app-shortcut",
@@ -23,6 +23,7 @@ export class ShortcutComponent implements OnInit {
 
   public ownerships: any;
   public deviceAction: any;
+  public groupAction: any;
   public listUIDShareRequest: any = [];
   public devicesData: any;
 
@@ -43,6 +44,7 @@ export class ShortcutComponent implements OnInit {
     for (let deviceData of this.devicesData){
       if (deviceData.topic == this.groups[groupIndex].members[boxIndex].ieee_address) {
         this.deviceAction = deviceData;
+        this.groupAction = this.groups[groupIndex];
         // console.log(deviceData);
         // console.log(this.groups);
         // console.log(this.groups[groupIndex]);
@@ -51,12 +53,16 @@ export class ShortcutComponent implements OnInit {
       }
     }
   }
+  private getRowIndex(groupIndex: any) { 
+    this.groupAction = this.groups[groupIndex];
+  }
 
   openDialogControl(): void {
     const virtualDevice = Object.assign({}, this.deviceAction);
+    const backupDevice = Object.assign({}, this.deviceAction);
     const dialogRef = this.dialog.open(ControllerBoardComponent, {
       width: "430px",
-      data: { virtualDevice },
+      data: { virtualDevice, backupDevice },
     });
     dialogRef.afterClosed().subscribe((result) => {
       /* anything */
@@ -72,5 +78,38 @@ export class ShortcutComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       /* anything */
     });
+  }
+
+  private requestDeleteDevice() {
+    var payload = {
+      "group": this.groupAction.friendly_name,
+      "device": this.deviceAction.topic,
+    };
+    PubSub.publish("zigbee2mqtt/bridge/request/group/members/remove", payload);
+  }
+
+  private addMemberToGroup(){
+    var payload = {
+      "group": this.groupAction.friendly_name,
+      "device": "chua biet"
+    };
+    PubSub.publish("zigbee2mqtt/bridge/request/group/members/add", payload);
+  }
+
+  private requestDeleteRoom() {
+    var payload = {
+      "id": this.groupAction.friendly_name,
+    };
+    PubSub.publish("zigbee2mqtt/bridge/request/group/remove", payload);
+  }
+
+  openDialogRename(): void {
+    const virtualGroup = Object.assign({}, this.groupAction);
+    
+    const dialogRefEdit = this.dialog.open(RenameGroupBoardComponent, {
+      width: "430px",
+      data: { virtualGroup },
+    });
+    dialogRefEdit.afterClosed().subscribe((result) => {});
   }
 }

@@ -6,8 +6,9 @@ import {
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
 import { PubSub } from "aws-amplify";
+import { BehaviorSubject } from "rxjs";
 import { CommonServiceService } from "src/app/services/common-service.service";
-const ColorConverter = require("cie-rgb-color-converter");
+var colorsys = require("colorsys");
 
 @Component({
   selector: "app-controller-board",
@@ -24,20 +25,10 @@ export class ControllerBoardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.data.virtualDevice.type === "fan") {
-      this.data.virtualDevice.fanspeed = "S2";
-    } else if (this.data.virtualDevice.type === "color-light") {
-      if (this.data.virtualDevice.burning) {
-        this.modeColorLight = "burning";
-      } else if (this.data.virtualDevice.sleep) {
-        this.modeColorLight = "sleep";
-      } else if (this.data.virtualDevice.rainbow) {
-        this.modeColorLight = "rainbow";
-      } else if (this.data.virtualDevice.party) {
-        this.modeColorLight = "party";
-      } else {
-        this.modeColorLight = "none"; // khong co mode nao duoc chon se chon mode none
-      }
+    if (this.data.virtualDevice.state == "ON") {
+      this.data.virtualDevice.state = true;
+    } else {
+      this.data.virtualDevice.state = false;
     }
   }
 
@@ -45,82 +36,49 @@ export class ControllerBoardComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  setModeColorLight(mode: string) {
-    switch (mode) {
-      case "sleep":
-        this.modeColorLight = "sleep";
-        break;
-      case "burning":
-        this.modeColorLight = "burning";
-        break;
-      case "rainbow":
-        this.modeColorLight = "rainbow";
-        break;
-      case "party":
-        this.modeColorLight = "party";
-        break;
-      default:
-        this.modeColorLight = "none"; // khong co mode nao duoc chon se sáng màu được chọn
-    }
-  }
-
   async onYesClick() {
-    if (this.data.virtualDevice.type === "color-light") {
-      if (this.modeColorLight === "burning") {
-        this.data.virtualDevice.burning = true;
-        this.data.virtualDevice.sleep = false;
-        this.data.virtualDevice.rainbow = false;
-        this.data.virtualDevice.party = false;
-      } else if (this.modeColorLight === "sleep") {
-        this.data.virtualDevice.burning = false;
-        this.data.virtualDevice.sleep = true;
-        this.data.virtualDevice.rainbow = false;
-        this.data.virtualDevice.party = false;
-      } else if (this.modeColorLight === "rainbow") {
-        this.data.virtualDevice.burning = false;
-        this.data.virtualDevice.sleep = false;
-        this.data.virtualDevice.rainbow = true;
-        this.data.virtualDevice.party = false;
-      } else if (this.modeColorLight === "party") {
-        this.data.virtualDevice.burning = false;
-        this.data.virtualDevice.sleep = false;
-        this.data.virtualDevice.rainbow = false;
-        this.data.virtualDevice.party = true;
-      } else if (this.modeColorLight === "none") {
-        this.data.virtualDevice.burning = false;
-        this.data.virtualDevice.sleep = false;
-        this.data.virtualDevice.rainbow = false;
-        this.data.virtualDevice.party = false;
-      }
+    type color = {
+      hex?: any;
+    };
+    type device = {
+      state?: any;
+      color?: { hex?: any };
+      brightness?: any;
+    };
+    const changedProperties: device = {};
+    console.log("1", this.data.virtualDevice.hex);
+    console.log("1", changedProperties);
 
-      // // convert hex code to RGB
-      // const hexToRgb = (hex) =>
-      //   hex
-      //     .replace(
-      //       /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
-      //       (m, r, g, b) => "#" + r + r + g + g + b + b
-      //     )
-      //     .substring(1)
-      //     .match(/.{2}/g)
-      //     .map((x) => parseInt(x, 16));
-      // let RGB = hexToRgb(this.data.virtualDevice.hex);
-      // this.data.virtualDevice.RGBColor.r = RGB[0];
-      // this.data.virtualDevice.RGBColor.g = RGB[1];
-      // this.data.virtualDevice.RGBColor.b = RGB[2];
-  
-      // // convert RGB to xy color space
-      // let xy = ColorConverter.rgbToXy(
-      //   this.data.virtualDevice.RGBColor.r,
-      //   this.data.virtualDevice.RGBColor.g,
-      //   this.data.virtualDevice.RGBColor.b
-      // );
-      // this.data.virtualDevice.color.x = xy.x;
-      // this.data.virtualDevice.color.y = xy.y;
+    if (this.data.virtualDevice.topic === "0x00124b00234c9228") {
+      console.log("2", this.data.virtualDevice.hex);
+      console.log("2", changedProperties);
+
+      if (this.data.virtualDevice.state != this.data.backupDevice.state) {
+        if (this.data.virtualDevice.state == true) {
+          changedProperties.state = "ON";
+        } else {
+          changedProperties.state = "OFF";
+        }
+      }
+      if (this.data.virtualDevice.hex != this.data.backupDevice.hex) {
+        var txt = '{"hex":"' + this.data.virtualDevice.hex + '"}';
+        changedProperties.color = JSON.parse(txt);
+        console.log("22222", txt);
+        console.log("22222", JSON.parse(txt));
+        console.log("22222", changedProperties.color);
+
+        if (
+          this.data.virtualDevice.brightness !=
+          this.data.backupDevice.brightness
+        ) {
+          changedProperties.brightness = this.data.virtualDevice.brightness;
+        }
+      }
     }
-    // await this.common.controlDevice(this.data.virtualDevice);
+    
     PubSub.publish(
       "zigbee2mqtt/" + this.data.virtualDevice.topic + "/set",
-      this.data.virtualDevice
+      changedProperties
     );
   }
 

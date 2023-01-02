@@ -52,8 +52,48 @@
             <div class="container container1">
                 <div class="row">
                     <div>{{group.friendly_name}}</div>
+                    <div class="dieukhienBotton2">
+                        <button class=" btn-outline-dark btn btn-outline-dark2" (click)="getRowIndex(j); addMemberToGroup()">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+
+                        <button class="btn-outline-dark btn btn-outline-dark2" (click)="getRowIndex(j); openDialogRename()">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+
+                        <button class="btn-outline-dark btn btn-outline-dark2" (click)="getRowIndex(j)" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalDeleteDevice">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <!-- Modal, confirm delete -->
+                        <div class="modal fade" id="exampleModalDeleteDevice"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title" id="exampleModalLabel">Bạn có muốn xóa phòng
+                                        này không ?</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" style="text-align: center;">
+                                    <h2>Tên phòng: <span *ngIf="groupAction"
+                                            style="color: brown;">{{groupAction.friendly_name}}</span></h2>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger"
+                                        (click)="requestDeleteRoom()" data-bs-dismiss="modal">Có, hãy
+                                        xóa</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Hủy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
                     <!-- <div class="col d-flex " *ngFor="let device of devices; let i=index"> -->
-                    <div class="col d-flex" *ngFor="let device of group.members; let i = index" (click)="getBoxIndex(j, i); openDialogControl()">
+                    <div class="col d-flex" *ngFor="let device of group.members; let i = index">
                         <div class="box">
                             <!-- <div *ngIf="device.type === 'normal-light'"> -->
                             <div *ngIf="device == '1'">
@@ -98,7 +138,7 @@
                                 <div class="tag-header">
                                     <h2>sensor-th</h2>
                                 </div>
-                                <div class="tag-content" >
+                                <div class="tag-content">
                                     <div *ngFor="let deviceData of devicesData">
                                         <div *ngIf="deviceData.topic == device.ieee_address">
                                             <h4 class="row d-flex">
@@ -161,9 +201,40 @@
                                 </div>
                             </div>
                             <div class="dieukhienBotton">
-                                <button id="dieukhienBotton" mat-flat-button (click)="openDialogControl(device)">
+                                <button id="dieukhienBotton" mat-flat-button
+                                    (click)="getBoxIndex(j, i); openDialogControl()">
                                     <mat-icon id="dieukhienBotton">info</mat-icon>
                                 </button>
+                                <button class="btn btn-outline-dark" data-bs-toggle="modal" (click)="getBoxIndex(j, i)"
+                                    data-bs-target="#exampleModalDeleteDevice">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+
+                                <!-- Modal, confirm delete -->
+                                <div class="modal fade" id="exampleModalDeleteDevice"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title" id="exampleModalLabel">Bạn có muốn xóa thiết bị
+                                                    này không ?</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" style="text-align: center;">
+                                                <h2>Loại thiết bị: <span *ngIf="deviceAction"
+                                                        style="color: brown;">{{deviceAction.topic}}</span></h2>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    (click)="requestDeleteDevice()" data-bs-dismiss="modal">Có, hãy
+                                                    xóa</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Hủy</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

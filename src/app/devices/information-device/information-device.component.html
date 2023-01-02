@@ -1,6 +1,15 @@
 <body>
     <div class="background-device-page">
+        
         <div class="container">
+            <div class="device_adding_icon">
+                <button mat-flat-button (click)="addingRequest()" id="timer">
+                    <mat-icon id="element1">add_box</mat-icon>
+                    <div *ngIf="stopSign==false" id="element2"> thêm thiết bị ({{display}})</div>
+                    <div *ngIf="stopSign==true" id="element2">thêm thiết bị (3:00)</div>
+                    <!-- <h1>{{timerCouting}}</h1> -->
+                </button>
+            </div>
             <div class="row">
                 <!-- <div class="col d-flex " *ngFor="let device of devices; let i=index"> -->
                 <div class="col d-flex" *ngFor="let device of devicesData; let i = index">
@@ -84,29 +93,17 @@
                                     <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
                                 </ng-template>
                                 <h2 class="row d-flex">Cường độ tín hiệu: {{device.linkquality}}</h2>
-                                <h2 class="row d-flex">Độ sáng: {{device.brightness}}</h2>
+                                <h2 class="row d-flex">Độ sáng: {{device.brightness}}%</h2>
                                 <h2 class="row d-flex" class="color-state">Màu đèn:
                                     <div class="color-state-box" [ngStyle]="{'background-color': device.hex}">
                                         {{device.hex}}</div>
                                 </h2>
-                                <h2 class="row d-flex">Chế độ: không gian màu {{device.color_mode}}</h2>
-
-                                <!-- <h2 class="row d-flex" *ngIf="1; else elseSleep">Chế độ: Giấc ngủ</h2>
-                                <ng-template #elseSleep>
-                                    <h2 class="row d-flex" *ngIf="device.burning; else elseBurning">Chế độ: Lửa cháy
-                                    </h2>
-                                    <ng-template #elseBurning>
-                                        <h2 class="row d-flex" *ngIf="device.party; else elseParty">Chế độ: Bửa tiệc
-                                        </h2>
-                                        <ng-template #elseParty>
-                                            <h2 class="row d-flex" *ngIf="device.rainbow; else elseColor">Chế độ: Cầu
-                                                vòng</h2>
-                                            <ng-template #elseColor>
-                                                <h2 class="row d-flex">Chế độ: Theo màu</h2>
-                                            </ng-template>
-                                        </ng-template>
-                                    </ng-template>
-                                </ng-template> -->
+                                <h2 class="row d-flex" *ngIf="device.power_on_behavior === 'previous'">Hành vi bật
+                                    nguồn: khôi phục</h2>
+                                <h2 class="row d-flex" *ngIf="device.power_on_behavior === 'ON'">Hành vi bật nguồn: bật
+                                    đèn</h2>
+                                <h2 class="row d-flex" *ngIf="device.power_on_behavior === 'OFF'">Hành vi bật nguồn: tắt
+                                    đèn</h2>
                             </div>
                         </div>
                         <!-- <div *ngIf="device.type === 'fan'"> -->
@@ -188,8 +185,22 @@
                                 <h2 class="row d-flex">Lịch trình tắt: </h2>
                             </div>
                         </div>
+                        <div *ngIf="device.topic === 'device_adding_icon'" class="device_adding_icon">
+                            <div class="tag-header">
+                                <h1>Add new device</h1>
+                            </div>
+                            <hr>
+                            <br><br>
+                            <div class="tag-content" style="text-align: center; height: 100%;">
+                                <button mat-flat-button (click)="addingRequest()">
+                                    <mat-icon style="scale: 1.5;">add_box</mat-icon>
+                                </button>
+                            </div>
+                            <h1 *ngIf="timerCouting==true">{{display}}</h1>
+                            <h1>{{timerCouting}}</h1>
+                        </div>
 
-                        <div class="dieukhienBotton">
+                        <div class="dieukhienBotton" *ngIf="device.topic != 'device_adding_icon'">
                             <!-- share, edit, del button -->
                             <div>
                                 <!-- <button *ngIf="ownerships[i] !== 'guest'; else elseBtnShare" class="btn btn-outline-dark" type="button" (click)="openDialogShareEdit(device, 'share')"> -->

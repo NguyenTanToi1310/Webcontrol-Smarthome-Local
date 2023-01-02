@@ -3,11 +3,13 @@ import { BehaviorSubject } from "rxjs";
 import { Amplify, Auth, PubSub } from "aws-amplify";
 import { AWSIoTProvider } from "@aws-amplify/pubsub";
 import * as AWS from "aws-sdk";
+import { MqttOverWSProvider } from "@aws-amplify/pubsub/lib/Providers";
 
 import { environment } from "../../environments/environment";
 import { Stringifiable } from "query-string";
 // import { ColorConverter } from "cie-rgb-color-converter"
-const ColorConverter = require('cie-rgb-color-converter');
+const ColorConverter = require("cie-rgb-color-converter");
+var colorsys = require("colorsys");
 
 export interface IUser {
   email: string;
@@ -53,7 +55,13 @@ export class CognitoService {
         aws_pubsub_endpoint:
           "wss://a2b1f06oxa84iu-ats.iot.ap-southeast-1.amazonaws.com/mqtt",
       })
+      // new MqttOverWSProvider({
+      //   aws_pubsub_endpoint: "ws://192.168.1.21:8080/mqtt",
+      //   aws_appsync_dengerously_connect_to_http_endpoint_for_testing: true,
+      // })
     );
+    // console.log("abcdef");
+    // PubSub.publish("zigbee2mqtt/", { msg: "Log in successfully" });
   }
 
   public signUp(user: IUser): Promise<any> {
@@ -197,20 +205,39 @@ export class CognitoService {
     });
   }
 
+  public updateNewJoinedDEvice(device: any): any {
+    PubSub.subscribe("zigbee2mqtt/" + device.friendly_name).subscribe({
+      next: (data) => {
+        data.value.topic = data.value[
+          Object.getOwnPropertySymbols(data.value)[0]
+        ]
+          .split("zigbee2mqtt/")
+          .pop(); //insert topic (removed prefix) into this object
+        this.deviceDataSource.next(data.value);
+        this.getDevicesData(data.value);
+      },
+      error: (error) => console.error(error),
+      complete: () => console.log("Done"),
+    });
+  }
+
   public getDevicesData(device: any): any {
-    const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
-      const hex = x.toString(16)
-      return hex.length === 1 ? '0' + hex : hex
-    }).join('')
-    
     var list = new Array();
     this.currentDevicesData.subscribe((devicesData) => (list = devicesData));
 
-    if (device.topic == '0x00124b00234c9228') {
-      let rgb = ColorConverter.xyBriToRgb(device.color.x, device.color.y, device.brightness);
-      device.RGBColor = rgb;
-      let hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+    if (device.topic == "0x00124b00234c9228") {
+      let hex = colorsys.hsvToHex(
+        device.color.hue,
+        device.color.saturation,
+        100
+      );
       device.hex = hex;
+    }
+    if (
+      device.topic == "0x00124b00234c9228" ||
+      device.topic == "den trang topic"
+    ) {
+      device.brightness = Number((device.brightness / 2.54).toFixed(0)); //scale to %
     }
 
     if (list.length == 0) {
@@ -233,7 +260,8 @@ export class CognitoService {
     PubSub.subscribe("zigbee2mqtt/bridge/groups").subscribe({
       next: (data) => {
         console.log("group received\n", data.value);
-        this.groupsSource.next(data.value);},
+        this.groupsSource.next(data.value);
+      },
       error: (error) => console.error(error),
       complete: () => console.log("Done"),
     });

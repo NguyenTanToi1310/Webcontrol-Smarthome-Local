@@ -96,3 +96,25 @@ button:focus {
 ::ng-deep .mat-button-focus-overlay {
     display: none;
 }
+
+.device_adding_icon .tag-content:hover {
+    color: white;
+    transition: 0.5s;
+    height: 30px;
+    width: 30px;
+}
+
+#element1{
+    scale: 1.5; display:inline-block;margin-right:10px;
+}
+#element2{
+    display:inline-block; font-size:15px;
+}
+#timer{
+    border: solid;
+    border-radius: 10px;
+    margin-top: 10px;
+    height: 50px;
+    min-width: 210px;
+    text-align: left;
+}
