@@ -49,13 +49,11 @@ export class LoginComponent implements OnInit {
       this.router.navigate(["/home"]);
       this.statusLogin = "SIGNIN_OK";
 
-      this.common.getShareRequest() //sadfgvdsfvregfergreg
+      // this.common.getShareRequest()
 
       this.auth.isLogin();
     }
     this.cognitoService.startConnection();
-    // this.cognitoService.subscribe();
-    // this.cognitoService.publish();
     this.cognitoService.getDeviceListAndEachDeviceData();
     this.cognitoService.getGroupsData();
 

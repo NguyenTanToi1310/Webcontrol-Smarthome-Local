@@ -25,10 +25,12 @@ export class ControllerBoardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.data.virtualDevice.state == "ON") {
+    if (this.data.backupDevice.state == "ON") {
       this.data.virtualDevice.state = true;
+      this.data.backupDevice.state = true;
     } else {
       this.data.virtualDevice.state = false;
+      this.data.backupDevice.state = false;
     }
   }
 
@@ -46,12 +48,12 @@ export class ControllerBoardComponent implements OnInit {
       brightness?: any;
     };
     const changedProperties: device = {};
-    console.log("1", this.data.virtualDevice.hex);
-    console.log("1", changedProperties);
+    // console.log("1", this.data.virtualDevice.hex);
+    // console.log("1", changedProperties);
 
-    if (this.data.virtualDevice.topic === "0x00124b00234c9228") {
-      console.log("2", this.data.virtualDevice.hex);
-      console.log("2", changedProperties);
+    if (this.data.virtualDevice.model_id == "WH_LEDRGB") {
+      // console.log("2", this.data.virtualDevice.hex);
+      // console.log("2", changedProperties);
 
       if (this.data.virtualDevice.state != this.data.backupDevice.state) {
         if (this.data.virtualDevice.state == true) {
@@ -63,16 +65,16 @@ export class ControllerBoardComponent implements OnInit {
       if (this.data.virtualDevice.hex != this.data.backupDevice.hex) {
         var txt = '{"hex":"' + this.data.virtualDevice.hex + '"}';
         changedProperties.color = JSON.parse(txt);
-        console.log("22222", txt);
-        console.log("22222", JSON.parse(txt));
-        console.log("22222", changedProperties.color);
+        // console.log("22222", txt);
+        // console.log("22222", JSON.parse(txt));
+        // console.log("22222", changedProperties.color);
 
-        if (
-          this.data.virtualDevice.brightness !=
-          this.data.backupDevice.brightness
-        ) {
-          changedProperties.brightness = this.data.virtualDevice.brightness;
-        }
+      }
+      if (
+        this.data.virtualDevice.brightness !=
+        this.data.backupDevice.brightness
+      ) {
+        changedProperties.brightness = this.data.virtualDevice.brightness;
       }
     }
     

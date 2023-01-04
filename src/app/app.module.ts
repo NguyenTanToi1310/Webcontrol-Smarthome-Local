@@ -72,6 +72,7 @@ import { ShortcutComponent } from './devices/shortcut/shortcut.component';
 import { AutomationBoardComponent } from './devices/automation-board/automation-board.component';
 import { EditAutomationConditionComponent } from './devices/edit-automation-condition/edit-automation-condition.component';
 import { RenameGroupBoardComponent } from './devices/rename-group-board/rename-group-board.component';
+import { NameNewGroupBoardComponent } from './devices/name-new-group-board/name-new-group-board.component';
 
 
 @NgModule({
@@ -93,6 +94,7 @@ import { RenameGroupBoardComponent } from './devices/rename-group-board/rename-g
     AutomationBoardComponent,
     EditAutomationConditionComponent,
     RenameGroupBoardComponent,
+    NameNewGroupBoardComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

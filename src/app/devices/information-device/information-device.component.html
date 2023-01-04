@@ -67,9 +67,9 @@
                         </div>
 
                         <!-- <div *ngIf="device.type === 'sensor-th'"> -->
-                        <div *ngIf="device.topic === '0x00124b00234c8c58'">
+                        <div *ngIf="device.model_id === 'WH_SENSOR'">
                             <div class="tag-header">
-                                <h1>sensor-th</h1>
+                                <h1>{{device.topic}}</h1>
                             </div>
                             <hr>
                             <div class="tag-content">
@@ -81,9 +81,9 @@
                         </div>
 
                         <!-- <div *ngIf="device.type === 'color-light'"> -->
-                        <div *ngIf="device.topic === '0x00124b00234c9228'">
+                        <div *ngIf="device.model_id === 'WH_LEDRGB'">
                             <div class="tag-header">
-                                <h1>color-light</h1>
+                                <h1>{{device.topic}}</h1>
                             </div>
                             <hr>
                             <div class="tag-content">
@@ -185,20 +185,6 @@
                                 <h2 class="row d-flex">Lịch trình tắt: </h2>
                             </div>
                         </div>
-                        <div *ngIf="device.topic === 'device_adding_icon'" class="device_adding_icon">
-                            <div class="tag-header">
-                                <h1>Add new device</h1>
-                            </div>
-                            <hr>
-                            <br><br>
-                            <div class="tag-content" style="text-align: center; height: 100%;">
-                                <button mat-flat-button (click)="addingRequest()">
-                                    <mat-icon style="scale: 1.5;">add_box</mat-icon>
-                                </button>
-                            </div>
-                            <h1 *ngIf="timerCouting==true">{{display}}</h1>
-                            <h1>{{timerCouting}}</h1>
-                        </div>
 
                         <div class="dieukhienBotton" *ngIf="device.topic != 'device_adding_icon'">
                             <!-- share, edit, del button -->
@@ -249,9 +235,8 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body">
-                                                <h2>Loại thiết bị: <span
-                                                        style="color: brown;">{{deviceAction.topic}}</span></h2>
+                                            <div class="modal-body" style="text-align: left;">
+                                                <h2>Loại thiết bị: <span>{{deviceAction.topic}}</span></h2>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-danger"

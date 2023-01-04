@@ -44,12 +44,12 @@ export class InformationDeviceComponent implements OnInit {
     this.cognito.currentDevicesData.subscribe(devicesData => this.devicesData = devicesData);
     this.currentStopSign.subscribe(data => this.stopSign = data)
 
-    this.common.ownership.subscribe((res) => {
-      this.ownerships = res;
-    });
+    // this.common.ownership.subscribe((res) => {
+    //   this.ownerships = res;
+    // });
+    // this.common.getShareHistories();
 
     this.deviceAction = this.devices;
-    this.common.getShareHistories();
   }
 
   openDialogControl(device: any): void {

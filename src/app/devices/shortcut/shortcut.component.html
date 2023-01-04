@@ -1,12 +1,12 @@
 <body>
     <div class="background-device-page">
-        <div class="container container2">
+        <!-- <div class="container container2">
             Câu lệnh
             <div class="row">
                 <div class="col d-flex flow">
                     <div class="buttons-wrapper">
                         <button mat-flat-button class="seemingly-outer-button button" id="outer"
-                            (click)="openDialogControl()"> <!-- thay ham nay thanh ham khac de run cua lenh -->
+                            (click)="openDialogControl()">
                             Chào buổi sáng
                         </button>
                         <button mat-flat-button class="seemingly-inner-button button" id="inner"
@@ -39,64 +39,102 @@
                         </button>
                     </div>
                 </div>
-                <!-- <div class="col d-flex flow">
-                    <button mat-flat-button (click)="openDialogControl(1)">
-                        <mat-icon>add_circle</mat-icon>
-                        thêm câu lệnh
-                    </button>
-                </div> -->
             </div>
-        </div>
+        </div> -->
 
         <div *ngFor="let group of groups; let j = index">
             <div class="container container1">
                 <div class="row">
-                    <div>{{group.friendly_name}}</div>
+                    <div>{{ group.friendly_name }}</div>
                     <div class="dieukhienBotton2">
-                        <button class=" btn-outline-dark btn btn-outline-dark2" (click)="getRowIndex(j); addMemberToGroup()">
+                        <button class="btn-outline-dark btn btn-outline-dark2"
+                            (click)="getRowIndex(j); getOtherDevicesRemaining()" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalChooseDevices">
                             <mat-icon>add_box</mat-icon>
                         </button>
 
-                        <button class="btn-outline-dark btn btn-outline-dark2" (click)="getRowIndex(j); openDialogRename()">
+                        <button class="btn-outline-dark btn btn-outline-dark2"
+                            (click)="getRowIndex(j); openDialogRename()">
                             <mat-icon>edit</mat-icon>
                         </button>
 
-                        <button class="btn-outline-dark btn btn-outline-dark2" (click)="getRowIndex(j)" data-bs-toggle="modal"
-                            data-bs-target="#exampleModalDeleteDevice">
+                        <button class="btn-outline-dark btn btn-outline-dark2" (click)="getRowIndex(j)"
+                            data-bs-toggle="modal" data-bs-target="#exampleModalDeleteGroup">
                             <mat-icon>delete</mat-icon>
                         </button>
+
+                        <!-- Modal, choose device -->
+                        <div class="modal fade" id="exampleModalChooseDevices" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title" id="exampleModalLabel">
+                                            Chọn thiết bị:
+                                        </h1>
+                                    </div>
+                                    <div class="modal-body" style="text-align: left">
+                                        <ul style="list-style-type: none; font-size: 18px">
+                                            <li *ngFor="let device of selectedDevices; let i = index">
+                                                <div *ngIf="device.added == false">
+                                                    <input type="checkbox" [(ngModel)]="device.checked" />
+                                                    {{ device.topic }}
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn" (click)="cancelRequestChooseDevice()"
+                                            data-bs-dismiss="modal">
+                                            Hủy
+                                        </button>
+                                        <button type="button" class="btn" (click)="submitSelectedDevices()"
+                                            data-bs-dismiss="modal">
+                                            Đồng ý
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Modal, confirm delete -->
-                        <div class="modal fade" id="exampleModalDeleteDevice"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title" id="exampleModalLabel">Bạn có muốn xóa phòng
-                                        này không ?</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body" style="text-align: center;">
-                                    <h2>Tên phòng: <span *ngIf="groupAction"
-                                            style="color: brown;">{{groupAction.friendly_name}}</span></h2>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger"
-                                        (click)="requestDeleteRoom()" data-bs-dismiss="modal">Có, hãy
-                                        xóa</button>
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Hủy</button>
+                        <div class="modal fade" id="exampleModalDeleteGroup" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title" id="exampleModalLabel">
+                                            Bạn có muốn xóa phòng này không ?
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" style="text-align: left">
+                                        <h2>
+                                            Tên phòng:
+                                            <span *ngIf="groupAction">{{
+                                                groupAction.friendly_name
+                                                }}</span>
+                                        </h2>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" (click)="requestDeleteDevice()"
+                                            data-bs-dismiss="modal">
+                                            Có, hãy xóa
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Hủy
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    </div>
 
-                    <!-- <div class="col d-flex " *ngFor="let device of devices; let i=index"> -->
-                    <div class="col d-flex" *ngFor="let device of group.members; let i = index">
+                    <div class="col d-flex" *ngFor="let member of group.members; let i = index">
                         <div class="box">
                             <!-- <div *ngIf="device.type === 'normal-light'"> -->
-                            <div *ngIf="device == '1'">
+                            <div *ngIf="member == '1'">
                                 <div class="tag-header">
                                     <h2>device.ot_nickname</h2>
                                 </div>
@@ -114,7 +152,7 @@
                             </div>
 
                             <!-- <div *ngIf="device.type === 'switch'"> -->
-                            <div *ngIf="device == '2'">
+                            <div *ngIf="member == '2'">
                                 <div class="tag-header">
                                     <h2>device.ot_nickname</h2>
                                 </div>
@@ -134,28 +172,31 @@
                             </div>
 
                             <!-- <div *ngIf="device.type === 'sensor-th'"> -->
-                            <div *ngIf="device.ieee_address === '0x00124b00234c8c58'">
-                                <div class="tag-header">
-                                    <h2>sensor-th</h2>
-                                </div>
-                                <div class="tag-content">
-                                    <div *ngFor="let deviceData of devicesData">
-                                        <div *ngIf="deviceData.topic == device.ieee_address">
+                            <div *ngIf="member.model_id === 'WH_SENSOR'">
+                                <div *ngFor="let deviceData of devicesData">
+                                    <div *ngIf="deviceData.model_id == member.model_id">
+                                        <div class="tag-header">
+                                            <h2>{{deviceData.topic}}</h2>
+                                        </div>
+                                        <div class="tag-content">
                                             <h4 class="row d-flex">
-                                                {{deviceData.temperature}}&ordm;C&emsp;{{deviceData.humidity}}%</h4>
+                                                {{ deviceData.temperature }}&ordm;C&emsp;{{
+                                                deviceData.humidity
+                                                }}%
+                                            </h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- <div *ngIf="device.type === 'color-light'"> -->
-                            <div *ngIf="device.ieee_address === '0x00124b00234c9228'">
-                                <div class="tag-header">
-                                    <h2>color-light</h2>
-                                </div>
-                                <div class="tag-content">
-                                    <div *ngFor="let deviceData of devicesData">
-                                        <div *ngIf="deviceData.topic == device.ieee_address">
+                            <div *ngIf="member.model_id === 'WH_LEDRGB'">
+                                <div *ngFor="let deviceData of devicesData">
+                                    <div *ngIf="deviceData.model_id == member.model_id">
+                                        <div class="tag-header">
+                                            <h2>{{deviceData.topic}}</h2>
+                                        </div>
+                                        <div class="tag-content">
                                             <h4 class="row d-flex"
                                                 *ngIf="deviceData.state === 'ON'; else elseStateDevice">
                                                 Đang bật
@@ -169,7 +210,7 @@
                             </div>
 
                             <!-- <div *ngIf="device.type === 'fan'"> -->
-                            <div *ngIf="device == '5'">
+                            <div *ngIf="member == '5'">
                                 <div class="tag-header">
                                     <h2>device.ot_nickname</h2>
                                 </div>
@@ -186,7 +227,7 @@
                             </div>
 
                             <!-- <div *ngIf="device.type === 'lock'"> -->
-                            <div *ngIf="device == '6'">
+                            <div *ngIf="member == '6'">
                                 <div class="tag-header">
                                     <h2>device.ot_nickname</h2>
                                 </div>
@@ -212,25 +253,42 @@
 
                                 <!-- Modal, confirm delete -->
                                 <div class="modal fade" id="exampleModalDeleteDevice"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static"
+                                    data-keyboard="false">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title" id="exampleModalLabel">Bạn có muốn xóa thiết bị
-                                                    này không ?</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                <h1 class="modal-title" id="exampleModalLabel">
+                                                    Bạn có muốn xóa thiết bị này không ?
+                                                </h1>
+                                                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button> -->
                                             </div>
-                                            <div class="modal-body" style="text-align: center;">
-                                                <h2>Loại thiết bị: <span *ngIf="deviceAction"
-                                                        style="color: brown;">{{deviceAction.topic}}</span></h2>
+                                            <div class="modal-body" style="text-align: left">
+                                                <h2>
+                                                    Loại thiết bị:
+                                                    <span *ngIf="deviceAction">{{
+                                                        deviceAction.topic
+                                                        }}</span>
+                                                </h2>
+                                                <h2>
+                                                    Tên phòng:
+                                                    <span *ngIf="groupAction">{{
+                                                        groupAction.friendly_name
+                                                        }}</span>
+                                                </h2>
+                                                <input type="checkbox" [(ngModel)]="delInAllGroup" />
+                                                Xoá thiết bị này khỏi tất cả các phòng
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-danger"
-                                                    (click)="requestDeleteDevice()" data-bs-dismiss="modal">Có, hãy
-                                                    xóa</button>
+                                                    (click)="requestDeleteDevice()" data-bs-dismiss="modal">
+                                                    Có, hãy xóa
+                                                </button>
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Hủy</button>
+                                                    (click)="cancelRequestDeleteDevice()" data-bs-dismiss="modal">
+                                                    Hủy
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -239,6 +297,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="container container2">
+            <div class="device_adding_icon box" (click)="openDialogNameNewGroup()">
+                <button mat-flat-button id="timer">
+                    <mat-icon id="element1">add_box</mat-icon>
+                    <div id="element2">thêm phòng mới</div>
+                </button>
             </div>
         </div>
     </div>

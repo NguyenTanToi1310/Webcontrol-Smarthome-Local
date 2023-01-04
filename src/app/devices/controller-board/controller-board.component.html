@@ -52,9 +52,9 @@
       <hr />
     </div>
 
-    <div *ngIf="data.virtualDevice.topic === '0x00124b00234c8c58'">
+    <div *ngIf="data.virtualDevice.model_id === 'WH_SENSOR'">
       <div class="tag-header">
-        <h1>sensor-th</h1>
+        <h1>{{data.virtualDevice.topic}}</h1>
       </div>
       <hr />
       <div class="tag-content">
@@ -73,9 +73,9 @@
       <!-- <h4 class="sensor-notify">Chọn kích hoạt để lấy dữ liệu mới nhất!</h4> -->
     </div>
 
-    <div *ngIf="data.virtualDevice.topic === '0x00124b00234c9228'">
+    <div *ngIf="data.virtualDevice.model_id === 'WH_LEDRGB'">
       <div class="tag-header">
-        <h1>color-light</h1>
+        <h1>{{data.virtualDevice.topic}}</h1>
       </div>
       <hr />
       <div class="tag-content">
@@ -88,22 +88,12 @@
         <h2 class="row d-flex">Cường độ tín hiệu: {{data.virtualDevice.linkquality}}</h2>
         <h2 class="row d-flex">Độ sáng: {{ data.virtualDevice.brightness }}%</h2>
         <h2 class="row d-flex">Mã màu: {{ data.virtualDevice.hex }}</h2>
-        <h2 class="row d-flex">
-          Chế độ: không gian màu {{ data.virtualDevice.color_mode }}
-        </h2>
-        <!-- <h2 class="row d-flex" *ngIf="modeColorLight === 'sleep'; else elseSleep">Chế độ: Giấc ngủ</h2> -->
-        <!-- <ng-template #elseSleep>
-          <h2 class="row d-flex" *ngIf="modeColorLight === 'burning'; else elseBurning">Chế độ: Lửa cháy</h2>
-          <ng-template #elseBurning>
-            <h2 class="row d-flex" *ngIf="modeColorLight === 'party'; else elseParty">Chế độ: Bửa tiệc</h2>
-            <ng-template #elseParty>
-              <h2 class="row d-flex" *ngIf="modeColorLight === 'rainbow'; else elseModeColor">Chế độ: Cầu vòng</h2>
-              <ng-template #elseModeColor>
-                <h2 class="row d-flex">Chế độ: Theo màu</h2>
-              </ng-template>
-            </ng-template>
-          </ng-template>
-        </ng-template> -->
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'previous'">Hành vi bật
+          nguồn: khôi phục</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'ON'">Hành vi bật nguồn: bật
+          đèn</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'OFF'">Hành vi bật nguồn: tắt
+          đèn</h2>
       </div>
       <hr />
     </div>
@@ -172,7 +162,7 @@
     </div>
   </div>
 
-  <div class="control-device" *ngIf="data.virtualDevice.topic !== '0x00124b00234c8c58'">
+  <div class="control-device" *ngIf="data.virtualDevice.model_id !== 'WH_SENSOR'">
     <div class="onOff">
       <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
       <div class="row" class="onOffButton">
@@ -199,7 +189,7 @@
     <!-- <div *ngIf="data.virtualDevice.type !== 'switch' && data.virtualDevice.type !== 'sensor-th' && data.virtualDevice.type !== 'fan' && data.virtualDevice.type !== 'lock' && data.virtualDevice.type !== 'smart-door-sensor' && data.virtualDevice.type !== 'smart-plug'"> -->
     <div *ngIf="
         data.virtualDevice.type === 'normal-light' ||
-        data.virtualDevice.topic === '0x00124b00234c9228'
+        data.virtualDevice.model_id === 'WH_LEDRGB'
       ">
       <div>
         <h2>Điều chỉnh độ sáng:</h2>
@@ -211,17 +201,17 @@
       </div>
     </div>
 
-    <div *ngIf="data.virtualDevice.topic === '0x00124b00234c9228'">
+    <div *ngIf="data.virtualDevice.model_id === 'WH_LEDRGB'">
       <h2>Thiết lập màu đèn:</h2>
       <div style="text-align: center">
-        <input type="color" id="head" name="head" value="data.virtualDevice.hex"
-          [(ngModel)]="data.virtualDevice.hex" style="width: 80%; height: 40px" />
+        <input type="color" id="head" name="head" value="data.virtualDevice.hex" [(ngModel)]="data.virtualDevice.hex"
+          style="width: 80%; height: 40px" />
         <div>{{ data.virtualDevice.hex }}</div>
       </div>
     </div>
 
     <!-- <div *ngIf="data.virtualDevice.type === 'smart-plug' || data.virtualDevice.type === 'smart-door-sensor'""> -->
-    <div *ngIf="1">
+    <div *ngIf="0">
       <h2>Đặt lịch bật:</h2>
       <div class="ngx-material-timepicker-example__form-group">
         <input placeholder="12:00 am" aria-label="default time" [ngxTimepicker]="On_picker" readonly />

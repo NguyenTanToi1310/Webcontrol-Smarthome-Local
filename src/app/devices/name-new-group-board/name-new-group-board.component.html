@@ -1,0 +1,40 @@
+<div  style="text-align: right">
+    <button mat-button (click)="onNoClick()">X</button>
+</div>
+<div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
+    <div class="device-name">
+        <div class="tag-header">
+            <h1>Nhập tên phòng</h1>
+        </div>
+        <hr>
+    </div>
+
+    <div class="control-device">
+        <div class="form-group">
+            <form action="" [formGroup]="editDeviceFormGroup">
+                <small id="friendly_nameHelp" class="form-text text-muted">Nhập tên cho phòng</small>
+                <input type="text" class="form-control" formControlName="friendly_nameFormControl" for aria-describedby="friendly_nameHelp">
+            </form>
+        </div>
+    </div>
+    <div class="notification-edit d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status" *ngIf="result.status == 'processing'; else resultTrue"></div>
+        <ng-template #resultTrue>
+            <h4 *ngIf="result.status == true; else resultFalse">Thêm phòng mới thành công</h4>
+            <ng-template #resultFalse>
+                <h4 *ngIf="result.status == false">Tên phòng không hợp lệ<br></h4>
+            </ng-template>
+        </ng-template>
+    </div>
+    <hr>
+</div>
+
+<div mat-dialog-actions style="float: right;">
+    <!-- <button mat-button (click)="onNoClick()">Hủy</button>
+    <button mat-button (click)="onAcceptClick()" cdkFocusInitial [disabled]="!editDeviceFormGroup.valid">Đồng ý</button> -->
+
+    <button *ngIf="result.status == 'waitting_for_input' || result.status == false" mat-button (click)="onNoClick()">Hủy</button>
+    <button *ngIf="result.status == 'waitting_for_input' || result.status == false" mat-button (click)="onAcceptClick()" cdkFocusInitial [disabled]="!editDeviceFormGroup.valid">Đồng ý</button>
+    <button *ngIf="result.status == 'processing'" disabled mat-button>Đồng ý</button>
+    <button *ngIf="result.status == true" mat-button (click)="onNoClick()">Đóng</button>
+</div>

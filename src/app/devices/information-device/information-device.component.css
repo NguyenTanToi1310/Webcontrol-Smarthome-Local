@@ -37,6 +37,10 @@ body {
     margin: 0px;
 }
 
+h1{
+    color: #ff914d;
+    margin: 0px;
+  }
 .box h1 {
     font-weight: bold;
     /* color: #FF914D; */
