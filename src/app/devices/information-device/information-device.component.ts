@@ -13,6 +13,7 @@ import { EditBoardComponent } from "../edit-board/edit-board.component";
 import { CognitoService } from "src/app/services/cognito.service";
 import { PubSub } from "aws-amplify";
 import { BehaviorSubject } from "rxjs";
+import { VariableAst } from "@angular/compiler";
 
 @Component({
   selector: "app-information-device",
@@ -23,6 +24,7 @@ export class InformationDeviceComponent implements OnInit {
   public devices: any;
   public devicesData: any;
   public stopSign;
+  public baseTopic: any;
 
   public display: any;
   public deviceAction: any;
@@ -42,13 +44,8 @@ export class InformationDeviceComponent implements OnInit {
   ngOnInit(): void {
     this.cognito.currentDevicesList.subscribe(devicesList => this.devices = devicesList);
     this.cognito.currentDevicesData.subscribe(devicesData => this.devicesData = devicesData);
-    this.currentStopSign.subscribe(data => this.stopSign = data)
-
-    // this.common.ownership.subscribe((res) => {
-    //   this.ownerships = res;
-    // });
-    // this.common.getShareHistories();
-
+    this.currentStopSign.subscribe(data => this.stopSign = data);
+    this.cognito.currentBaseTopic.subscribe(baseTopic => this.baseTopic = baseTopic);
     this.deviceAction = this.devices;
   }
 
@@ -76,7 +73,7 @@ export class InformationDeviceComponent implements OnInit {
       "block": false,
       "force": false
     };
-    PubSub.publish("zigbee2mqtt/bridge/request/device/remove", payload);
+    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/device/remove", payload);
   }
 
   openDialogShareEdit(device: any, cmd: string): void {
@@ -119,7 +116,7 @@ export class InformationDeviceComponent implements OnInit {
       "value": true, 
       "time": 180
     };
-    PubSub.publish("zigbee2mqtt/bridge/request/permit_join", payload);
+    PubSub.publish(this.baseTopic + "zigbee2mqtt/bridge/request/permit_join", payload);
     PubSub.subscribe("zigbee2mqtt/bridge/event").subscribe({
       next: (data) => {
         if(data.value.type == 'device_interview' && data.value.data.status == 'successful'){
@@ -129,7 +126,7 @@ export class InformationDeviceComponent implements OnInit {
             "value": false, 
             "time": 180
           };
-          PubSub.publish("zigbee2mqtt/bridge/request/permit_join", payload);
+          PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/permit_join", payload);
           this.cognito.updateNewJoinedDEvice(data.value.data);
         }
       },

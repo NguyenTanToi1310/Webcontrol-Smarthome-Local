@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PubSub } from 'aws-amplify';
+import { CognitoService } from 'src/app/services/cognito.service';
 import { CommonServiceService } from 'src/app/services/common-service.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -19,6 +20,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./edit-board.component.css']
 })
 export class EditBoardComponent implements OnInit {
+  
+  matcher = new MyErrorStateMatcher();
+  public baseTopic: any;
 
   public editDeviceFormGroup = new FormGroup({
     switchTypeFormControl : new FormControl(''),
@@ -26,7 +30,6 @@ export class EditBoardComponent implements OnInit {
     friendly_nameFormControl : new FormControl(''),
   });
 
-  matcher = new MyErrorStateMatcher()
 
   public result : any = {
     status : 'waitting_for_input'
@@ -35,10 +38,13 @@ export class EditBoardComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<EditBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService
+    private common: CommonServiceService,
+    private cognito: CognitoService,
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.cognito.currentBaseTopic.subscribe(baseTopic => this.baseTopic = baseTopic);
+   }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -61,7 +67,7 @@ export class EditBoardComponent implements OnInit {
         "to": this.editDeviceFormGroup.value.friendly_nameFormControl,
         "homeassistant_rename":true
       };
-      PubSub.publish("zigbee2mqtt/bridge/request/device/rename", payload);
+      PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/device/rename", payload);
 
       PubSub.subscribe("zigbee2mqtt/bridge/response/device/rename").subscribe({
         next: (data) => {

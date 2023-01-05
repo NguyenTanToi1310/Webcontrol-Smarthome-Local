@@ -33,6 +33,8 @@ export class ShortcutComponent implements OnInit {
   public listUIDShareRequest: any = [];
   public devicesData: any;
 
+  public baseTopic: any;
+
   constructor(
     private common: CommonServiceService,
     public dialog: MatDialog,
@@ -40,6 +42,10 @@ export class ShortcutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.cognito.currentDevicesData.subscribe(
+      (devicesData) => (this.devicesData = devicesData)
+    );
+    
     this.cognito.currentGroups.subscribe((groups) => {
       this.groups = groups;
       for (var group of this.groups) {
@@ -52,9 +58,8 @@ export class ShortcutComponent implements OnInit {
         }
       }
     });
-    this.cognito.currentDevicesData.subscribe(
-      (devicesData) => (this.devicesData = devicesData)
-    );
+
+    this.cognito.currentBaseTopic.subscribe(baseTopic => this.baseTopic = baseTopic);
 
     this.selectedDevices = this.devicesData;
   }
@@ -108,14 +113,14 @@ export class ShortcutComponent implements OnInit {
       group: this.groupAction.friendly_name,
       device: this.deviceAction.topic,
     };
-    PubSub.publish("zigbee2mqtt/bridge/request/group/members/remove", payload1);
+    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/remove", payload1);
 
     if (this.delInAllGroup == true) {
       var payload2 = {
         device: this.deviceAction.topic,
       };
       PubSub.publish(
-        "zigbee2mqtt/bridge/request/group/members/remove_all",
+        this.baseTopic+"zigbee2mqtt/bridge/request/group/members/remove_all",
         payload2
       );
       this.delInAllGroup = false;
@@ -137,14 +142,14 @@ export class ShortcutComponent implements OnInit {
       group: this.groupAction.friendly_name,
       device: "chua biet",
     };
-    PubSub.publish("zigbee2mqtt/bridge/request/group/members/add", payload);
+    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/add", payload);
   }
 
   private requestDeleteRoom() {
     var payload = {
       id: this.groupAction.friendly_name,
     };
-    PubSub.publish("zigbee2mqtt/bridge/request/group/remove", payload);
+    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/remove", payload);
   }
 
   openDialogRename(): void {
@@ -188,7 +193,7 @@ export class ShortcutComponent implements OnInit {
           group: this.groupAction.friendly_name,
           device: device.topic,
         };
-        PubSub.publish("zigbee2mqtt/bridge/request/group/members/add", payload);
+        PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/add", payload);
         device.checked = false;
       }
     }

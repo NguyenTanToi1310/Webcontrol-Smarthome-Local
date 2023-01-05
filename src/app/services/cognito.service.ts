@@ -42,6 +42,10 @@ export class CognitoService {
   private groupsSource = new BehaviorSubject([]);
   currentGroups = this.groupsSource.asObservable();
 
+  private baseTopicSource = new BehaviorSubject("");
+  currentBaseTopic = this.baseTopicSource.asObservable();
+  public baseTopic = "hubid0/";
+
   constructor() {
     Amplify.configure({
       Auth: environment.cognito,
@@ -63,6 +67,7 @@ export class CognitoService {
     );
     // console.log("abcdef");
     // PubSub.publish("zigbee2mqtt/", { msg: "Log in successfully" });
+    this.baseTopicSource.next(this.baseTopic);
   }
 
   public signUp(user: IUser): Promise<any> {
@@ -213,7 +218,7 @@ export class CognitoService {
             error: (error) => console.error(error),
             complete: () => console.log("Done"),
           });
-          PubSub.publish("zigbee2mqtt/" + device.friendly_name + "/get", {"state":""})
+          PubSub.publish(this.baseTopic+"zigbee2mqtt/" + device.friendly_name + "/get", {"state":""})
         }
       },
       error: (error) => console.error(error),

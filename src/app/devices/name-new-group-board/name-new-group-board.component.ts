@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PubSub } from 'aws-amplify';
+import { CognitoService } from 'src/app/services/cognito.service';
 import { CommonServiceService } from 'src/app/services/common-service.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -19,6 +20,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./name-new-group-board.component.css']
 })
 export class NameNewGroupBoardComponent implements OnInit {
+  public baseTopic: any;
+
 
   public editDeviceFormGroup = new FormGroup({
     switchTypeFormControl : new FormControl(''),
@@ -35,10 +38,13 @@ export class NameNewGroupBoardComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<NameNewGroupBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService
+    private common: CommonServiceService,
+    private cognito: CognitoService,
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.cognito.currentBaseTopic.subscribe(baseTopic => this.baseTopic = baseTopic);
+   }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -53,7 +59,7 @@ export class NameNewGroupBoardComponent implements OnInit {
       var payload = {
         "friendly_name": this.editDeviceFormGroup.value.friendly_nameFormControl
       };
-      PubSub.publish("zigbee2mqtt/bridge/request/group/add", payload);
+      PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/add", payload);
       this.result.status=true;
     }
   }
