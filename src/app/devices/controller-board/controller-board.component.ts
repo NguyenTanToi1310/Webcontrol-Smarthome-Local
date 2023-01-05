@@ -113,7 +113,7 @@ export class ControllerBoardComponent implements OnInit {
       if (
         this.data.virtualDevice.brightness != this.data.backupDevice.brightness
       ) {
-        changedProperties.brightness = this.data.virtualDevice.brightness;
+        changedProperties.brightness = Number((this.data.virtualDevice.brightness * 2.54).toFixed(0));
       }
     }
 

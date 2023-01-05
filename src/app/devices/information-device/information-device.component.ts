@@ -42,10 +42,16 @@ export class InformationDeviceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cognito.currentDevicesList.subscribe(devicesList => this.devices = devicesList);
-    this.cognito.currentDevicesData.subscribe(devicesData => this.devicesData = devicesData);
-    this.currentStopSign.subscribe(data => this.stopSign = data);
-    this.cognito.currentBaseTopic.subscribe(baseTopic => this.baseTopic = baseTopic);
+    this.cognito.currentDevicesList.subscribe(
+      (devicesList) => (this.devices = devicesList)
+    );
+    this.cognito.currentDevicesData.subscribe(
+      (devicesData) => (this.devicesData = devicesData)
+    );
+    this.currentStopSign.subscribe((data) => (this.stopSign = data));
+    this.cognito.currentBaseTopic.subscribe(
+      (baseTopic) => (this.baseTopic = baseTopic)
+    );
     this.deviceAction = this.devices;
   }
 
@@ -56,11 +62,13 @@ export class InformationDeviceComponent implements OnInit {
     // console.log("this.data.backupDevice ", backupDevice);
     const dialogRef = this.dialog.open(ControllerBoardComponent, {
       width: "430px",
-      data: { virtualDevice, backupDevice },  // virtualDevice => store data of device after changed its properties, 
-                                              // backupDevice => store original data which is b4 data is changed
-                                              // to compare which properties is changed after controlled
+      data: { virtualDevice, backupDevice }, // virtualDevice => store data of device after changed its properties,
+      // backupDevice => store original data which is b4 data is changed
+      // to compare which properties is changed after controlled
     });
-    dialogRef.afterClosed().subscribe(result => { /* anything */ })
+    dialogRef.afterClosed().subscribe((result) => {
+      /* anything */
+    });
   }
 
   private handleDevice(device: any) {
@@ -69,11 +77,14 @@ export class InformationDeviceComponent implements OnInit {
 
   private requestDeleteDevice() {
     var payload = {
-      "id": this.deviceAction.topic,
-      "block": false,
-      "force": false
+      id: this.deviceAction.topic,
+      block: false,
+      force: false,
     };
-    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/device/remove", payload);
+    PubSub.publish(
+      this.baseTopic + "zigbee2mqtt/bridge/request/device/remove",
+      payload
+    );
   }
 
   openDialogShareEdit(device: any, cmd: string): void {
@@ -109,31 +120,43 @@ export class InformationDeviceComponent implements OnInit {
   }
 
   public addingRequest(): void {
-    this.stopTimerSouce.next(false)
+    this.stopTimerSouce.next(false);
     this.timer(3);
     var payload = {
-      "device": null, 
-      "value": true, 
-      "time": 180
+      device: null,
+      value: true,
+      time: 180,
     };
-    PubSub.publish(this.baseTopic + "zigbee2mqtt/bridge/request/permit_join", payload);
+    PubSub.publish(
+      this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
+      payload
+    );
     PubSub.subscribe("zigbee2mqtt/bridge/event").subscribe({
       next: (data) => {
-        if(data.value.type == 'device_interview' && data.value.data.status == 'successful'){
-          this.stopTimerSouce.next(true)
-          var payload = {
-            "device": null, 
-            "value": false, 
-            "time": 180
-          };
-          PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/permit_join", payload);
-          this.cognito.updateNewJoinedDEvice(data.value.data);
+        if (
+          data.value.type == "device_interview" &&
+          data.value.data.status == "successful"
+        ) {
+          this.stopAddingProcess();
         }
       },
       error: (error) => console.error(error),
       complete: () => console.log("Done"),
     });
+  }
 
+  stopAddingProcess() {
+    this.stopTimerSouce.next(true);
+    var payload = {
+      device: null,
+      value: false,
+      time: 180,
+    };
+    PubSub.publish(
+      this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
+      payload
+    ); //stop adding process
+    // this.cognito.updateNewJoinedDEvice(data.value.data);
   }
 
   timer(minute) {
@@ -156,6 +179,7 @@ export class InformationDeviceComponent implements OnInit {
       this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
 
       if (seconds == 0 || this.stopSign == true) {
+        this.stopTimerSouce.next(true);
         clearInterval(timer);
       }
     }, 1000);
