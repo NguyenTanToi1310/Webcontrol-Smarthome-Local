@@ -137,7 +137,7 @@ export class InformationDeviceComponent implements OnInit {
           data.value.type == "device_interview" &&
           data.value.data.status == "successful"
         ) {
-          this.stopAddingProcess();
+          this.stopTimer();
         }
       },
       error: (error) => console.error(error),
@@ -146,7 +146,6 @@ export class InformationDeviceComponent implements OnInit {
   }
 
   stopAddingProcess() {
-    this.stopTimerSouce.next(true);
     var payload = {
       device: null,
       value: false,
@@ -157,6 +156,10 @@ export class InformationDeviceComponent implements OnInit {
       payload
     ); //stop adding process
     // this.cognito.updateNewJoinedDEvice(data.value.data);
+  }
+
+  stopTimer() {
+    this.stopTimerSouce.next(true);
   }
 
   timer(minute) {
@@ -179,7 +182,7 @@ export class InformationDeviceComponent implements OnInit {
       this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
 
       if (seconds == 0 || this.stopSign == true) {
-        this.stopTimerSouce.next(true);
+        this.stopAddingProcess();
         clearInterval(timer);
       }
     }, 1000);
