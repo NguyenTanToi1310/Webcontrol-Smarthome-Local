@@ -181,10 +181,16 @@ export class InformationDeviceComponent implements OnInit {
 
       this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
 
-      if (seconds == 0 || this.stopSign == true) {
+      if (this.stopSign == true) {
         this.stopAddingProcess();
         clearInterval(timer);
       }
+      if (seconds == 0) {
+        this.stopTimer();
+        this.stopAddingProcess();
+        clearInterval(timer);
+      }
+
     }, 1000);
   }
 }
