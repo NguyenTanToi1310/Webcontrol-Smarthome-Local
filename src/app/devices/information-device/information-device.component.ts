@@ -136,7 +136,7 @@ export class InformationDeviceComponent implements OnInit {
       this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
       payload
     );
-    PubSub.subscribe("zigbee2mqtt/bridge/event").subscribe({
+    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/event").subscribe({
       next: (data) => {
         if (
           data.value.type == "device_interview" &&

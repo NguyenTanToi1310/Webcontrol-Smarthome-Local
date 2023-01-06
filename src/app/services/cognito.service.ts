@@ -165,7 +165,7 @@ export class CognitoService {
   }
 
   public startConnection() {
-    PubSub.publish("publicweb/connect", "connect");
+    PubSub.publish(this.baseTopic+"publicweb/connect", "connect");
   }
 
   public subscribe() {
@@ -177,12 +177,12 @@ export class CognitoService {
   }
 
   public getDeviceListAndEachDeviceData(): any {
-    PubSub.subscribe("zigbee2mqtt/bridge/devices").subscribe({
+    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/devices").subscribe({
       next: (data) => {
         // console.log("Device list received\n", data);
 
         this.devicesListSource.next(data.value);
-        console.log("zigbee2mqtt/bridge/devices: ", data.value);
+        console.log(this.baseTopic+"zigbee2mqtt/bridge/devices: ", data.value);
 
         var list = new Array();
         console.log("aaaaaaaa\n", list)
@@ -198,12 +198,12 @@ export class CognitoService {
           ) {
             continue;
           }
-          PubSub.subscribe("zigbee2mqtt/" + device.friendly_name).subscribe({
+          PubSub.subscribe(this.baseTopic+"zigbee2mqtt/" + device.friendly_name).subscribe({
             next: (data) => {
               data.value.topic = data.value[
                 Object.getOwnPropertySymbols(data.value)[0]
               ]
-                .split("zigbee2mqtt/")
+                .split(this.baseTopic+"zigbee2mqtt/")
                 .pop(); //insert topic (removed prefix) into this object
               
               for(var tempDevice of devicesList){
@@ -227,7 +227,7 @@ export class CognitoService {
   }
 
   public updateNewJoinedDEvice(device: any): any {
-    PubSub.subscribe("zigbee2mqtt/" + device.friendly_name).subscribe({
+    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/" + device.friendly_name).subscribe({
       next: (data) => {
         data.value.topic = data.value[
           Object.getOwnPropertySymbols(data.value)[0]
@@ -278,7 +278,7 @@ export class CognitoService {
   }
 
   public getGroupsData(): any {
-    PubSub.subscribe("zigbee2mqtt/bridge/groups").subscribe({
+    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/groups").subscribe({
       next: (data) => {
         console.log("group received\n", data.value);
         this.groupsSource.next(data.value);

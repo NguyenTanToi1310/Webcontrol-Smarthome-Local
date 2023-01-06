@@ -69,7 +69,7 @@ export class EditBoardComponent implements OnInit {
       };
       PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/device/rename", payload);
 
-      PubSub.subscribe("zigbee2mqtt/bridge/response/device/rename").subscribe({
+      PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/response/device/rename").subscribe({
         next: (data) => {
           console.log(data);
           console.log(data.value.status);
