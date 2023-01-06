@@ -165,7 +165,7 @@ export class CognitoService {
   }
 
   public startConnection() {
-    PubSub.publish(this.baseTopic+"publicweb/connect", "connect");
+    PubSub.publish(this.baseTopic + "publicweb/connect", "connect");
   }
 
   public subscribe() {
@@ -177,37 +177,41 @@ export class CognitoService {
   }
 
   public getDeviceListAndEachDeviceData(): any {
-    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/devices").subscribe({
+    PubSub.subscribe(this.baseTopic + "zigbee2mqtt/bridge/devices").subscribe({
       next: (data) => {
         // console.log("Device list received\n", data);
 
         this.devicesListSource.next(data.value);
-        console.log(this.baseTopic+"zigbee2mqtt/bridge/devices: ", data.value);
+        console.log(
+          this.baseTopic + "zigbee2mqtt/bridge/devices: ",
+          data.value
+        );
 
         var list = new Array();
-        console.log("aaaaaaaa\n", list)
+        console.log("aaaaaaaa\n", list);
         this.devicesDataSource.next(list);
-        console.log("aaaaaaaa\n", list)
-
+        console.log("aaaaaaaa\n", list);
 
         let devicesList = data.value;
         for (var device of devicesList) {
-          if (
-            device.friendly_name === "Coordinator" ||
-            device.friendly_name === "0xa4c138acdb8cd3ff"
-          ) {
+          if (device.friendly_name === "Coordinator") {
             continue;
           }
-          PubSub.subscribe(this.baseTopic+"zigbee2mqtt/" + device.friendly_name).subscribe({
+          if (device.model_id === "TS0505B") {
+            device.model_id = "WH_LEDRGB";
+          }
+          PubSub.subscribe(
+            this.baseTopic + "zigbee2mqtt/" + device.friendly_name
+          ).subscribe({
             next: (data) => {
               data.value.topic = data.value[
                 Object.getOwnPropertySymbols(data.value)[0]
               ]
-                .split(this.baseTopic+"zigbee2mqtt/")
+                .split(this.baseTopic + "zigbee2mqtt/")
                 .pop(); //insert topic (removed prefix) into this object
-              
-              for(var tempDevice of devicesList){
-                if(tempDevice.friendly_name == data.value.topic){
+
+              for (var tempDevice of devicesList) {
+                if (tempDevice.friendly_name == data.value.topic) {
                   data.value.model_id = tempDevice.model_id;
                   data.value.ieee_address = tempDevice.ieee_address;
                 }
@@ -218,7 +222,10 @@ export class CognitoService {
             error: (error) => console.error(error),
             complete: () => console.log("Done"),
           });
-          PubSub.publish(this.baseTopic+"zigbee2mqtt/" + device.friendly_name + "/get", {"state":""})
+          PubSub.publish(
+            this.baseTopic + "zigbee2mqtt/" + device.friendly_name + "/get",
+            { state: "" }
+          );
         }
       },
       error: (error) => console.error(error),
@@ -227,7 +234,9 @@ export class CognitoService {
   }
 
   public updateNewJoinedDEvice(device: any): any {
-    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/" + device.friendly_name).subscribe({
+    PubSub.subscribe(
+      this.baseTopic + "zigbee2mqtt/" + device.friendly_name
+    ).subscribe({
       next: (data) => {
         data.value.topic = data.value[
           Object.getOwnPropertySymbols(data.value)[0]
@@ -254,10 +263,7 @@ export class CognitoService {
       );
       device.hex = hex;
     }
-    if (
-      device.model_id == "WH_LEDRGB" ||
-      device.model_id == "den trang"
-    ) {
+    if (device.model_id == "WH_LEDRGB" || device.model_id == "den trang") {
       device.brightness = Number((device.brightness / 2.54).toFixed(0)); //scale to %
     }
 
@@ -278,7 +284,7 @@ export class CognitoService {
   }
 
   public getGroupsData(): any {
-    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/groups").subscribe({
+    PubSub.subscribe(this.baseTopic + "zigbee2mqtt/bridge/groups").subscribe({
       next: (data) => {
         console.log("group received\n", data.value);
         this.groupsSource.next(data.value);
