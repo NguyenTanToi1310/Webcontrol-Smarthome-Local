@@ -24,6 +24,7 @@ export class InformationDeviceComponent implements OnInit {
   public devices: any;
   public devicesData: any;
   public stopSign;
+  public timerReset: any;   //in second => 180s
   public baseTopic: any;
 
   public display: any;
@@ -31,6 +32,9 @@ export class InformationDeviceComponent implements OnInit {
 
   private stopTimerSouce = new BehaviorSubject(true);
   currentStopSign = this.stopTimerSouce.asObservable();
+
+  private timerResetSouce = new BehaviorSubject(true);
+  currenttimerReset = this.timerResetSouce.asObservable();
 
   public ownerships: any;
   public listUIDShareRequest: any = [];
@@ -49,6 +53,7 @@ export class InformationDeviceComponent implements OnInit {
       (devicesData) => (this.devicesData = devicesData)
     );
     this.currentStopSign.subscribe((data) => (this.stopSign = data));
+    this.currenttimerReset.subscribe((data) => (this.timerReset = data));
     this.cognito.currentBaseTopic.subscribe(
       (baseTopic) => (this.baseTopic = baseTopic)
     );
@@ -165,12 +170,16 @@ export class InformationDeviceComponent implements OnInit {
   timer(minute) {
     // let minute = 1;
     let seconds: number = minute * 60;
+
     let textSec: any = "0";
     let statSec: number = 60;
 
     const prefix = minute < 10 ? "0" : "";
 
     const timer = setInterval(() => {
+      if(seconds == 180) {
+        this.timerResetSouce.next(true);
+      }
       seconds--;
       if (statSec != 0) statSec--;
       else statSec = 59;
@@ -182,10 +191,12 @@ export class InformationDeviceComponent implements OnInit {
       this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
 
       if (this.stopSign == true) {
+        this.timerResetSouce.next(false);
         this.stopAddingProcess();
         clearInterval(timer);
       }
       if (seconds == 0) {
+        this.timerResetSouce.next(false);
         this.stopTimer();
         this.stopAddingProcess();
         clearInterval(timer);

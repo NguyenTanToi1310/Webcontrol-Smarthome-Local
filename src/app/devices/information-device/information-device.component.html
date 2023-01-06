@@ -13,8 +13,8 @@
                     <div id="element2"> Thêm thiết bị (3:00)</div>
                 </button>
                 <button *ngIf="stopSign==false"  mat-flat-button (click)="stopTimer()" id="timer">
-                    <mat-icon id="element1">cancel</mat-icon>
-                    <div id="element2"> Huỷ bỏ ({{display}})</div>
+                    <mat-icon *ngIf="timerReset==true" id="element1">cancel</mat-icon>
+                    <div *ngIf="timerReset==true" id="element2"> Huỷ bỏ ({{display}})</div>
                 </button>
             </div>
             <div class="row">
