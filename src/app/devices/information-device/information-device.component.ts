@@ -24,7 +24,7 @@ export class InformationDeviceComponent implements OnInit {
   public devices: any;
   public devicesData: any;
   public stopSign;
-  public timerReset: any;   //in second => 180s
+  public timerReset: any; //in second => 180s
   public baseTopic: any;
 
   public display: any;
@@ -46,12 +46,33 @@ export class InformationDeviceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cognito.currentDevicesList.subscribe(
-      (devicesList) => (this.devices = devicesList)
-    );
-    this.cognito.currentDevicesData.subscribe(
-      (devicesData) => (this.devicesData = devicesData)
-    );
+
+    this.cognito.currentDevicesData.subscribe((devicesData) => {
+      this.devicesData = devicesData;
+      console.log(devicesData)
+  
+      for(var deviceData of this.devicesData){
+        for(var device of this.devices){
+          if(deviceData.topic == device.friendly_name )
+          {
+            device.linkquality = deviceData.linkquality;
+          }
+        }
+      }
+    });
+
+    this.cognito.currentDevicesList.subscribe((devicesList) => {
+      this.devices = devicesList;
+      for(var device of this.devices){
+        for(var deviceData of this.devicesData){
+          if(deviceData.topic == device.friendly_name )
+          {
+            device.linkquality = deviceData.linkquality;
+          }
+        }
+      }
+    });
+
     this.currentStopSign.subscribe((data) => (this.stopSign = data));
     this.currenttimerReset.subscribe((data) => (this.timerReset = data));
     this.cognito.currentBaseTopic.subscribe(
@@ -74,6 +95,13 @@ export class InformationDeviceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       /* anything */
     });
+  }
+
+  wakeupDevice(device: any): void {
+    PubSub.publish(
+      this.baseTopic + "zigbee2mqtt/" + device.friendly_name + "/get",
+      { state: "" }
+    );
   }
 
   private handleDevice(device: any) {
@@ -136,7 +164,7 @@ export class InformationDeviceComponent implements OnInit {
       this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
       payload
     );
-    PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/event").subscribe({
+    PubSub.subscribe(this.baseTopic + "zigbee2mqtt/bridge/event").subscribe({
       next: (data) => {
         if (
           data.value.type == "device_interview" &&
@@ -177,7 +205,7 @@ export class InformationDeviceComponent implements OnInit {
     const prefix = minute < 10 ? "0" : "";
 
     const timer = setInterval(() => {
-      if(seconds == 180) {
+      if (seconds == 180) {
         this.timerResetSouce.next(true);
       }
       seconds--;
@@ -201,7 +229,6 @@ export class InformationDeviceComponent implements OnInit {
         this.stopAddingProcess();
         clearInterval(timer);
       }
-
     }, 1000);
   }
 }

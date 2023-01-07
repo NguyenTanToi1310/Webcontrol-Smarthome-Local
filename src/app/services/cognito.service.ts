@@ -179,18 +179,15 @@ export class CognitoService {
   public getDeviceListAndEachDeviceData(): any {
     PubSub.subscribe(this.baseTopic + "zigbee2mqtt/bridge/devices").subscribe({
       next: (data) => {
-        // console.log("Device list received\n", data);
 
-        this.devicesListSource.next(data.value);
+        // this.devicesListSource.next(data.value);
         console.log(
           this.baseTopic + "zigbee2mqtt/bridge/devices: ",
           data.value
         );
 
         var list = new Array();
-        console.log("aaaaaaaa\n", list);
         this.devicesDataSource.next(list);
-        console.log("aaaaaaaa\n", list);
 
         let devicesList = data.value;
         for (var device of devicesList) {
@@ -200,6 +197,7 @@ export class CognitoService {
           if (device.model_id === "TS0505B") {
             device.model_id = "WH_LEDRGB";
           }
+          device.linkquality = '0';
           PubSub.subscribe(
             this.baseTopic + "zigbee2mqtt/" + device.friendly_name
           ).subscribe({
@@ -227,6 +225,8 @@ export class CognitoService {
             { state: "" }
           );
         }
+        this.devicesListSource.next(devicesList);
+
       },
       error: (error) => console.error(error),
       complete: () => console.log("Done"),
@@ -274,13 +274,11 @@ export class CognitoService {
       if (list[i].ieee_address == device.ieee_address) {
         list[i] = device;
         this.devicesDataSource.next(list);
-        console.log("listtttt\n", list);
         return;
       }
     }
     list.push(device);
     this.devicesDataSource.next(list);
-    console.log("listtttt\n", list);
   }
 
   public getGroupsData(): any {
