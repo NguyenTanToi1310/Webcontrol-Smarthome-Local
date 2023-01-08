@@ -1,7 +1,7 @@
 import { Component,Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CommonServiceService } from 'src/app/services/common-service.service';
+// import { CommonServiceService } from 'src/app/services/common-service.service';
 import { EditAutomationConditionComponent } from '../edit-automation-condition/edit-automation-condition.component';
 
 @Component({
@@ -18,7 +18,7 @@ export class AutomationBoardComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AutomationBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService,
+    // private common: CommonServiceService,
     public dialog: MatDialog
   ) { }
   
@@ -92,7 +92,7 @@ export class AutomationBoardComponent implements OnInit {
         this.data.virtualDevice.party = false
       }
     }
-    await this.common.controlDevice(this.data.virtualDevice);
+    // await this.common.controlDevice(this.data.virtualDevice);
   }
 
   formatLabel(value: number) {

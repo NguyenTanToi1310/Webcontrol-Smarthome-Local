@@ -4,7 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PubSub } from 'aws-amplify';
 import { CognitoService } from 'src/app/services/cognito.service';
-import { CommonServiceService } from 'src/app/services/common-service.service';
+// import { CommonServiceService } from 'src/app/services/common-service.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -38,7 +38,7 @@ export class NameNewGroupBoardComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<NameNewGroupBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService,
+    // private common: CommonServiceService,
     private cognito: CognitoService,
   ) { }
 

@@ -46,6 +46,8 @@ export class CognitoService {
   currentBaseTopic = this.baseTopicSource.asObservable();
   public baseTopic = "hubid0/";
 
+  messages = [];
+
   constructor() {
     Amplify.configure({
       Auth: environment.cognito,
@@ -53,20 +55,18 @@ export class CognitoService {
 
     this.authenticationSubject = new BehaviorSubject<boolean>(false);
 
-    // Apply plugin with configuration
-    Amplify.addPluggable(
-      new AWSIoTProvider({
-        aws_pubsub_region: "ap-southeast-1",
-        aws_pubsub_endpoint:
-          "wss://a2b1f06oxa84iu-ats.iot.ap-southeast-1.amazonaws.com/mqtt",
-      })
-      // new MqttOverWSProvider({
-      //   aws_pubsub_endpoint: "ws://192.168.1.21:8080/mqtt",
-      //   aws_appsync_dengerously_connect_to_http_endpoint_for_testing: true,
-      // })
-    );
-    // console.log("abcdef");
-    // PubSub.publish("zigbee2mqtt/", { msg: "Log in successfully" });
+    PubSub.addPluggable(new MqttOverWSProvider({
+      aws_pubsub_endpoint: 'ws://localhost:9001/',
+      aws_appsync_dangerously_connect_to_http_endpoint_for_testing: true, // Do not use SSL
+    }));
+
+    PubSub.subscribe("broker-to-web").subscribe({
+      next: (data) => console.log("Broker to web:\n", data.value),
+      error: (error) => console.error(error),
+      complete: () => console.log("Done"),
+    });
+    
+    PubSub.publish("web-to-broker", { "msg": "Website hello broker" });
     this.baseTopicSource.next(this.baseTopic);
   }
 
@@ -91,9 +91,13 @@ export class CognitoService {
   }
 
   public signIn(user: IUser): Promise<any> {
-    return Auth.signIn(user.email, user.password).then(() => {
+    // return Auth.signIn(user.email, user.password).then(() => {
+    //   this.authenticationSubject.next(true);
+    // });
+    if(user.email == "admin" && user.password == "admin"){
       this.authenticationSubject.next(true);
-    });
+    }
+    return;
   }
 
   public forgotPassword(user: IUser): Promise<any> {

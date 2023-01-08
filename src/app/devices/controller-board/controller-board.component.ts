@@ -8,7 +8,7 @@ import {
 import { PubSub } from "aws-amplify";
 import { BehaviorSubject } from "rxjs";
 import { CognitoService } from "src/app/services/cognito.service";
-import { CommonServiceService } from "src/app/services/common-service.service";
+// import { CommonServiceService } from "src/app/services/common-service.service";
 var colorsys = require("colorsys");
 
 @Component({
@@ -23,7 +23,7 @@ export class ControllerBoardComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ControllerBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService,
+    // private common: CommonServiceService,
     private cognito: CognitoService,
   ) {}
 

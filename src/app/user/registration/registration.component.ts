@@ -48,7 +48,7 @@ export class RegistrationComponent implements OnInit {
     this.user.lastname = this.information.value.lastname;
     this.user.phonenumber = this.information.value.phone;
 
-    this.auth.changeUserCurrentData(this.user);
+    // this.auth.changeUserCurrentData(this.user);
     
     if (this.information.value.password == this.information.value.repassword) {
       this.statusRegistration = await this.auth.signUp(this.user);

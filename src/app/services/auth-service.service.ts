@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { AngularFireAuth } from "@angular/fire/auth";
-import { CommonServiceService } from "./common-service.service";
+// import { AngularFireAuth } from "@angular/fire/auth";
+// import { CommonServiceService } from "./common-service.service";
 import { BehaviorSubject } from "rxjs";
-import { AngularFireDatabase } from "@angular/fire/database";
+// import { AngularFireDatabase } from "@angular/fire/database";
 import * as qs from "query-string";
 import { HttpClient } from "@angular/common/http";
 
@@ -19,10 +19,10 @@ export class AuthServiceService {
   userCurrentData = this.user.asObservable();
 
   constructor(
-    public afAuth: AngularFireAuth,
-    public afdb: AngularFireDatabase,
+    // public afAuth: AngularFireAuth,
+    // public afdb: AngularFireDatabase,
     private cognitoService: CognitoService,
-    private common: CommonServiceService,
+    // private common: CommonServiceService,
     private http: HttpClient
   ) {}
 
@@ -43,17 +43,18 @@ export class AuthServiceService {
 
   public signIn(user) {
     // dang nhap
-    return new Promise<any>(async (resolve, reject) => {
-      await this.cognitoService
-        .signIn(user)
-        .then(async (res) => {
-          resolve(res);
-        })
-        .catch((error) => {
-          resolve(error);
-          reject(error);
-        });
-    });
+    // return new Promise<any>(async (resolve, reject) => {
+    //   await this.cognitoService
+    //     .signIn(user)
+    //     .then(async (res) => {
+    //       resolve(res);
+    //     })
+    //     .catch((error) => {
+    //       resolve(error);
+    //       reject(error);
+    //     });
+    // });
+    this.cognitoService.signIn(user);
   }
 
   public signOut() {
@@ -136,46 +137,46 @@ export class AuthServiceService {
     });
   }
 
-  public async sendVerificationMail() {
-    return await this.afAuth.currentUser
-      .then(async (user) => {
-        return await user.sendEmailVerification();
-      })
-      .catch((error) => {
-        /*console.log(error) */
-      });
-  }
+  // public async sendVerificationMail() {
+  //   return await this.afAuth.currentUser
+  //     .then(async (user) => {
+  //       return await user.sendEmailVerification();
+  //     })
+  //     .catch((error) => {
+  //       /*console.log(error) */
+  //     });
+  // }
 
-  public async editProfile(profile: any) {
-    let editURL =
-      "https://us-central1-smarthome-quoctoi-bfa7d.cloudfunctions.net/fulfillment/user/editprofile";
-    const data = qs.stringify({
-      oldPassword: profile.oldPassword,
-      newPassword: profile.newPassword,
-      phone: profile.phone,
-      firstname: profile.firstname,
-      lastname: profile.lastname,
-    });
-    await this.http.post<unknown>(editURL, data).subscribe((res) => {
-      /* console.log(res) */
-    });
-  }
+  // // public async editProfile(profile: any) {
+  // //   let editURL =
+  // //     "https://us-central1-smarthome-quoctoi-bfa7d.cloudfunctions.net/fulfillment/user/editprofile";
+  // //   const data = qs.stringify({
+  // //     oldPassword: profile.oldPassword,
+  // //     newPassword: profile.newPassword,
+  // //     phone: profile.phone,
+  // //     firstname: profile.firstname,
+  // //     lastname: profile.lastname,
+  // //   });
+  // //   await this.http.post<unknown>(editURL, data).subscribe((res) => {
+  // //     /* console.log(res) */
+  // //   });
+  // }
 
-  public async updateProfileUser(profile: any) {
-    let information = {
-      displayName: profile.lastname + " " + profile.firstname,
-      phoneNumber: profile.phone,
-    };
+  // public async updateProfileUser(profile: any) {
+  //   let information = {
+  //     displayName: profile.lastname + " " + profile.firstname,
+  //     phoneNumber: profile.phone,
+  //   };
 
-    this.afAuth.currentUser
-      .then(async (res) => {
-        console.log(res);
-        return await res.updateProfile(information);
-      })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
-  }
+  //   this.afAuth.currentUser
+  //     .then(async (res) => {
+  //       console.log(res);
+  //       return await res.updateProfile(information);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error: ", error);
+  //     });
+  // }
 
   public changeUserCurrentData(user: IUser) {
     this.user.next(user);

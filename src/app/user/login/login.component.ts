@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
 
 import { AuthServiceService } from "src/app/services/auth-service.service";
-import { CommonServiceService } from "src/app/services/common-service.service";
+// import { CommonServiceService } from "src/app/services/common-service.service";
 
 import { IUser, CognitoService } from "../../services/cognito.service";
 
@@ -14,22 +15,24 @@ import { IUser, CognitoService } from "../../services/cognito.service";
 })
 export class LoginComponent implements OnInit {
   public information = new FormGroup({
-    email: new FormControl("", [Validators.required, Validators.email]),
+    email: new FormControl("", [Validators.required]),
     password: new FormControl("", [
       Validators.required,
-      Validators.minLength(6),
     ]),
   });
 
-  public statusLogin: any;
+  private loginStatusSource = new BehaviorSubject<boolean>(false);
+  currentLoginStatus = this.loginStatusSource.asObservable();
 
+  public statusLogin: any;
+  
   user: IUser;
 
   constructor(
     private router: Router,
     private cognitoService: CognitoService,
+    // private common: CommonServiceService,
     private auth: AuthServiceService,
-    private common: CommonServiceService
   ) {
     this.user = {} as IUser;
   }
@@ -48,11 +51,13 @@ export class LoginComponent implements OnInit {
     if (!this.statusLogin) {
       this.router.navigate(["/home"]);
       this.statusLogin = "SIGNIN_OK";
-
-      // this.common.getShareRequest()
-
       this.auth.isLogin();
     }
+    // if(this.user.email == "admin" && this.user.password == "admin"){
+    //   this.router.navigate(["/home"]);
+    //   this.statusLogin = "SIGNIN_OK";
+    //   this.loginStatusSource.next(true);
+    // }
     this.cognitoService.startConnection();
     this.cognitoService.getDeviceListAndEachDeviceData();
     this.cognitoService.getGroupsData();

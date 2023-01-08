@@ -4,7 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-import { CommonServiceService } from "src/app/services/common-service.service";
+// import { CommonServiceService } from "src/app/services/common-service.service";
 import { ControllerBoardComponent } from "../controller-board/controller-board.component";
 
 import { ShareBoardComponent } from "../share-board/share-board.component";
@@ -40,7 +40,7 @@ export class InformationDeviceComponent implements OnInit {
   public listUIDShareRequest: any = [];
 
   constructor(
-    private common: CommonServiceService,
+    // private common: CommonServiceService,
     private cognito: CognitoService,
     public dialog: MatDialog
   ) {}
@@ -141,16 +141,16 @@ export class InformationDeviceComponent implements OnInit {
     }
   }
 
-  public async replyDemand(deviceId: string, command: string, index: any) {
-    if (command === "accept") {
-      await this.common.acceptShareDeviceDemand(deviceId);
-    } else if (command === "refuse") {
-      await this.common.refuseShareDeviceDemand(
-        deviceId,
-        this.listUIDShareRequest[index]
-      );
-    }
-  }
+  // public async replyDemand(deviceId: string, command: string, index: any) {
+  //   if (command === "accept") {
+  //     await this.common.acceptShareDeviceDemand(deviceId);
+  //   } else if (command === "refuse") {
+  //     await this.common.refuseShareDeviceDemand(
+  //       deviceId,
+  //       this.listUIDShareRequest[index]
+  //     );
+  //   }
+  // }
 
   public addingRequest(): void {
     this.stopTimerSouce.next(false);

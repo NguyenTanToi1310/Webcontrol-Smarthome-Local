@@ -7,9 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+// import { AngularFireModule } from '@angular/fire';
+// import { AngularFirestoreModule } from '@angular/fire/firestore';
+// import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { environment } from '../environments/environment';
 
@@ -50,7 +50,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 // Service
 import { AuthServiceService } from './services/auth-service.service';
-import { CommonServiceService } from './services/common-service.service';
+// import { CommonServiceService } from './services/common-service.service';
 
 //Interceptor
 import { HttpInterceptorInterceptor } from './services/http-interceptor.interceptor'
@@ -103,9 +103,9 @@ import { NameNewGroupBoardComponent } from './devices/name-new-group-board/name-
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
+    // AngularFireModule,
+    // AngularFirestoreModule,
+    // AngularFireAuthModule,
     MatCheckboxModule,
     MatCheckboxModule,
     MatButtonModule,

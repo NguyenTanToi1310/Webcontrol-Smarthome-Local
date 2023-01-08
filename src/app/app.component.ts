@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from './services/auth-service.service';
-import { CommonServiceService } from './services/common-service.service';
+// import { CommonServiceService } from './services/common-service.service';
 
 @Component({
   selector: 'app-root',
@@ -17,36 +17,36 @@ export class AppComponent implements OnInit {
 
   constructor(
     public auth: AuthServiceService,
-    public common: CommonServiceService,
+    // public common: CommonServiceService,
     public router: Router
   ) {
     this.logined = this.auth.isLogin()
     if (this.logined) {
-      this.userInfor = this.common.userInfor
+      // this.userInfor = this.common.userInfor
     } else {
       this.userInfor = ""
     }
 
-    this.common.getShareRequest()
-    this.common.numberDeviceShare$.subscribe(number =>{
-      this.numberDeviceShare = number
-    })
+    // this.common.getShareRequest()
+    // this.common.numberDeviceShare$.subscribe(number =>{
+      // this.numberDeviceShare = number
+    // })
   }
 
   ngOnInit() {
     this.auth.loginedCurrentMessage.subscribe(message => {
       this.logined = message
       if (this.logined) {
-        this.userInfor = this.common.userInfor;
+        // this.userInfor = this.common.userInfor;
       } else {
         this.userInfor = ""
       }
     })
     
-    this.common.getShareRequest()
-    this.common.numberDeviceShare$.subscribe(number =>{
-      this.numberDeviceShare = number
-    })
+    // this.common.getShareRequest()
+    // this.common.numberDeviceShare$.subscribe(number =>{
+    //   this.numberDeviceShare = number
+    // })
 
   }
 

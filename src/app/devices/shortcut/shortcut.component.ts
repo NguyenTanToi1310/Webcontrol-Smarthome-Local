@@ -4,7 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-import { CommonServiceService } from "src/app/services/common-service.service";
+// import { CommonServiceService } from "src/app/services/common-service.service";
 import { ControllerBoardComponent } from "../controller-board/controller-board.component";
 import { AutomationBoardComponent } from "../automation-board/automation-board.component";
 import { CognitoService } from "src/app/services/cognito.service";
@@ -36,7 +36,7 @@ export class ShortcutComponent implements OnInit {
   public baseTopic: any;
 
   constructor(
-    private common: CommonServiceService,
+    // private common: CommonServiceService,
     public dialog: MatDialog,
     private cognito: CognitoService
   ) {}
