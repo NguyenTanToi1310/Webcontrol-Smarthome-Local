@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from './services/auth-service.service';
 // import { CommonServiceService } from './services/common-service.service';
-
+import { VoiceRecoderComponent } from './services/voice-recoder/voice-recoder.component';
+import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit {
   constructor(
     public auth: AuthServiceService,
     // public common: CommonServiceService,
-    public router: Router
+    public router: Router,
+    public dialog: MatDialog
   ) {
     this.logined = this.auth.isLogin()
     if (this.logined) {
@@ -56,5 +58,16 @@ export class AppComponent implements OnInit {
     this.logined = this.auth.isLogin()
     this.userInfor = ""
     location.reload()
+  }
+
+  openDialogVoiceRecoder(): void {
+    const dialogRef = this.dialog.open(VoiceRecoderComponent, {
+      width: "400px",
+      // height: "100px",
+      data: { }, 
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      /* anything */
+    });
   }
 }

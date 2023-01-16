@@ -73,6 +73,7 @@ import { AutomationBoardComponent } from './devices/automation-board/automation-
 import { EditAutomationConditionComponent } from './devices/edit-automation-condition/edit-automation-condition.component';
 import { RenameGroupBoardComponent } from './devices/rename-group-board/rename-group-board.component';
 import { NameNewGroupBoardComponent } from './devices/name-new-group-board/name-new-group-board.component';
+import { VoiceRecoderComponent } from './services/voice-recoder/voice-recoder.component';
 
 
 @NgModule({
@@ -95,6 +96,7 @@ import { NameNewGroupBoardComponent } from './devices/name-new-group-board/name-
     EditAutomationConditionComponent,
     RenameGroupBoardComponent,
     NameNewGroupBoardComponent,
+    VoiceRecoderComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
