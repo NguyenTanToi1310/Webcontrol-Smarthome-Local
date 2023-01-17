@@ -11,7 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
 
-import { environment } from '../environments/environment';
+// import { environment } from '../environments/environment';
 
 //Angular Material Components
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -74,7 +74,16 @@ import { EditAutomationConditionComponent } from './devices/edit-automation-cond
 import { RenameGroupBoardComponent } from './devices/rename-group-board/rename-group-board.component';
 import { NameNewGroupBoardComponent } from './devices/name-new-group-board/name-new-group-board.component';
 import { VoiceRecoderComponent } from './services/voice-recoder/voice-recoder.component';
+import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
+import { environment as env } from '../environments/environment';
+import { CustomMqttService } from './services/mqtt.service'
 
+const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: env.mqtt.server,
+  port: env.mqtt.port,
+  protocol: (env.mqtt.protocol === "wss") ? "wss" : "ws",
+  path: '',
+};
 
 @NgModule({
   declarations: [
@@ -140,11 +149,13 @@ import { VoiceRecoderComponent } from './services/voice-recoder/voice-recoder.co
     MatSortModule,
     MatPaginatorModule,
     MatBadgeModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
   ],
   providers: [
     // AuthServiceService,
     // CommonServiceService,
+    CustomMqttService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

@@ -44,7 +44,7 @@ export class CognitoService {
 
   private baseTopicSource = new BehaviorSubject("");
   currentBaseTopic = this.baseTopicSource.asObservable();
-  public baseTopic = "hubid0/";
+  public baseTopic = "";
 
   messages = [];
 
@@ -55,10 +55,10 @@ export class CognitoService {
 
     this.authenticationSubject = new BehaviorSubject<boolean>(false);
 
-    PubSub.addPluggable(new MqttOverWSProvider({
-      aws_pubsub_endpoint: 'ws://localhost:9001/',
-      aws_appsync_dangerously_connect_to_http_endpoint_for_testing: true, // Do not use SSL
-    }));
+    // PubSub.addPluggable(new MqttOverWSProvider({
+    //   aws_pubsub_endpoint: 'ws://192.168.137.66:9001/',
+    //   aws_appsync_dangerously_connect_to_http_endpoint_for_testing: true, // Do not use SSL
+    // }));
 
     PubSub.subscribe("broker-to-web").subscribe({
       next: (data) => console.log("Broker to web:\n", data.value),

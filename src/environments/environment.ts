@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-
+  mqtt: {
+		server: '192.168.137.66',
+		protocol: "ws",
+		port: 9001
+	},
   cognito: {
     region: 'ap-southeast-1',
     userPoolId: 'ap-southeast-1_J7vJimaTM',
