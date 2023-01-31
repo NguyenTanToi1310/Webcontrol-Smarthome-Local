@@ -1,15 +1,18 @@
 import { Component,Inject, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-// import { CommonServiceService } from 'src/app/services/common-service.service';
+import { CommonServiceService } from 'src/app/services/common-service.service';
 
+import { CustomMqttService } from '../../services/mqtt.service';
+import { Subscription } from 'rxjs';
+import { IMqttMessage } from "ngx-mqtt";
 @Component({
   selector: 'app-edit-automation-condition',
   templateUrl: './edit-automation-condition.component.html',
   styleUrls: ['./edit-automation-condition.component.css']
 })
 export class EditAutomationConditionComponent implements OnInit {
-
+  mqttSubscriptions: Subscription[] = [];
   modeColorLight : any = ""
   favoriteSeason: string = "Mặc định";
   seasons: string[] = ['Mặc định', 'Tuỳ Chỉnh'];
@@ -26,8 +29,9 @@ export class EditAutomationConditionComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<EditAutomationConditionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // private common: CommonServiceService,
+    private common: CommonServiceService,
     public dialog: MatDialog,
+    private readonly clientMqtt: CustomMqttService,
     private _formBuilder: FormBuilder
   ) { }
   
@@ -101,7 +105,6 @@ export class EditAutomationConditionComponent implements OnInit {
         this.data.virtualDevice.party = false
       }
     }
-    // await this.common.controlDevice(this.data.virtualDevice);
   }
 
   formatLabel(value: number) {

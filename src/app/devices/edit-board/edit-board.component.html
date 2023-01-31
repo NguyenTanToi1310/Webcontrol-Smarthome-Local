@@ -4,7 +4,7 @@
 <div mat-dialog-content style="margin-left: 15px; margin-right: 15px;">
     <div class="device-name">
         <div class="tag-header">
-            <h1>{{data.virtualDevice.topic}}</h1>
+            <h1>{{data.virtualDevice.name}}</h1>
         </div>
         <hr>
     </div>
@@ -16,8 +16,8 @@
                 <small id="PINHelp" class="form-text text-muted" *ngIf="data.virtualDevice.type == 'lock'">Nhập mã PIN mới cho khóa</small>
                 <input type="password" class="form-control" formControlName="PINFormControl" for aria-describedby="PINHelp" *ngIf="data.virtualDevice.type == 'lock'">
 
-                <small id="friendly_nameHelp" class="form-text text-muted">Nhập tên mới cho thiết bị</small>
-                <input type="text" class="form-control" formControlName="friendly_nameFormControl" for aria-describedby="friendly_nameHelp">
+                <small id="nameHelp" class="form-text text-muted">Nhập tên mới cho thiết bị</small>
+                <input type="text" class="form-control" formControlName="nameFormControl" for aria-describedby="nameHelp">
 
                 <!-- <small id="en_nicknameHelp" class="form-text text-muted">Nhập tên thiết bị tiếng Anh</small>
                 <input type="text" class="form-control" formControlName="en_nicknameFormControl" for aria-describedby="en_nicknameHelp"> -->

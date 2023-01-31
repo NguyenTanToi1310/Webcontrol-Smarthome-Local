@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   currentLoginStatus = this.loginStatusSource.asObservable();
 
   public statusLogin: any;
+  public failOfSignIn: any;
   
   user: IUser;
 
@@ -48,10 +49,19 @@ export class LoginComponent implements OnInit {
     this.user.password = this.information.value.password;
 
     this.statusLogin = await this.auth.signIn(this.user);
+    console.log(this.statusLogin)
     if (!this.statusLogin) {
-      this.router.navigate(["/home"]);
-      this.statusLogin = "SIGNIN_OK";
+      // this.router.navigate(["/home"]);
+      // this.statusLogin = "SIGNIN_OK";
       this.auth.isLogin();
+      if(this.auth.isLogin() == true){
+        this.router.navigate(["/home"]);
+        this.statusLogin = "SIGNIN_OK";
+      } else {
+        this.failOfSignIn = true;
+      }
+      console.log(this.statusLogin)
+
     }
     // if(this.user.email == "admin" && this.user.password == "admin"){
     //   this.router.navigate(["/home"]);

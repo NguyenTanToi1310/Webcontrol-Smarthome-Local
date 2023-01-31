@@ -17,7 +17,7 @@
                 <div class="col d-flex" *ngFor="let device of devices | slice:1; let i = index">
                     <div class="box">
                         <div class="tag-header">
-                            <h1>{{device.friendly_name}}</h1>
+                            <h1>{{device.name}}</h1>
                         </div>
                         <hr>
 
@@ -74,6 +74,32 @@
                                         <h2 class="row d-flex">Nhiệt độ: {{deviceData.temperature}}&ordm;C</h2>
                                         <h2 class="row d-flex">Độ ẩm: {{deviceData.humidity}}%</h2>
                                     </div>
+                                    <div *ngIf="deviceData.model_id === 'TS0203'">
+                                        <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
+                                        <h2 class="row d-flex" *ngIf="deviceData.battery_low == false; else elseBatteryLow">
+                                                Pin: {{deviceData.battery}}%
+                                        </h2>
+                                        <ng-template #elseBatteryLow>
+                                            <h2 class="row d-flex" class="color-state">
+                                                <div class="color-state-box"
+                                                    [ngStyle]="{'background-color': '#FF914D'}">
+                                                    Pin: {{deviceData.battery}}%</div>
+                                            </h2>
+                                        </ng-template>
+
+                                        <h2 class="row d-flex" *ngIf="deviceData.contact; else elseContact">
+                                            Trạng
+                                            thái cửa:
+                                            Đang đóng</h2>
+                                        <ng-template #elseContact>
+                                            <h2 class="row d-flex ">Trạng thái cửa: Đang mở</h2>
+                                        </ng-template>
+                                    </div>
+                                    <div *ngIf="deviceData.model_id === 'SNZB-01'">
+                                        <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
+                                        <h2 class="row d-flex">Pin: {{deviceData.battery}}%</h2>
+                                        <h2 class="row d-flex">Hành động: {{deviceData.action}}</h2>
+                                    </div>
                                     <div
                                         *ngIf="deviceData.model_id === 'WH_LEDRGB' || deviceData.model_id === 'TS0505B'">
                                         <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
@@ -90,12 +116,27 @@
                                                 [ngStyle]="{'background-color': deviceData.hex}">
                                                 {{deviceData.hex}}</div>
                                         </h2>
-                                        <!-- <h2 class="row d-flex" *ngIf="device.power_on_behavior === 'previous'">Hành vi bật
-                                                nguồn: khôi phục</h2>
-                                            <h2 class="row d-flex" *ngIf="device.power_on_behavior === 'ON'">Hành vi bật nguồn: bật
-                                                đèn</h2>
-                                            <h2 class="row d-flex" *ngIf="device.power_on_behavior === 'OFF'">Hành vi bật nguồn: tắt
-                                                đèn</h2> -->
+                                    </div>
+                                    <div *ngIf="deviceData.model_id === 'ZM-L03E-Z'">
+                                        <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
+                                        <h2 class="row d-flex">Trạng thái:</h2>
+                                        <h2 class="row d-flex" class="color-state">
+                                            <div class="color-state-box color-state-box-switch4"
+                                                [ngStyle]="{'background-color':deviceData.state_left == 'ON' ? '#50C878' : '#B2BEB5' }">
+                                                <div *ngIf="deviceData.state_left == 'ON';  else elseTat">Bật</div>
+                                            </div>
+                                            <div class="color-state-box color-state-box-switch4"
+                                                [ngStyle]="{'background-color':deviceData.state_center == 'ON' ? '#50C878' : '#B2BEB5' }">
+                                                <div *ngIf="deviceData.state_center == 'ON'; else elseTat">Bật</div>
+                                            </div>
+                                            <div class="color-state-box color-state-box-switch4"
+                                                [ngStyle]="{'background-color':deviceData.state_right == 'ON' ? '#50C878' : '#B2BEB5' }">
+                                                <div *ngIf="deviceData.state_right == 'ON'; else elseTat">Bật</div>
+                                            </div>
+                                            <ng-template #elseTat>
+                                                <div>Tắt</div>
+                                            </ng-template>
+                                        </h2>
                                     </div>
                                     <div *ngIf="deviceData.model_id === 'WH_SWITCH4'">
                                         <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>

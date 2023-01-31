@@ -22,10 +22,10 @@
               Đăng nhập
             </button>
           </div>
-          <div style="margin-top: 20px;">
+          <!-- <div style="margin-top: 20px;">
             <span class="forgetPass-login" [routerLink]="['/forgot-password']" routerLinkActive="router-link-active">Quên mật khẩu</span>
             <span class="forgetPass-login" [routerLink]="['/registration']" routerLinkActive="router-link-active" style="margin-left: 60px;">Đăng ký tài khoản</span>
-          </div>
+          </div> -->
         </form>
       </div>
       <div class="d-flex notify-status">
@@ -34,7 +34,7 @@
             <h3>Đăng nhập thành công !!!</h3>
           </div>
           <ng-template #elseBlock>
-            <h3 *ngIf="statusLogin !== ''">{{ statusLogin.message }}</h3>
+            <h3 *ngIf="failOfSignIn === true">Tài khoản ko hợp lệ !!!</h3>
           </ng-template>
         </div>
       </div>

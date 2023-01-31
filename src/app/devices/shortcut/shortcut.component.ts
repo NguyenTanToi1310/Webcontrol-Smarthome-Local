@@ -4,8 +4,8 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-// import { CommonServiceService } from "src/app/services/common-service.service";
 import { ControllerBoardComponent } from "../controller-board/controller-board.component";
+import { GroupControllerBoardComponent } from "../group-controller-board/group-controller-board.component";
 import { AutomationBoardComponent } from "../automation-board/automation-board.component";
 import { CognitoService } from "src/app/services/cognito.service";
 import { BoundText } from "@angular/compiler/src/render3/r3_ast";
@@ -13,12 +13,16 @@ import { PubSub } from "aws-amplify";
 import { RenameGroupBoardComponent } from "../rename-group-board/rename-group-board.component";
 import { NameNewGroupBoardComponent } from "../name-new-group-board/name-new-group-board.component";
 
+import { CustomMqttService } from '../../services/mqtt.service';
+import { Subscription } from 'rxjs';
+import { IMqttMessage } from "ngx-mqtt";
 @Component({
   selector: "app-shortcut",
   templateUrl: "./shortcut.component.html",
   styleUrls: ["./shortcut.component.css"],
 })
 export class ShortcutComponent implements OnInit {
+  mqttSubscriptions: Subscription[] = [];
   public devices: any;
   public groups: any;
 
@@ -36,14 +40,40 @@ export class ShortcutComponent implements OnInit {
   public baseTopic: any;
 
   constructor(
-    // private common: CommonServiceService,
     public dialog: MatDialog,
-    private cognito: CognitoService
+    private cognito: CognitoService,
+    private readonly clientMqtt: CustomMqttService,
   ) {}
 
   ngOnInit(): void {
     this.cognito.currentDevicesData.subscribe(
-      (devicesData) => (this.devicesData = devicesData)
+      (devicesData) => {
+        this.devicesData = devicesData
+        for (var device of this.devicesData) {
+          for (var group of this.groups) {
+            for (var member of group.members) {
+                if (device.ieee_address === member.ieee_address) {
+                  member.model_id = device.model_id;
+                if(member.model_id == "WH_LEDRGB" || member.model_id == "TS0505B") {
+                  group.isColorLightExist = true;
+                }
+                // đèn trắng
+                // if(member.model_id == "TS0505B" || member.model_id == "WH_LEDRGB") {
+                //   group.isColorLightExist = true;
+                // }
+                if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
+                  group.isSwitchExist = true;
+                }
+                if(member.model_id == "WH_SENSOR" || member.model_id == "TS0203") {
+                  group.isSensorExist = true;
+                }
+                member.name = device.name;
+                member.friendly_name = device.topic;
+              }
+            }
+          }
+        }
+      }
     );
     
     this.cognito.currentGroups.subscribe((groups) => {
@@ -53,6 +83,21 @@ export class ShortcutComponent implements OnInit {
           for (var device of this.devicesData) {
             if (device.ieee_address === member.ieee_address) {
               member.model_id = device.model_id;
+              if(member.model_id == "WH_LEDRGB" || member.model_id == "TS0505B") {
+                group.isColorLightExist = true;
+              }
+              // đèn trắng
+              // if(member.model_id == "TS0505B" || member.model_id == "WH_LEDRGB") {
+              //   group.isColorLightExist = true;
+              // }
+              if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
+                group.isSwitchExist = true;
+              }
+              if(member.model_id == "WH_SENSOR" || member.model_id == "TS0203") {
+                group.isSensorExist = true;
+              }
+              member.name = device.name;
+              member.friendly_name = device.topic;
             }
           }
         }
@@ -89,6 +134,7 @@ export class ShortcutComponent implements OnInit {
     const virtualDevice = Object.assign({}, this.deviceAction);
     const backupDevice = Object.assign({}, this.deviceAction);
     const dialogRef = this.dialog.open(ControllerBoardComponent, {
+      autoFocus: false,
       width: "430px",
       data: { virtualDevice, backupDevice },
     });
@@ -97,9 +143,20 @@ export class ShortcutComponent implements OnInit {
     });
   }
 
+  openDialogGroupControl(): void {
+    const virtualGroup = Object.assign({}, this.groupAction);
+    const dialogRef = this.dialog.open(GroupControllerBoardComponent, {
+      autoFocus: false,
+      width: "430px",
+      data: { virtualGroup },
+    });
+    dialogRef.afterClosed().subscribe((result) => {});
+  }
+
   openDialogAutomationBoard(): void {
     // const virtualDevice =  Object.assign({}, device)
     const dialogRef = this.dialog.open(AutomationBoardComponent, {
+      autoFocus: false,
       width: "430px",
       // data: { virtualDevice }
     });
@@ -113,16 +170,20 @@ export class ShortcutComponent implements OnInit {
       group: this.groupAction.friendly_name,
       device: this.deviceAction.topic,
     };
-    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/remove", payload1);
+    // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/remove", payload1);
+    this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/remove", JSON.stringify(payload1));
+
 
     if (this.delInAllGroup == true) {
       var payload2 = {
         device: this.deviceAction.topic,
       };
-      PubSub.publish(
-        this.baseTopic+"zigbee2mqtt/bridge/request/group/members/remove_all",
-        payload2
-      );
+      // PubSub.publish(
+      //   this.baseTopic+"zigbee2mqtt/bridge/request/group/members/remove_all",
+      //   payload2
+      // );
+      this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/remove_all", JSON.stringify(payload2));
+
       this.delInAllGroup = false;
     }
   }
@@ -142,14 +203,17 @@ export class ShortcutComponent implements OnInit {
       group: this.groupAction.friendly_name,
       device: "chua biet",
     };
-    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/add", payload);
+    // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/add", payload);
+    this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+
   }
 
   private requestDeleteRoom() {
     var payload = {
       id: this.groupAction.friendly_name,
     };
-    PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/remove", payload);
+    // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/remove", payload);
+    this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/remove", JSON.stringify(payload));
   }
 
   openDialogRename(): void {
@@ -193,7 +257,9 @@ export class ShortcutComponent implements OnInit {
           group: this.groupAction.friendly_name,
           device: device.topic,
         };
-        PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/add", payload);
+        // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/add", payload);
+        this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+
         device.checked = false;
       }
     }

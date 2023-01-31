@@ -5,11 +5,20 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-import { PubSub } from "aws-amplify";
 import { BehaviorSubject } from "rxjs";
+
+import { CustomMqttService } from '../../services/mqtt.service';
+import { Subscription } from 'rxjs';
+import { IMqttMessage } from "ngx-mqtt";
+
 import { CognitoService } from "src/app/services/cognito.service";
-// import { CommonServiceService } from "src/app/services/common-service.service";
+import { CommonServiceService } from "src/app/services/common-service.service";
 var colorsys = require("colorsys");
+
+interface power_on_behavior {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: "app-controller-board",
@@ -17,18 +26,34 @@ var colorsys = require("colorsys");
   styleUrls: ["./controller-board.component.css"],
 })
 export class ControllerBoardComponent implements OnInit {
+  mqttSubscriptions: Subscription[] = [];
   modeColorLight: any = "";
   public baseTopic: any;
+
+  private deviceDataResponse: any = "";
+  public result: any = {
+    status: "waitting_for_input",
+  };
+  private myTimeout: any;
+
+  power_on_behaviors: power_on_behavior[] = [
+    {value: 'on', viewValue: 'Bật'},
+    {value: 'off', viewValue: 'Tắt'},
+    {value: 'previous', viewValue: 'Khôi phục'},
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<ControllerBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // private common: CommonServiceService,
+    private common: CommonServiceService,
     private cognito: CognitoService,
+    private readonly clientMqtt: CustomMqttService,
   ) {}
 
   ngOnInit() {
-    this.cognito.currentBaseTopic.subscribe(baseTopic => this.baseTopic = baseTopic);
+    this.cognito.currentBaseTopic.subscribe(
+      (baseTopic) => (this.baseTopic = baseTopic)
+    );
 
     if (this.data.backupDevice.model_id == "WH_LEDRGB") {
       if (this.data.backupDevice.state == "ON") {
@@ -69,6 +94,29 @@ export class ControllerBoardComponent implements OnInit {
         this.data.backupDevice.state_l4 = false;
       }
     }
+    if (this.data.backupDevice.model_id == "ZM-L03E-Z") {
+      if (this.data.backupDevice.state_left == "ON") {
+        this.data.virtualDevice.state_left = true;
+        this.data.backupDevice.state_left = true;
+      } else {
+        this.data.virtualDevice.state_left = false;
+        this.data.backupDevice.state_left = false;
+      }
+      if (this.data.backupDevice.state_center == "ON") {
+        this.data.virtualDevice.state_center = true;
+        this.data.backupDevice.state_center = true;
+      } else {
+        this.data.virtualDevice.state_center = false;
+        this.data.backupDevice.state_center = false;
+      }
+      if (this.data.backupDevice.state_right == "ON") {
+        this.data.virtualDevice.state_right = true;
+        this.data.backupDevice.state_right = true;
+      } else {
+        this.data.virtualDevice.state_right = false;
+        this.data.backupDevice.state_right = false;
+      }
+    }
   }
 
   onNoClick(): void {
@@ -76,44 +124,55 @@ export class ControllerBoardComponent implements OnInit {
   }
 
   async onYesClick() {
+    this.result.status = "processing";
     type color = {
       hex?: any;
     };
     type device = {
       state?: any;
+      power_on_behavior?: any;
       color?: { hex?: any };
       brightness?: any;
       state_l1?: any;
       state_l2?: any;
       state_l3?: any;
       state_l4?: any;
+      power_on_behavior_l1?: any;
+      power_on_behavior_l2?: any;
+      power_on_behavior_l3?: any;
+      power_on_behavior_l4?: any;
+      state_left?: any;
+      state_center?: any;
+      state_right?: any;
     };
     const changedProperties: device = {};
-    // console.log("1", this.data.virtualDevice.hex);
-    // console.log("1", changedProperties);
+
+    if(this.data.virtualDevice.state != this.data.backupDevice.state){
+      if(this.data.virtualDevice.state == true){
+        changedProperties.state = "ON";
+      }else{
+        changedProperties.state = "OFF";
+      }
+    }
+
+    if (this.data.virtualDevice.model_id == "WH_LEDRGB" || this.data.virtualDevice.model_id == "den trang") {
+      if (this.data.virtualDevice.power_on_behavior != this.data.backupDevice.power_on_behavior) {
+        changedProperties.power_on_behavior = this.data.virtualDevice.power_on_behavior;
+      }
+    }
 
     if (this.data.virtualDevice.model_id == "WH_LEDRGB") {
-      // console.log("2", this.data.virtualDevice.hex);
-      // console.log("2", changedProperties);
 
-      if (this.data.virtualDevice.state != this.data.backupDevice.state) {
-        if (this.data.virtualDevice.state == true) {
-          changedProperties.state = "ON";
-        } else {
-          changedProperties.state = "OFF";
-        }
-      }
       if (this.data.virtualDevice.hex != this.data.backupDevice.hex) {
         var txt = '{"hex":"' + this.data.virtualDevice.hex + '"}';
         changedProperties.color = JSON.parse(txt);
-        // console.log("22222", txt);
-        // console.log("22222", JSON.parse(txt));
-        // console.log("22222", changedProperties.color);
       }
       if (
         this.data.virtualDevice.brightness != this.data.backupDevice.brightness
       ) {
-        changedProperties.brightness = Number((this.data.virtualDevice.brightness * 2.54).toFixed(0));
+        changedProperties.brightness = Number(
+          (this.data.virtualDevice.brightness * 2.54).toFixed(0)
+        );
       }
     }
 
@@ -146,12 +205,95 @@ export class ControllerBoardComponent implements OnInit {
           changedProperties.state_l4 = "OFF";
         }
       }
+      if(this.data.virtualDevice.power_on_behavior_l1 != this.data.backupDevice.power_on_behavior_l1){
+        changedProperties.power_on_behavior_l1 = this.data.virtualDevice.power_on_behavior_l1;
+      }
+      if(this.data.virtualDevice.power_on_behavior_l2 != this.data.backupDevice.power_on_behavior_l2){
+        changedProperties.power_on_behavior_l2 = this.data.virtualDevice.power_on_behavior_l2;
+      }
+      if(this.data.virtualDevice.power_on_behavior_l3 != this.data.backupDevice.power_on_behavior_l3){
+        changedProperties.power_on_behavior_l3 = this.data.virtualDevice.power_on_behavior_l3;
+      }
+      if(this.data.virtualDevice.power_on_behavior_l4 != this.data.backupDevice.power_on_behavior_l4){
+        changedProperties.power_on_behavior_l4 = this.data.virtualDevice.power_on_behavior_l4;
+      }
     }
 
-    PubSub.publish(
-      this.baseTopic+"zigbee2mqtt/" + this.data.virtualDevice.topic + "/set",
-      changedProperties
-    );
+    if (this.data.virtualDevice.model_id == "ZM-L03E-Z") {
+      if (this.data.virtualDevice.state_left != this.data.backupDevice.state_left) {
+        if (this.data.virtualDevice.state_left == true) {
+          changedProperties.state_left = "ON";
+        } else {
+          changedProperties.state_left = "OFF";
+        }
+      }
+      if (this.data.virtualDevice.state_center != this.data.backupDevice.state_center) {
+        if (this.data.virtualDevice.state_center == true) {
+          changedProperties.state_center = "ON";
+        } else {
+          changedProperties.state_center = "OFF";
+        }
+      }
+      if (this.data.virtualDevice.state_right != this.data.backupDevice.state_right) {
+        if (this.data.virtualDevice.state_right == true) {
+          changedProperties.state_right = "ON";
+        } else {
+          changedProperties.state_right = "OFF";
+        }
+      }
+    }
+
+    //no change at all, close dialog and stop this func
+    if (Object.keys(changedProperties).length == 0) {
+      this.dialogRef.close();
+      return;
+    }
+
+    //subcribe to wait for responding, if nothing is responded, fail
+    // const tempSub = PubSub.subscribe(
+    //   this.baseTopic + "zigbee2mqtt/" + this.data.virtualDevice.topic
+    // ).subscribe({
+    //   next: (data) => {
+    //     this.deviceDataResponse = data.value;
+    //     this.result.status = true;
+    //     clearTimeout(this.myTimeout);
+    //     this.dialogRef.close();
+    //     tempSub.unsubscribe();
+    //   },
+    //   error: (error) => console.error(error),
+    //   complete: () => console.log("Done"),
+    // });
+
+    this.mqttSubscriptions[0] = this.clientMqtt.topic("zigbee2mqtt/" + this.data.virtualDevice.topic).subscribe((message: IMqttMessage) => {
+      let messageJSON = JSON.parse(message.payload.toString())
+      console.log("message: " + messageJSON.text);
+      this.deviceDataResponse = messageJSON;
+      this.result.status = true;
+      clearTimeout(this.myTimeout);
+      this.dialogRef.close();
+      // tempSub.unsubscribe();         ???????????????????
+    });
+
+    // console.log("bat dau timer\n");
+    this.myTimeout = setTimeout(() => {
+      // console.log("time outtttt!\n");
+      if (this.deviceDataResponse == "") {
+        this.result.status = false;
+        console.log("nothing");
+        console.log("time outtttt!\n");
+      }
+      // tempSub.unsubscribe();           ??????????????????
+    }, 10000);
+
+    // PubSub.publish(
+    //   this.baseTopic + "zigbee2mqtt/" + this.data.virtualDevice.topic + "/set",
+    //   changedProperties
+    // );
+    this.clientMqtt.publish("zigbee2mqtt/" + this.data.virtualDevice.topic + "/set", JSON.stringify(changedProperties))
+  }
+
+  myGreeting() {
+    console.log("time outtttt!\n");
   }
 
   formatLabel(value: number) {

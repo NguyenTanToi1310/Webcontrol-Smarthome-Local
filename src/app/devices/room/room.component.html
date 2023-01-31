@@ -1,6 +1,6 @@
 <body>
     <div class="background-device-page">
-        <div class="container container2">
+        <!-- <div class="container container2">
             Câu lệnh
             <div class="row">
                 <div class="col d-flex flow">
@@ -40,17 +40,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div *ngFor="let group of groups; let j = index">
+        <div *ngFor="let room of roomsList; let j = index">
             <div class="container container1">
                 <div class="row">
-                    <div>{{ group.friendly_name }}</div>
-                    <div class="dieukhienBotton2">
-                        <button class="btn-outline-dark btn btn-outline-dark2"
-                            (click)="getRowIndex(j); openDialogGroupControl()">
-                            <mat-icon>info</mat-icon>
-                        </button>
+                    <div>{{ room[0] }}</div>
+                    <!-- <div class="dieukhienBotton2">
                         <button class="btn-outline-dark btn btn-outline-dark2"
                             (click)="getRowIndex(j); getOtherDevicesRemaining()" data-bs-toggle="modal"
                             data-bs-target="#exampleModalChooseDevices">
@@ -67,7 +63,7 @@
                             <mat-icon>delete</mat-icon>
                         </button>
 
-                        <!-- Modal, choose device -->
+                        Modal, choose device
                         <div class="modal fade" id="exampleModalChooseDevices" aria-labelledby="exampleModalLabel"
                             aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog">
@@ -82,7 +78,7 @@
                                             <li *ngFor="let device of selectedDevices; let i = index">
                                                 <div *ngIf="device.added == false">
                                                     <input type="checkbox" [(ngModel)]="device.checked" />
-                                                    {{ device.name }}
+                                                    {{ device.topic }}
                                                 </div>
                                             </li>
                                         </ul>
@@ -101,7 +97,7 @@
                             </div>
                         </div>
 
-                        <!-- Modal, confirm delete -->
+                        Modal, confirm delete
                         <div class="modal fade" id="exampleModalDeleteGroup" aria-labelledby="exampleModalLabel"
                             aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog">
@@ -133,58 +129,25 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="col d-flex" *ngFor="let member of group.members; let i = index">
+                    <!-- "| slice:1" => skip first element (Coordinator) -->
+                    <div class="col d-flex" *ngFor="let member of room | slice:1; let i = index">
                         <div class="box">
-                            <!-- <div *ngIf="device.type === 'normal-light'"> -->
-                            <div *ngIf="member == '1'">
-                                <div class="tag-header">
-                                    <h2>device.ot_nickname</h2>
-                                </div>
-                                <div class="tag-content">
-                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Đang bật</h2> -->
-                                    <!-- <ng-template #elseStateDevice><h2 class="row d-flex"> Đang tắt</h2></ng-template> -->
-                                    <!-- <h2 class="row d-flex">Độ sáng: {{device.brightness}}</h2> -->
-                                    <h4 class="row d-flex" *ngIf="0; else elseStateDevice">
-                                        Đang bật
-                                    </h4>
-                                    <ng-template #elseStateDevice>
-                                        <h4 class="row d-flex">Đang tắt</h4>
-                                    </ng-template>
-                                </div>
+                            <div class="tag-header">
+                                <h2>{{member}}</h2>
                             </div>
 
-                            <!-- <div *ngIf="device.type === 'switch'"> -->
-                            <div *ngIf="member == '2'">
-                                <div class="tag-header">
-                                    <h2>device.ot_nickname</h2>
-                                </div>
-                                <div class="tag-content">
-                                    <!--  -->
-                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Đang bật</h2>
-                                        <ng-template #elseStateDevice><h2 class="row d-flex"> Đang tắt</h2></ng-template>
-            
-                                        <h2 class="row d-flex" *ngIf="device.switch_type==='light'; else elseSwitchType_1">Sử dụng cho: Đèn</h2> -->
-                                    <h4 class="row d-flex" *ngIf="1; else elseStateDevice">
-                                        Đang bật
-                                    </h4>
-                                    <ng-template #elseStateDevice>
-                                        <h4 class="row d-flex">Đang tắt</h4>
-                                    </ng-template>
-                                </div>
-                            </div>
+                            
+                            <!-- <div class="tag-content">
+                                <h4 class="row d-flex">
+                                    ngoại tuyến
+                                </h4>
+                            </div> -->
 
-                            <div class="tag-header" *ngIf="!member.name">
-                                <h2>Thiết bị ngoại tuyến</h2>
-                            </div>
-
-                            <div *ngIf="member.model_id === 'WH_SENSOR'">
-                                <div *ngFor="let deviceData of devicesData">
-                                    <div *ngIf="deviceData.ieee_address== member.ieee_address">
-                                        <div class="tag-header">
-                                            <h2>{{deviceData.name}}</h2>
-                                        </div>
+                            <div *ngFor="let deviceData of devicesData">
+                                <div *ngIf="member == deviceData.name">
+                                    <div *ngIf="deviceData.model_id === 'WH_SENSOR'">
                                         <div class="tag-content">
                                             <h4 class="row d-flex">
                                                 {{ deviceData.temperature }}&ordm;C&emsp;{{
@@ -193,15 +156,7 @@
                                             </h4>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div *ngIf="member.model_id === 'TS0203'">
-                                <div *ngFor="let deviceData of devicesData">
-                                    <div *ngIf="deviceData.ieee_address== member.ieee_address">
-                                        <div class="tag-header">
-                                            <h2>{{deviceData.name}}</h2>
-                                        </div>
+                                    <div *ngIf="deviceData.model_id === 'TS0203'">
                                         <div class="tag-content">
                                             <h4 class="row d-flex" *ngIf="deviceData.contact; else elseContact">
                                                 Cửa đóng
@@ -211,31 +166,14 @@
                                               </ng-template>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div *ngIf="member.model_id === 'SNZB-01'">
-                                <div *ngFor="let deviceData of devicesData">
-                                    <div *ngIf="deviceData.ieee_address== member.ieee_address">
-                                        <div class="tag-header">
-                                            <h2>{{deviceData.name}}</h2>
-                                        </div>
+                                    <div *ngIf="deviceData.model_id === 'SNZB-01'">
                                         <div class="tag-content">
                                             <h4 class="row d-flex">
-                                                {{ deviceData.action }}
+                                                {{deviceData.action}}
                                             </h4>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-
-                            <div *ngIf="member.model_id === 'WH_LEDRGB'">
-                                <div *ngFor="let deviceData of devicesData">
-                                    <div *ngIf="deviceData.ieee_address== member.ieee_address">
-                                        <div class="tag-header">
-                                            <h2>{{deviceData.name}}</h2>
-                                        </div>
+                                    <div *ngIf="deviceData.model_id === 'WH_LEDRGB'">
                                         <div class="tag-content">
                                             <h4 class="row d-flex"
                                                 *ngIf="deviceData.state === 'ON'; else elseStateDevice">
@@ -246,24 +184,17 @@
                                             </ng-template>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div *ngIf="member.model_id === 'WH_SWITCH4'">
-                                <div *ngFor="let deviceData of devicesData">
-                                    <div *ngIf="deviceData.ieee_address== member.ieee_address">
-                                        <div class="tag-header">
-                                            <h2>{{deviceData.name}}</h2>
-                                        </div>
+                                    <div *ngIf="deviceData.model_id === 'WH_SWITCH4'">
                                         <div class="tag-content">
                                             <h4>
                                                 <span *ngIf="deviceData.state_l1 === 'ON'; else elseState1Device">
-                                                Bật</span> 
+                                                    Bật</span>
                                                 <span *ngIf="deviceData.state_l2 === 'ON'; else elseState2Device">
-                                                     / Bật</span> 
+                                                    / Bật</span>
                                                 <span *ngIf="deviceData.state_l3 === 'ON'; else elseState3Device">
-                                                     / Bật</span> 
+                                                    / Bật</span>
                                                 <span *ngIf="deviceData.state_l4 === 'ON'; else elseState4Device">
-                                                     / Bật</span> 
+                                                    / Bật</span>
                                             </h4>
                                             <h4>
                                                 <ng-template #elseState1Device>
@@ -281,22 +212,15 @@
                                             </h4>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div *ngIf="member.model_id === 'ZM-L03E-Z'">
-                                <div *ngFor="let deviceData of devicesData">
-                                    <div *ngIf="deviceData.ieee_address== member.ieee_address">
-                                        <div class="tag-header">
-                                            <h2>{{deviceData.name}}</h2>
-                                        </div>
+                                    <div *ngIf="deviceData.model_id === 'ZM-L03E-Z'">
                                         <div class="tag-content">
                                             <h4>
-                                                <span *ngIf="deviceData.state_left=== 'ON'; else elseState1Device">
-                                                Bật</span> 
-                                                <span *ngIf="deviceData.state_center=== 'ON'; else elseState2Device">
-                                                     / Bật</span> 
-                                                <span *ngIf="deviceData.state_right === 'ON'; else elseState3Device">
-                                                     / Bật</span> 
+                                                <span *ngIf="deviceData.state_left === 'ON'; else elseState1Device">
+                                                    Bật</span>
+                                                <span *ngIf="deviceData.state_center === 'ON'; else elseState2Device">
+                                                    / Bật</span>
+                                                <span *ngIf="deviceData.state_right=== 'ON'; else elseState3Device">
+                                                    / Bật</span>
                                             </h4>
                                             <h4>
                                                 <ng-template #elseState1Device>
@@ -312,51 +236,64 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
-                            <!-- <div *ngIf="device.type === 'fan'"> -->
-                            <div *ngIf="member == '5'">
-                                <div class="tag-header">
-                                    <h2>device.ot_nickname</h2>
-                                </div>
-                                <div class="tag-content">
-                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice">Đang bật</h2>
-                                        <ng-template #elseStateDevice><h2 class="row d-flex"> Đang tắt</h2></ng-template> -->
-                                    <h4 class="row d-flex" *ngIf="1; else elseStateDevice">
-                                        Đang bật
-                                    </h4>
-                                    <ng-template #elseStateDevice>
-                                        <h4 class="row d-flex">Đang tắt</h4>
-                                    </ng-template>
-                                </div>
-                            </div>
-
-                            <!-- <div *ngIf="device.type === 'lock'"> -->
-                            <div *ngIf="member == '6'">
-                                <div class="tag-header">
-                                    <h2>device.ot_nickname</h2>
-                                </div>
-                                <div class="tag-content">
-                                    <!-- <h2 class="row d-flex" *ngIf="device.state; else elseStateDevice"> Đang khóa</h2> -->
-                                    <h4 class="row d-flex" *ngIf="1; else elseStateDevice">
-                                        Đang bật
-                                    </h4>
-                                    <ng-template #elseStateDevice>
-                                        <h4 class="row d-flex">Đang tăt</h4>
-                                    </ng-template>
-                                </div>
-                            </div>
-                            <div class="dieukhienBotton" *ngIf="!!member.name">
+                            <div class="dieukhienBotton">
                                 <button id="dieukhienBotton" mat-flat-button
-                                    (click)="getBoxIndex(j, i); openDialogControl()">
+                                    (click)="getDeviceAction(member); openDialogControl()">
                                     <mat-icon id="dieukhienBotton">info</mat-icon>
                                 </button>
-                                <button class="btn btn-outline-dark" data-bs-toggle="modal" (click)="getBoxIndex(j, i)"
+                                <button class="btn btn-outline-dark" (click)="getDeviceAction(member)"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModalChangeRoom">
+                                    <mat-icon>sync</mat-icon>
+                                </button>
+
+                                <div class="modal fade" id="exampleModalChangeRoom" aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
+                                    <div class="modal-dialog">
+                                        <span *ngIf="deviceAction">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title" id="exampleModalLabel"
+                                                        style="text-align: left">
+                                                        Đổi thiết bị {{deviceAction.name}}
+                                                        <br>
+                                                        sang phòng {{deviceAction.room}}
+                                                    </h1>
+                                                </div>
+                                                <div class="modal-body" style="text-align: left">
+                                                    <mat-form-field appearance="fill"
+                                                        style="width:40% !important; height: 45px;">
+                                                        <mat-label>Phòng</mat-label>
+                                                        <mat-select [(value)]="deviceAction.room">
+                                                            <mat-option *ngFor="let room of rooms" [value]="room.value">
+                                                                {{room.viewValue}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                        Hủy
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        (click)="requestChangeRoom()" data-bs-dismiss="modal">
+                                                        Đồng ý
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <!-- <button class="btn btn-outline-dark" data-bs-toggle="modal" (click)="getBoxIndex(j, i)"
                                     data-bs-target="#exampleModalDeleteDevice">
                                     <mat-icon>delete</mat-icon>
                                 </button>
 
-                                <!-- Modal, confirm delete -->
+                                Modal, confirm delete
                                 <div class="modal fade" id="exampleModalDeleteDevice"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static"
                                     data-keyboard="false">
@@ -366,14 +303,12 @@
                                                 <h1 class="modal-title" id="exampleModalLabel">
                                                     Bạn có muốn xóa thiết bị này không ?
                                                 </h1>
-                                                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button> -->
                                             </div>
                                             <div class="modal-body" style="text-align: left">
                                                 <h2>
                                                     Loại thiết bị:
                                                     <span *ngIf="deviceAction">{{
-                                                        deviceAction.name
+                                                        deviceAction.topic
                                                         }}</span>
                                                 </h2>
                                                 <h2>
@@ -397,7 +332,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -405,13 +340,13 @@
             </div>
         </div>
 
-        <div class="container container2">
+        <!-- <div class="container container2">
             <div class="device_adding_icon box" (click)="openDialogNameNewGroup()">
                 <button mat-flat-button id="timer">
                     <mat-icon id="element1">add_box</mat-icon>
                     <div id="element2">thêm phòng mới</div>
                 </button>
             </div>
-        </div>
+        </div> -->
     </div>
 </body>

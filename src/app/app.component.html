@@ -1,14 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="max-height: 10vh ;background-color: #ffffff !important; color: aliceblue !important;;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light"
+  style="max-height: 10vh ;background-color: #ffffff !important; color: aliceblue !important;;">
   <div class="container-fluid">
-    <a class="navbar-brand-name" href="/home"> 
-      <img class="navbar-brand-name" src = "../assets/logo/warmhouse.png">
+    <a class="navbar-brand-name" href="/home">
+      <img class="navbar-brand-name" src="../assets/logo/warmhouse.png">
     </a>
-    <button class="navbar-toggler button-name" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler button-name" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <button *ngIf="1" class="btn btn-outline-dark" (click)="openDialogVoiceRecoder()" data-bs-toggle="modal">
+    <button *ngIf="logined == true" class="btn btn-outline-dark" (click)="openDialogVoiceRecoder()" data-bs-toggle="modal">
       <mat-icon>mic</mat-icon>
     </button>
 
@@ -18,6 +20,7 @@
         <div class="example-button-row">
           <button mat-button class="button-hover" [routerLink]="['/information-device']" routerLinkActive="router-link-active">Tất cả thiết bị</button>
           <button mat-button class="button-hover" [routerLink]="['/shortcut']" routerLinkActive="router-link-active">Lối tắt</button>
+          <button mat-button class="button-hover" [routerLink]="['/room']" routerLinkActive="router-link-active">Phòng</button>
           <!-- <button mat-button class="button-hover" [routerLink]="['/show-list-device']" routerLinkActive="router-link-active">Chỉnh sửa</button> -->
           <button mat-button class="button-hover" [routerLink]="['/home']" routerLinkActive="router-link-active">Mua hàng</button>
           <button mat-button class="button-hover" [routerLink]="['/about']" routerLinkActive="router-link-active">Giới thiệu</button>

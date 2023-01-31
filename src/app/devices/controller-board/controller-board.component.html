@@ -2,11 +2,11 @@
   <button mat-button (click)="onNoClick()">X</button>
 </div>
 
-<div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px">
+<div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px; overflow: unset;">
   <div class="device-name">
     <div *ngIf="data.virtualDevice.type === 'normal-light'">
       <div class="tag-header">
-        <h1>{{ data.virtualDevice.topic }}</h1>
+        <h1>{{ data.virtualDevice.name }}</h1>
       </div>
       <hr />
       <div class="tag-content">
@@ -23,7 +23,7 @@
 
     <div *ngIf="data.virtualDevice.model_id === 'WH_SWITCH4'">
       <div class="tag-header">
-        <h1>{{data.virtualDevice.topic}}</h1>
+        <h1>{{data.virtualDevice.name}}</h1>
       </div>
       <hr>
       <div class="tag-content">
@@ -50,20 +50,72 @@
             <div>Tắt</div>
           </ng-template>
         </h2>
+
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l1 === 'previous'">Hành vi bật
+          nguồn công tắc 1: khôi phục</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l1 === 'on'">Hành vi bật nguồn công tắc 1:
+          bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l1 === 'off'">Hành vi bật nguồn công tắc 1:
+          tắt</h2>
+
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l2 === 'previous'">Hành vi bật
+          nguồn công tắc 2: khôi phục</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l2 === 'on'">Hành vi bật nguồn công tắc 2:
+          bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l2 === 'off'">Hành vi bật nguồn công tắc 2:
+          tắt</h2>
+
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l3 === 'previous'">Hành vi bật
+          nguồn công tắc 3: khôi phục</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l3 === 'on'">Hành vi bật nguồn công tắc 3:
+          bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l3 === 'off'">Hành vi bật nguồn công tắc 3:
+          tắt</h2>
+
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l4 === 'previous'">Hành vi bật
+          nguồn công tắc 4: khôi phục</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l4 === 'on'">Hành vi bật nguồn công tắc 4:
+          bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior_l4 === 'off'">Hành vi bật nguồn công tắc 4:
+          tắt</h2>
       </div>
       <hr />
     </div>
 
+    <div *ngIf="data.virtualDevice.model_id === 'ZM-L03E-Z'">
+      <div class="tag-header">
+        <h1>{{data.virtualDevice.name}}</h1>
+      </div>
+      <hr>
+      <div class="tag-content">
+        <h2 class="row d-flex">Cường độ tín hiệu: {{data.virtualDevice.linkquality}}</h2>
+        <h2 class="row d-flex">Trạng thái:</h2>
+        <h2 class="row d-flex" class="color-state">
+          <div class="color-state-box color-state-box-switch4"
+            [ngStyle]="{'background-color':data.virtualDevice.state_left ? '#50C878' : '#B2BEB5' }">
+            <div *ngIf="data.virtualDevice.state_left; else elseTat">Bật</div>
+          </div>
+          <div class="color-state-box color-state-box-switch4"
+            [ngStyle]="{'background-color':data.virtualDevice.state_center ? '#50C878' : '#B2BEB5' }">
+            <div *ngIf="data.virtualDevice.state_center; else elseTat">Bật</div>
+          </div>
+          <div class="color-state-box color-state-box-switch4"
+            [ngStyle]="{'background-color':data.virtualDevice.state_right ? '#50C878' : '#B2BEB5' }">
+            <div *ngIf="data.virtualDevice.state_right; else elseTat">Bật</div>
+          </div>
+          <ng-template #elseTat>
+            <div>Tắt</div>
+          </ng-template>
+        </h2>
+      </div>
+    </div>
+
     <div *ngIf="data.virtualDevice.model_id === 'WH_SENSOR'">
       <div class="tag-header">
-        <h1>{{data.virtualDevice.topic}}</h1>
+        <h1>{{data.virtualDevice.name}}</h1>
       </div>
       <hr />
       <div class="tag-content">
-        <!-- <h2 class="row d-flex" *ngIf="data.virtualDevice.stream.active; else elseStateDevice">Trạng thái: Kích hoạt</h2>
-        <ng-template #elseStateDevice>
-          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
-        </ng-template> -->
         <h2 class="row d-flex">Pin: {{ data.virtualDevice.battery }}%</h2>
         <h2 class="row d-flex">Cường độ tín hiệu: {{ data.virtualDevice.linkquality }}</h2>
         <h2 class="row d-flex">
@@ -72,12 +124,52 @@
         <h2 class="row d-flex">Độ ẩm: {{ data.virtualDevice.humidity }}%</h2>
       </div>
       <hr />
-      <!-- <h4 class="sensor-notify">Chọn kích hoạt để lấy dữ liệu mới nhất!</h4> -->
+    </div>
+
+    <div *ngIf="data.virtualDevice.model_id === 'TS0203'">
+      <div class="tag-header">
+        <h1>{{data.virtualDevice.name}}</h1>
+      </div>
+      <hr />
+      <div class="tag-content">
+        <h2 class="row d-flex">Cường độ tín hiệu: {{data.virtualDevice.linkquality}}</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.battery_low == false; else elseBatteryLow">
+          Pin: {{data.virtualDevice.battery}}%
+        </h2>
+        <ng-template #elseBatteryLow>
+          <h2 class="row d-flex" class="color-state">
+            <div class="color-state-box" [ngStyle]="{'background-color': '#FF914D'}">
+              Pin: {{data.virtualDevice.battery}}%</div>
+          </h2>
+        </ng-template>
+
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.contact; else elseContact">
+          Trạng
+          thái cửa:
+          Đang đóng</h2>
+        <ng-template #elseContact>
+          <h2 class="row d-flex ">Trạng thái cửa: Đang mở</h2>
+        </ng-template>
+      </div>
+      <hr />
+    </div>
+
+    <div *ngIf="data.virtualDevice.model_id === 'SNZB-01'">
+      <div class="tag-header">
+        <h1>{{data.virtualDevice.name}}</h1>
+      </div>
+      <hr />
+      <div class="tag-content">
+        <h2 class="row d-flex">Pin: {{ data.virtualDevice.battery }}%</h2>
+        <h2 class="row d-flex">Cường độ tín hiệu: {{ data.virtualDevice.linkquality }}</h2>
+        <h2 class="row d-flex">Hành động: {{ data.virtualDevice.action }}</h2>
+      </div>
+      <hr />
     </div>
 
     <div *ngIf="data.virtualDevice.model_id === 'WH_LEDRGB'">
       <div class="tag-header">
-        <h1>{{data.virtualDevice.topic}}</h1>
+        <h1>{{data.virtualDevice.name}}</h1>
       </div>
       <hr />
       <div class="tag-content">
@@ -92,102 +184,51 @@
         <h2 class="row d-flex">Mã màu: {{ data.virtualDevice.hex }}</h2>
         <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'previous'">Hành vi bật
           nguồn: khôi phục</h2>
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'ON'">Hành vi bật nguồn: bật
-          đèn</h2>
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'OFF'">Hành vi bật nguồn: tắt
-          đèn</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'on'">Hành vi bật nguồn: bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'off'">Hành vi bật nguồn: tắt</h2>
       </div>
       <hr />
     </div>
 
-    <div *ngIf="data.virtualDevice.type === 'fan'">
-      <hr />
-      <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
-          Trạng thái: Đang bật
-        </h2>
-        <ng-template #elseStateDevice>
-          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
-        </ng-template>
-        <h2 class="row d-flex">Mức độ: {{ data.virtualDevice.fanspeed }}</h2>
-      </div>
-      <hr />
-    </div>
-    <div *ngIf="data.virtualDevice.type === 'lock'">
-      <hr />
-      <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
-          Trạng thái: Đang khóa
-        </h2>
-        <ng-template #elseStateDevice>
-          <h2 class="row d-flex">Trạng thái: Đang mở</h2>
-        </ng-template>
-      </div>
-      <hr />
-    </div>
-
-    <div *ngIf="data.virtualDevice.type === 'smart-plug'">
-      <hr />
-      <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="1; else elseStateDevice">
-          Trạng thái: Đang bật
-        </h2>
-        <ng-template #elseStateDevice>
-          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
-        </ng-template>
-        <h2 class="row d-flex">Đếm ngược:</h2>
-        <h2 class="row d-flex">Lịch trình bật:</h2>
-        <h2 class="row d-flex">Lịch trình tắt:</h2>
-      </div>
-      <hr />
-    </div>
-
-    <div *ngIf="data.virtualDevice.type === 'smart-door-sensor'">
-      <hr />
-      <div class="tag-content">
-        <h2 class="row d-flex" *ngIf="1; else elseStateDevice">
-          Trạng thái: Đang bật
-        </h2>
-        <ng-template #elseStateDevice>
-          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
-        </ng-template>
-        <h2 class="row d-flex" *ngIf="1; else elseStateDevice">
-          Trạng thái cửa: Đang mở
-        </h2>
-        <ng-template #elseStateDevice>
-          <h2 class="row d-flex">Trạng thái cửa: Đang đóng</h2>
-        </ng-template>
-        <h2 class="row d-flex">Lịch trình bật:</h2>
-        <h2 class="row d-flex">Lịch trình tắt:</h2>
-      </div>
-      <hr />
-    </div>
-  </div>
-
-  <div class="control-device" *ngIf="data.virtualDevice.model_id !== 'WH_SENSOR'">
-    <div class="onOff" *ngIf="data.virtualDevice.model_id !== 'WH_SWITCH4'">
-      <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
-      <div class="row" class="onOffButton">
-        <div class="col">
-          <div class="toggle-wrapper2">
-            <div class="toggle2 dog-rollover2">
-              <input *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox"
-                class="inputCheckbox" checked="data.virtualDevice.state" [(ngModel)]="data.virtualDevice.state" />
-              <ng-template #sensorType>
-                <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.active"
-                  [(ngModel)]="data.virtualDevice.active" />
-              </ng-template>
-              <label class="toggle-item2" for="doggo2">
-                <div class="dog2">
-                  <div class="face2"></div>
-                </div>
-              </label>
+  <div class="control-device"
+    *ngIf="data.virtualDevice.model_id != 'WH_SENSOR' && data.virtualDevice.model_id != 'TS0203' && data.virtualDevice.model_id != 'SNZB-01'">
+    <div *ngIf="data.virtualDevice.model_id != 'WH_SWITCH4' && data.virtualDevice.model_id != 'ZM-L03E-Z'">
+      <div class="onOff">
+        <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
+        <div class="row" class="onOffButton">
+          <div class="col">
+            <div class="toggle-wrapper2">
+              <div class="toggle2 dog-rollover2">
+                <input *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox"
+                  class="inputCheckbox" checked="data.virtualDevice.state" [(ngModel)]="data.virtualDevice.state" />
+                <ng-template #sensorType>
+                  <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.active"
+                    [(ngModel)]="data.virtualDevice.active" />
+                </ng-template>
+                <label class="toggle-item2" for="doggo2">
+                  <div class="dog2">
+                    <div class="face2"></div>
+                  </div>
+                </label>
+              </div>
             </div>
           </div>
         </div>
+        <br>
+        <div class="onOff">
+          <h2 class="onOffText">Hành vi bật nguồn:</h2>
+          <mat-form-field class="row" class="onOffButton" appearance="fill" style="width:40% !important; height: 45px;">
+            <mat-label>Hành vi bật nguồn</mat-label>
+            <mat-select [(value)]="data.virtualDevice.power_on_behavior">
+              <mat-option *ngFor="let power_on_behavior of power_on_behaviors" [value]="power_on_behavior.value">
+                {{power_on_behavior.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </div>
-    <br />
+
     <!-- <div *ngIf="data.virtualDevice.type !== 'switch' && data.virtualDevice.type !== 'sensor-th' && data.virtualDevice.type !== 'fan' && data.virtualDevice.type !== 'lock' && data.virtualDevice.type !== 'smart-door-sensor' && data.virtualDevice.type !== 'smart-plug'"> -->
     <div *ngIf="
         data.virtualDevice.type === 'normal-light' ||
@@ -204,17 +245,96 @@
     </div>
 
     <div *ngIf="data.virtualDevice.model_id === 'WH_LEDRGB'">
-      <h2>Thiết lập màu đèn:</h2>
-      <div style="text-align: center">
-        <input type="color" id="head" name="head" value="data.virtualDevice.hex" [(ngModel)]="data.virtualDevice.hex"
-          style="width: 80%; height: 40px" />
-        <div>{{ data.virtualDevice.hex }}</div>
+      <div class="onOff">
+        <h2 class="onOffText">Thiết lập màu đèn:</h2>
+        <div class="row" class="onOffButton" style="text-align: center; width:40% !important; height: 45px;">
+          <input type="color" id="head" name="head" value="data.virtualDevice.hex" [(ngModel)]="data.virtualDevice.hex"
+            style="width: 100%; height: 35px" />
+          <!-- <div>{{ data.virtualDevice.hex }}</div> -->
+        </div>
       </div>
+    </div>
+
+    <div *ngIf="data.virtualDevice.model_id === 'ZM-L03E-Z'">
+      <div class="onOff">
+        <h2 class="onOffText">Bật/Tắt công tắc 1: </h2>
+        <div class="row" class="onOffButton">
+          <div class="col">
+            <div class="toggle-wrapper2">
+              <div class="toggle2 dog-rollover2">
+                <input *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox"
+                  class="inputCheckbox" checked="data.virtualDevice.state_left"
+                  [(ngModel)]="data.virtualDevice.state_left" />
+                <ng-template #sensorType>
+                  <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualDevice.active"
+                    [(ngModel)]="data.virtualDevice.active" />
+                </ng-template>
+                <label class="toggle-item2" for="doggo2">
+                  <div class="dog2">
+                    <div class="face2"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <div class="onOff">
+        <h2 class="onOffText">Bật/Tắt công tắc 2:</h2>
+        <div class="row" class="onOffButton">
+          <div class="col">
+            <div class="toggle-wrapper22">
+              <div class="toggle22 dog-rollover22">
+                <input *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo22" type="checkbox"
+                  class="inputCheckbox2" checked="data.virtualDevice.state_center"
+                  [(ngModel)]="data.virtualDevice.state_center" />
+                <ng-template #sensorType>
+                  <input id="doggo22" type="checkbox" class="inputCheckbox2" checked="data.virtualDevice.active"
+                    [(ngModel)]="data.virtualDevice.active" />
+                </ng-template>
+                <label class="toggle-item22" for="doggo22">
+                  <div class="dog22">
+                    <div class="face22"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <div class="onOff">
+        <h2 class="onOffText">Bật/Tắt công tắc 3:</h2>
+        <div class="row" class="onOffButton">
+          <div class="col">
+            <div class="toggle-wrapper23">
+              <div class="toggle23 dog-rollover23">
+                <input *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo23" type="checkbox"
+                  class="inputCheckbox3" checked="data.virtualDevice.state_right"
+                  [(ngModel)]="data.virtualDevice.state_right" />
+                <ng-template #sensorType>
+                  <input id="doggo23" type="checkbox" class="inputCheckbox3" checked="data.virtualDevice.active"
+                    [(ngModel)]="data.virtualDevice.active" />
+                </ng-template>
+                <label class="toggle-item23" for="doggo23">
+                  <div class="dog23">
+                    <div class="face23"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
     </div>
 
     <div *ngIf="data.virtualDevice.model_id === 'WH_SWITCH4'">
       <div class="onOff">
-        <h2 class="onOffText">Công tắc 1: </h2>
+        <h2 class="onOffText">Bật/Tắt công tắc 1: </h2>
         <div class="row" class="onOffButton">
           <div class="col">
             <div class="toggle-wrapper2">
@@ -239,7 +359,7 @@
       <br />
 
       <div class="onOff">
-        <h2 class="onOffText">Công tắc 2:</h2>
+        <h2 class="onOffText">Bật/Tắt công tắc 2:</h2>
         <div class="row" class="onOffButton">
           <div class="col">
             <div class="toggle-wrapper22">
@@ -264,7 +384,7 @@
       <br />
 
       <div class="onOff">
-        <h2 class="onOffText">Công tắc 3:</h2>
+        <h2 class="onOffText">Bật/Tắt công tắc 3:</h2>
         <div class="row" class="onOffButton">
           <div class="col">
             <div class="toggle-wrapper23">
@@ -288,32 +408,6 @@
       </div>
       <br />
 
-      <div class="onOff">
-        <h2 class="onOffText">Công tắc 4:</h2>
-        <div class="row" class="onOffButton">
-          <div class="col">
-            <div class="toggle-wrapper24">
-              <div class="toggle24 dog-rollover24">
-                <input *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType" id="doggo24" type="checkbox"
-                  class="inputCheckbox4" checked="data.virtualDevice.state_l4"
-                  [(ngModel)]="data.virtualDevice.state_l4" />
-                <ng-template #sensorType>
-                  <input id="doggo24" type="checkbox" class="inputCheckbox4" checked="data.virtualDevice.active"
-                    [(ngModel)]="data.virtualDevice.active" />
-                </ng-template>
-                <label class="toggle-item24" for="doggo24">
-                  <div class="dog24">
-                    <div class="face24"></div>
-                  </div>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br />
-    </div>
-
     <div *ngIf="0">
       <h2>Đặt lịch bật:</h2>
       <div class="ngx-material-timepicker-example__form-group">
@@ -328,13 +422,22 @@
     </div>
   </div>
 </div>
-<div mat-dialog-actions style="float: right">
-  <button mat-button (click)="onNoClick()">Hủy</button>
 
-  <button mat-button (click)="onYesClick()" [mat-dialog-close]="data.virtualDevice.state" cdkFocusInitial>
-    <span *ngIf="data.virtualDevice.type !== 'sensor-th'; else sensorType">Đồng ý</span>
-    <ng-template #sensorType>
-      <span>Kích hoạt</span>
+<br>
+<div class="notification-edit d-flex justify-content-center">
+  <div class="spinner-border text-primary" role="status" *ngIf="result.status == 'processing'; else resultTrue"></div>
+  <ng-template #resultTrue>
+    <h4 *ngIf="result.status == true; else resultFalse">Thành công</h4>
+    <ng-template #resultFalse>
+      <h4 *ngIf="result.status == false">Có lỗi xảy ra, vui lòng thử lại hoặc làm mới</h4>
     </ng-template>
-  </button>
+  </ng-template>
+</div>
+
+<div mat-dialog-actions style="float: right;">
+  <button *ngIf="result.status == 'waitting_for_input'" mat-button (click)="onNoClick()">Hủy</button>
+  <button *ngIf="result.status == 'waitting_for_input'" mat-button (click)="onYesClick()" cdkFocusInitial>Đồng
+    ý</button>
+  <button *ngIf="result.status == 'processing'" disabled mat-button>Đồng ý</button>
+  <button *ngIf="result.status == false" mat-button (click)="onNoClick()">Đóng</button>
 </div>

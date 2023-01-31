@@ -4,7 +4,6 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-// import { CommonServiceService } from "src/app/services/common-service.service";
 import { ControllerBoardComponent } from "../controller-board/controller-board.component";
 
 import { ShareBoardComponent } from "../share-board/share-board.component";
@@ -15,13 +14,18 @@ import { PubSub } from "aws-amplify";
 import { BehaviorSubject } from "rxjs";
 import { VariableAst } from "@angular/compiler";
 
+import { CustomMqttService } from '../../services/mqtt.service';
+import { Subscription } from 'rxjs';
+import { IMqttMessage } from "ngx-mqtt";
+
 @Component({
   selector: "app-information-device",
   templateUrl: "./information-device.component.html",
   styleUrls: ["./information-device.component.css"],
 })
 export class InformationDeviceComponent implements OnInit {
-  public devices: any;
+  mqttSubscriptions: Subscription[] = [];
+  public devices = new Array;
   public devicesData: any;
   public stopSign;
   public timerReset: any; //in second => 180s
@@ -40,9 +44,9 @@ export class InformationDeviceComponent implements OnInit {
   public listUIDShareRequest: any = [];
 
   constructor(
-    // private common: CommonServiceService,
     private cognito: CognitoService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly clientMqtt: CustomMqttService,
   ) {}
 
   ngOnInit(): void {
@@ -52,10 +56,10 @@ export class InformationDeviceComponent implements OnInit {
       console.log(devicesData)
   
       for(var deviceData of this.devicesData){
-        for(var device of this.devices){
-          if(deviceData.topic == device.friendly_name )
+        for(let i = 0; i<this.devices.length; i++){
+          if(deviceData.topic == this.devices[i].friendly_name )
           {
-            device.linkquality = deviceData.linkquality;
+            this.devices[i].linkquality = deviceData.linkquality;
           }
         }
       }
@@ -63,11 +67,13 @@ export class InformationDeviceComponent implements OnInit {
 
     this.cognito.currentDevicesList.subscribe((devicesList) => {
       this.devices = devicesList;
-      for(var device of this.devices){
+      console.log(this.devices)
+
+      for(let i = 0; i<this.devices.length; i++){
         for(var deviceData of this.devicesData){
-          if(deviceData.topic == device.friendly_name )
+          if(deviceData.topic == this.devices[i].friendly_name )
           {
-            device.linkquality = deviceData.linkquality;
+            this.devices[i].linkquality = deviceData.linkquality;
           }
         }
       }
@@ -87,6 +93,7 @@ export class InformationDeviceComponent implements OnInit {
     // console.log("this.data.this.data.virtualDevice ", virtualDevice);
     // console.log("this.data.backupDevice ", backupDevice);
     const dialogRef = this.dialog.open(ControllerBoardComponent, {
+      autoFocus: false,
       width: "430px",
       data: { virtualDevice, backupDevice }, // virtualDevice => store data of device after changed its properties,
       // backupDevice => store original data which is b4 data is changed
@@ -98,10 +105,11 @@ export class InformationDeviceComponent implements OnInit {
   }
 
   wakeupDevice(device: any): void {
-    PubSub.publish(
-      this.baseTopic + "zigbee2mqtt/" + device.friendly_name + "/get",
-      { state: "" }
-    );
+    // PubSub.publish(
+    //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name + "/get",
+    //   { state: "" }
+    // );
+    this.clientMqtt.publish("zigbee2mqtt/" + device.friendly_name + "/get", JSON.stringify({ state: "" }));
   }
 
   private handleDevice(device: any) {
@@ -114,10 +122,11 @@ export class InformationDeviceComponent implements OnInit {
       block: false,
       force: false,
     };
-    PubSub.publish(
-      this.baseTopic + "zigbee2mqtt/bridge/request/device/remove",
-      payload
-    );
+    // PubSub.publish(
+    //   this.baseTopic + "zigbee2mqtt/bridge/request/device/remove",
+    //   payload
+    // );
+    this.clientMqtt.publish("zigbee2mqtt/bridge/request/device/remove", JSON.stringify(payload));
   }
 
   openDialogShareEdit(device: any, cmd: string): void {
@@ -141,17 +150,6 @@ export class InformationDeviceComponent implements OnInit {
     }
   }
 
-  // public async replyDemand(deviceId: string, command: string, index: any) {
-  //   if (command === "accept") {
-  //     await this.common.acceptShareDeviceDemand(deviceId);
-  //   } else if (command === "refuse") {
-  //     await this.common.refuseShareDeviceDemand(
-  //       deviceId,
-  //       this.listUIDShareRequest[index]
-  //     );
-  //   }
-  // }
-
   public addingRequest(): void {
     this.stopTimerSouce.next(false);
     this.timer(3);
@@ -160,21 +158,33 @@ export class InformationDeviceComponent implements OnInit {
       value: true,
       time: 180,
     };
-    PubSub.publish(
-      this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
-      payload
-    );
-    PubSub.subscribe(this.baseTopic + "zigbee2mqtt/bridge/event").subscribe({
-      next: (data) => {
-        if (
-          data.value.type == "device_interview" &&
-          data.value.data.status == "successful"
-        ) {
-          this.stopTimer();
-        }
-      },
-      error: (error) => console.error(error),
-      complete: () => console.log("Done"),
+    // PubSub.publish(
+    //   this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
+    //   payload
+    // );
+    this.clientMqtt.publish("zigbee2mqtt/bridge/request/permit_join", JSON.stringify(payload));
+
+    // PubSub.subscribe(this.baseTopic + "zigbee2mqtt/bridge/event").subscribe({
+    //   next: (data) => {
+    //     if (
+    //       data.value.type == "device_interview" &&
+    //       data.value.data.status == "successful"
+    //     ) {
+    //       this.stopTimer();
+    //     }
+    //   },
+    //   error: (error) => console.error(error),
+    //   complete: () => console.log("Done"),
+    // });
+    this.mqttSubscriptions[0] = this.clientMqtt.topic("zigbee2mqtt/bridge/event").subscribe((message: IMqttMessage) => {
+      let messageJSON = JSON.parse(message.payload.toString())
+      console.log("message: " + messageJSON.text);
+      if (
+        messageJSON.type == "device_interview" &&
+        messageJSON.data.status == "successful"
+      ) {
+        this.stopTimer();
+      }
     });
   }
 
@@ -184,11 +194,11 @@ export class InformationDeviceComponent implements OnInit {
       value: false,
       time: 180,
     };
-    PubSub.publish(
-      this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
-      payload
-    ); //stop adding process
-    // this.cognito.updateNewJoinedDEvice(data.value.data);
+    // PubSub.publish(
+    //   this.baseTopic + "zigbee2mqtt/bridge/request/permit_join",
+    //   payload
+    // ); 
+    this.clientMqtt.publish("zigbee2mqtt/bridge/request/permit_join", JSON.stringify(payload))
   }
 
   stopTimer() {

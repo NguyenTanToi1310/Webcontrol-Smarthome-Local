@@ -76,7 +76,9 @@ import { NameNewGroupBoardComponent } from './devices/name-new-group-board/name-
 import { VoiceRecoderComponent } from './services/voice-recoder/voice-recoder.component';
 import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
 import { environment as env } from '../environments/environment';
-import { CustomMqttService } from './services/mqtt.service'
+import { CustomMqttService } from './services/mqtt.service';
+import { GroupControllerBoardComponent } from './devices/group-controller-board/group-controller-board.component';
+import { RoomComponent } from './devices/room/room.component'
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: env.mqtt.server,
@@ -106,6 +108,8 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     RenameGroupBoardComponent,
     NameNewGroupBoardComponent,
     VoiceRecoderComponent,
+    GroupControllerBoardComponent,
+    RoomComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InformationDeviceComponent } from './devices/information-device/information-device.component';
+import { RoomComponent } from './devices/room/room.component';
 import { ShortcutComponent } from './devices/shortcut/shortcut.component';
 import { ShowListDeviceComponent } from './devices/show-list-device/show-list-device.component';
 import { AboutComponent } from './page/about/about.component';
 import { ConfirmEmailComponent } from './page/confirm-email/confirm-email.component';
 import { HomeComponent } from './page/home/home.component';
 import { PersonalComponent } from './page/personal/personal.component';
+import { VoiceRecoderComponent } from './services/voice-recoder/voice-recoder.component';
 import { AuthGuard } from './user/auth.guard';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { LoginComponent } from './user/login/login.component';
@@ -27,6 +29,8 @@ const routes: Routes = [
     { path: 'show-list-device', component: ShowListDeviceComponent, canActivate: [AuthGuard] },
     { path: 'shortcut', component: ShortcutComponent, canActivate: [AuthGuard] },
     // { path: 'shortcut', component: ShortcutComponent}
+    { path: 'voice-recoder', component: VoiceRecoderComponent, canActivate: [AuthGuard]},
+    { path: 'room', component: RoomComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
