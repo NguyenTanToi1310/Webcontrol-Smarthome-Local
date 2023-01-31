@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   mqtt: {
-		server: '192.168.137.66',
+		server: '192.168.137.77',
 		protocol: "ws",
 		port: 9001
 	},

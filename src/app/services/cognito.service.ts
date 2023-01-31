@@ -32,6 +32,7 @@ export interface IUser {
 })
 export class CognitoService {
   mqttSubscriptions: Subscription[] = [];
+  indexSubscriptions: number = 0;
   private authenticationSubject: BehaviorSubject<any>;
 
   private devicesListSource = new BehaviorSubject([]);
@@ -266,9 +267,9 @@ export class CognitoService {
     //   error: (error) => console.error(error),
     //   complete: () => console.log("Done"),
     // });
-    this.mqttSubscriptions[0] = this.clientMqtt.topic("zigbee2mqtt/bridge/devices").subscribe((message: IMqttMessage) => {
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/bridge/devices").subscribe((message: IMqttMessage) => {
       let messageJSON = JSON.parse(message.payload.toString())
-      console.log("message: " + messageJSON.text);
+      console.log("message: " + message.payload.toString());
 
       var list = new Array();
       this.devicesDataSource.next(list);
@@ -331,15 +332,13 @@ export class CognitoService {
         //   error: (error) => console.error(error),
         //   complete: () => console.log("Done"),
         // });
-        this.mqttSubscriptions[1] = this.clientMqtt.topic("zigbee2mqtt/" + device.friendly_name).subscribe((message: IMqttMessage) => {
+        this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/" + device.friendly_name).subscribe((message: IMqttMessage) => {
           let messageJSON = JSON.parse(message.payload.toString())
-          console.log("message: " + messageJSON.text);
-          messageJSON.topic = messageJSON[
-            Object.getOwnPropertySymbols(messageJSON)[0]
-          ]
+          console.log("message: " + message.payload.toString());
+          messageJSON.topic = message.topic.toString()
             .split(this.baseTopic + "zigbee2mqtt/")
             .pop(); //insert topic (removed prefix) into this object
-
+          console.log(messageJSON.topic);
           for (var tempDevice of devicesList) {
             if (tempDevice.friendly_name == messageJSON.topic) {
               messageJSON.model_id = tempDevice.model_id;
@@ -369,33 +368,33 @@ export class CognitoService {
     });
   }
 
-  public updateNewJoinedDEvice(device: any): any {
-    // PubSub.subscribe(
-    //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name
-    // ).subscribe({
-    //   next: (data) => {
-    //     data.value.topic = data.value[
-    //       Object.getOwnPropertySymbols(data.value)[0]
-    //     ]
-    //       .split("zigbee2mqtt/")
-    //       .pop(); //insert topic (removed prefix) into this object
-    //     this.deviceDataSource.next(data.value);
-    //     this.getDevicesData(data.value);
-    //   },
-    //   error: (error) => console.error(error),
-    //   complete: () => console.log("Done"),
-    // });
-    this.mqttSubscriptions[2] = this.clientMqtt.topic("zigbee2mqtt/" + device.friendly_name).subscribe((message: IMqttMessage) => {
-      let messageJSON = JSON.parse(message.payload.toString())
-      messageJSON.topic = messageJSON[
-        Object.getOwnPropertySymbols(messageJSON)[0]
-      ]
-        .split("zigbee2mqtt/")
-        .pop(); //insert topic (removed prefix) into this object
-      this.deviceDataSource.next(messageJSON);
-      this.getDevicesData(messageJSON);
-    });
-  }
+  // public updateNewJoinedDEvice(device: any): any {
+  //   // PubSub.subscribe(
+  //   //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name
+  //   // ).subscribe({
+  //   //   next: (data) => {
+  //   //     data.value.topic = data.value[
+  //   //       Object.getOwnPropertySymbols(data.value)[0]
+  //   //     ]
+  //   //       .split("zigbee2mqtt/")
+  //   //       .pop(); //insert topic (removed prefix) into this object
+  //   //     this.deviceDataSource.next(data.value);
+  //   //     this.getDevicesData(data.value);
+  //   //   },
+  //   //   error: (error) => console.error(error),
+  //   //   complete: () => console.log("Done"),
+  //   // });
+  //   this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/" + device.friendly_name).subscribe((message: IMqttMessage) => {
+  //     let messageJSON = JSON.parse(message.payload.toString())
+  //     messageJSON.topic = messageJSON[
+  //       Object.getOwnPropertySymbols(messageJSON)[0]
+  //     ]
+  //       .split("zigbee2mqtt/")
+  //       .pop(); //insert topic (removed prefix) into this object
+  //     this.deviceDataSource.next(messageJSON);
+  //     this.getDevicesData(messageJSON);
+  //   });
+  // }
 
   public getDevicesData(device: any): any {
     var list = new Array();
@@ -438,7 +437,7 @@ export class CognitoService {
     // });
     this.mqttSubscriptions[3] = this.clientMqtt.topic("zigbee2mqtt/bridge/groups").subscribe((message: IMqttMessage) => {
       let messageJSON = JSON.parse(message.payload.toString())
-      console.log("message: " + messageJSON.text);
+      console.log("message: " + message.payload.toString());
         this.groupsSource.next(messageJSON);
     });
   }

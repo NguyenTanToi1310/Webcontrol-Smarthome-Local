@@ -270,7 +270,7 @@ export class ControllerBoardComponent implements OnInit {
       this.deviceDataResponse = messageJSON;
       this.result.status = true;
       clearTimeout(this.myTimeout);
-      this.dialogRef.close();
+      // this.dialogRef.close();
       // tempSub.unsubscribe();         ???????????????????
     });
 
@@ -289,6 +289,7 @@ export class ControllerBoardComponent implements OnInit {
     //   this.baseTopic + "zigbee2mqtt/" + this.data.virtualDevice.topic + "/set",
     //   changedProperties
     // );
+    console.log("pub ne")
     this.clientMqtt.publish("zigbee2mqtt/" + this.data.virtualDevice.topic + "/set", JSON.stringify(changedProperties))
   }
 

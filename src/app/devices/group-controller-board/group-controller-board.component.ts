@@ -91,7 +91,7 @@ export class GroupControllerBoardComponent implements OnInit {
     this.clientMqtt.publish("zigbee2mqtt/" + this.data.virtualGroup.friendly_name + "/set", JSON.stringify(changedProperties))
 
     
-    this.dialogRef.close();
+    // this.dialogRef.close();
     // console.log(changedProperties);
   }
 

@@ -43,22 +43,22 @@ export class VoiceRecoderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.mqttSubscriptions[0] = this.clientMqtt.topic('hermes/asr/textCaptured').subscribe((message: IMqttMessage) => {
-      let messageJSON = JSON.parse(message.payload.toString())
-      console.log("message: " + messageJSON.text);
-      if(this.sessionID.localeCompare(messageJSON.sessionId) == 0)
-        this.clientMqtt.publish("hermes/nlu/query", JSON.stringify({
-          "siteId": "default", 
-          "input": messageJSON.text, 
-          "sessionId": this.sessionID
-        }))
-      else
-        console.log("ERROR: Wrong sessionId")
-    });
-    this.mqttSubscriptions[1] = this.clientMqtt.topic('hermes/intent/#').subscribe((message: IMqttMessage) => {
-      // var messageJSON = JSON.parse(message.payload.toString())
-      console.log("ok" + message.payload.toString());
-    });
+    // this.mqttSubscriptions[0] = this.clientMqtt.topic('hermes/asr/textCaptured').subscribe((message: IMqttMessage) => {
+    //   let messageJSON = JSON.parse(message.payload.toString())
+    //   console.log("message: " + messageJSON.text);
+    //   if(this.sessionID.localeCompare(messageJSON.sessionId) == 0)
+    //     this.clientMqtt.publish("hermes/nlu/query", JSON.stringify({
+    //       "siteId": "default", 
+    //       "input": messageJSON.text, 
+    //       "sessionId": this.sessionID
+    //     }))
+    //   else
+    //     console.log("ERROR: Wrong sessionId")
+    // });
+    // this.mqttSubscriptions[1] = this.clientMqtt.topic('hermes/intent/#').subscribe((message: IMqttMessage) => {
+    //   // var messageJSON = JSON.parse(message.payload.toString())
+    //   console.log("ok" + message.payload.toString());
+    // });
   }
 
   /**

@@ -435,9 +435,9 @@
 </div>
 
 <div mat-dialog-actions style="float: right;">
-  <button *ngIf="result.status == 'waitting_for_input'" mat-button (click)="onNoClick()">Hủy</button>
-  <button *ngIf="result.status == 'waitting_for_input'" mat-button (click)="onYesClick()" cdkFocusInitial>Đồng
+  <button mat-button (click)="onNoClick()">Hủy</button>
+  <button mat-button (click)="onYesClick()" cdkFocusInitial>Đồng
     ý</button>
-  <button *ngIf="result.status == 'processing'" disabled mat-button>Đồng ý</button>
-  <button *ngIf="result.status == false" mat-button (click)="onNoClick()">Đóng</button>
+  <!-- <button *ngIf="result.status == 'processing'" disabled mat-button>Đồng ý</button>
+  <button *ngIf="result.status == false" mat-button (click)="onNoClick()">Đóng</button> -->
 </div>
