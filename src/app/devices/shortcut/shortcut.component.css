@@ -12,7 +12,7 @@ body {
 }
 .background-device-page {
   /* height: 90vh; */
-  background-image: url("../../../assets/device-page/background.jpg");
+  background-image: url(../../../assets/device-page/background.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: right top;
@@ -222,4 +222,10 @@ button:focus {
   height: 50px;
   min-width: 210px;
   text-align: left;
+}
+
+@media screen and (max-width: 480px){
+  .box{
+    min-width: 330px;
+  }
 }

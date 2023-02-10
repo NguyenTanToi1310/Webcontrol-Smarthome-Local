@@ -4,7 +4,7 @@ body {
 
 .background-device-page {
     /* height: 90vh; */
-    background-image: url("../../../assets/device-page/background.jpg");
+    background-image: url(../../../assets/device-page/background.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right top;
@@ -17,7 +17,8 @@ body {
 
 .col {
     margin-top: 20px;
-    max-width: 270px;
+    max-width: 330px;
+    /* max-width: 270px; */
     min-width: 270px;
 }
 
@@ -129,4 +130,22 @@ button:focus {
     text-align: center;
     min-width: 50px;
     margin-right: 5px;
+}
+@media screen and (max-width: 480px){
+    .col{
+        max-width: 100%;
+    }
+    #dieukhienBotton:hover,
+    .btn-outline-dark:hover {
+    /* box-shadow: -5px -5px 4px  rgba(1, 255, 64, 0.5),
+                10px 10px 6px  rgba(0, 0, 0, 0.15),
+                inset -5px -5px 5px  rgba(1, 255, 64, 0.5),
+                inset 1px 1px 1px  rgba(0, 0, 0, 0.15);  */
+    color: black;
+    background-color: #ff914d00;
+    transition: 0.5s;
+    }
+    .row{
+        margin-bottom: 10vh;
+    }
 }

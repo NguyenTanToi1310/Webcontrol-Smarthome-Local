@@ -1,59 +1,54 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light"
   style="max-height: 10vh ;background-color: #ffffff !important; color: aliceblue !important;;">
   <div class="container-fluid">
-    <a class="navbar-brand-name" href="/home">
-      <img class="navbar-brand-name" src="../assets/logo/warmhouse.png">
+    <a class="navbar-brand-name">
+      <img class="navbar-brand-name" [routerLink]="['/home']" routerLinkActive="router-link-active" src="../assets/logo/warmhouse.png">
+      <button *ngIf="logined == true" class="btn btn-outline-dark" (click)="openDialogVoiceRecoder()" data-bs-toggle="modal">
+        <mat-icon>mic</mat-icon>
+      </button>
     </a>
     <button class="navbar-toggler button-name" type="button" data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-      aria-label="Toggle navigation">
+    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+    aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <button *ngIf="logined == true" class="btn btn-outline-dark" (click)="openDialogVoiceRecoder()" data-bs-toggle="modal">
-      <mat-icon>mic</mat-icon>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <span class="me-auto"></span>
       <section>
-        <div class="example-button-row">
+        <div class="example-button-row example-button-row-show">
           <button mat-button class="button-hover" [routerLink]="['/information-device']" routerLinkActive="router-link-active">Tất cả thiết bị</button>
           <button mat-button class="button-hover" [routerLink]="['/shortcut']" routerLinkActive="router-link-active">Lối tắt</button>
           <button mat-button class="button-hover" [routerLink]="['/room']" routerLinkActive="router-link-active">Phòng</button>
-          <!-- <button mat-button class="button-hover" [routerLink]="['/show-list-device']" routerLinkActive="router-link-active">Chỉnh sửa</button> -->
           <button mat-button class="button-hover" [routerLink]="['/home']" routerLinkActive="router-link-active">Mua hàng</button>
           <button mat-button class="button-hover" [routerLink]="['/about']" routerLinkActive="router-link-active">Giới thiệu</button>
+        </div>
+        <div class="example-button-row example-button-row-collapse">
+          <button mat-button class="button-hover" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" [routerLink]="['/information-device']" routerLinkActive="router-link-active">Tất cả thiết bị</button>
+          <button mat-button class="button-hover" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" [routerLink]="['/shortcut']" routerLinkActive="router-link-active">Lối tắt</button>
+          <button mat-button class="button-hover" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" [routerLink]="['/room']" routerLinkActive="router-link-active">Phòng</button>
+          <button mat-button class="button-hover" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" [routerLink]="['/home']" routerLinkActive="router-link-active">Mua hàng</button>
+          <button mat-button class="button-hover" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" [routerLink]="['/about']" routerLinkActive="router-link-active">Giới thiệu</button>
         </div>
       </section>
 
       <section>
-        <!-- <button mat-icon-button class="example-icon" class="button-hover" aria-label="Example icon-button with share icon" mat-button
-          [matMenuTriggerFor]="menu">
-          <mat-icon>account_circle</mat-icon>
-        </button> -->
-
         <div class="notLogined" *ngIf="logined == false">
-        <!-- <mat-menu #menu="matMenu"> -->
-          <button class="loginButton" mat-flat-button [routerLink]="['/login']" routerLinkActive="router-link-active">
-            <!-- <mat-icon>subdirectory_arrow_right</mat-icon> -->
+          <button mat-flat-button class="loginButton example-button-row-show"  [routerLink]="['/login']" routerLinkActive="router-link-active">
             <span>Đăng nhập/Đăng ký</span>
           </button>
-          <!-- <button mat-menu-item [routerLink]="['/registration']" routerLinkActive="router-link-active" *ngIf="logined == false">
-            <mat-icon>add</mat-icon>
-            <span>Đăng ký</span>
-          </button> -->
+          <button mat-flat-button class="loginButton example-button-row-collapse" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" [routerLink]="['/login']" routerLinkActive="router-link-active">
+            <span>Đăng nhập/Đăng ký</span>
+          </button>
         </div>
         <div class="Logined" *ngIf="logined == true">
           <button class="userName" mat-flat-button [routerLink]="['/personal-page']" routerLinkActive="router-link-active" *ngIf="!!userInfor">
-            <!-- <mat-icon style="color: #FF914D;">account_circle</mat-icon> -->
             <span *ngIf="numberDeviceShare == 0; else noti">{{userInfor.name}}</span>
             <ng-template #noti>
               <marquee style="width: 9vw;">{{userInfor.name}} có {{numberDeviceShare}} thông báo</marquee>
             </ng-template>
           </button>
           <button class="logoutButton" mat-flat-button (click)="logout()">
-            <!-- <mat-icon>subdirectory_arrow_left</mat-icon> -->
             <span>Đăng xuất</span>
           </button>
         </div>

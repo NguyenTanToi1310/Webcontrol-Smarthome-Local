@@ -69,16 +69,17 @@ import { ShareBoardComponent } from './devices/share-board/share-board.component
 import { EditBoardComponent } from './devices/edit-board/edit-board.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { ShortcutComponent } from './devices/shortcut/shortcut.component';
-import { AutomationBoardComponent } from './devices/automation-board/automation-board.component';
-import { EditAutomationConditionComponent } from './devices/edit-automation-condition/edit-automation-condition.component';
+import { CreateNewSceneBoardComponent } from './devices/create-new-scene-board/create-new-scene-board.component';
+import { SceneInfoBoardComponent } from './devices/scene-info-board/scene-info-board.component';
 import { RenameGroupBoardComponent } from './devices/rename-group-board/rename-group-board.component';
-import { NameNewGroupBoardComponent } from './devices/name-new-group-board/name-new-group-board.component';
+import { CreateNewGroupBoardComponent } from './devices/create-new-group-board/create-new-group-board.component';
 import { VoiceRecoderComponent } from './services/voice-recoder/voice-recoder.component';
 import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
 import { environment as env } from '../environments/environment';
 import { CustomMqttService } from './services/mqtt.service';
 import { GroupControllerBoardComponent } from './devices/group-controller-board/group-controller-board.component';
 import { RoomComponent } from './devices/room/room.component'
+import { EditSceneBoardComponent } from './devices/edit-scene-board/edit-scene-board.component';
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: env.mqtt.server,
@@ -103,13 +104,14 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     EditBoardComponent,
     ForgotPasswordComponent,
     ShortcutComponent,
-    AutomationBoardComponent,
-    EditAutomationConditionComponent,
+    CreateNewSceneBoardComponent,
+    SceneInfoBoardComponent,
     RenameGroupBoardComponent,
-    NameNewGroupBoardComponent,
+    CreateNewGroupBoardComponent,
     VoiceRecoderComponent,
     GroupControllerBoardComponent,
     RoomComponent,
+    EditSceneBoardComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

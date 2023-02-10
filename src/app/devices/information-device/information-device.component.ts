@@ -176,16 +176,17 @@ export class InformationDeviceComponent implements OnInit {
     //   error: (error) => console.error(error),
     //   complete: () => console.log("Done"),
     // });
-    this.mqttSubscriptions[0] = this.clientMqtt.topic("zigbee2mqtt/bridge/event").subscribe((message: IMqttMessage) => {
-      let messageJSON = JSON.parse(message.payload.toString())
-      console.log("message: " + messageJSON.text);
-      if (
-        messageJSON.type == "device_interview" &&
-        messageJSON.data.status == "successful"
-      ) {
-        this.stopTimer();
-      }
-    });
+    
+    // this.mqttSubscriptions[0] = this.clientMqtt.topic("zigbee2mqtt/bridge/event").subscribe((message: IMqttMessage) => {
+    //   let messageJSON = JSON.parse(message.payload.toString())
+    //   console.log("message: " + messageJSON.text);
+    //   if (
+    //     messageJSON.type == "device_interview" &&
+    //     messageJSON.data.status == "successful"
+    //   ) {
+    //     this.stopTimer();
+    //   }
+    // });
   }
 
   stopAddingProcess() {

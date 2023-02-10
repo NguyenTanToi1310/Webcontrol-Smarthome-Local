@@ -7,8 +7,8 @@
   color: #FF914D;
 }
 
-mat-slider {
-  width: 300px;
+mat-slider, .form-group {
+  width: 90%;
 }
 
 .sensor-notify {
@@ -40,3 +40,21 @@ mat-slider {
 :host ::ng-deep .mat-radio-checked .mat-radio-inner-circle{
  transform: rotate(45deg) scale(0.3);
 }
+::ng-deep .mat-slide-toggle:not(mat-checked):not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: rgb(206, 206, 206);
+}
+/* ::ng-deep .mat-slide-toggle:not(mat-checked):not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: rgb(78, 78, 78);
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: #2595be92;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #2596be;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-ripple .mat-ripple-element {
+  background-color: rgba(29, 135, 229, .2);
+} */

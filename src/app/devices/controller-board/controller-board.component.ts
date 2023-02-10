@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
 import { IMqttMessage } from "ngx-mqtt";
 
 import { CognitoService } from "src/app/services/cognito.service";
-import { CommonServiceService } from "src/app/services/common-service.service";
 var colorsys = require("colorsys");
 
 interface power_on_behavior {
@@ -45,7 +44,6 @@ export class ControllerBoardComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ControllerBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService,
     private cognito: CognitoService,
     private readonly clientMqtt: CustomMqttService,
   ) {}
@@ -55,7 +53,7 @@ export class ControllerBoardComponent implements OnInit {
       (baseTopic) => (this.baseTopic = baseTopic)
     );
 
-    if (this.data.backupDevice.model_id == "WH_LEDRGB") {
+    if (this.data.backupDevice.model_id == "WH_LEDRGB" || this.data.backupDevice.model_id == "WH_LEDTEMP") {
       if (this.data.backupDevice.state == "ON") {
         this.data.virtualDevice.state = true;
         this.data.backupDevice.state = true;
@@ -155,24 +153,24 @@ export class ControllerBoardComponent implements OnInit {
       }
     }
 
-    if (this.data.virtualDevice.model_id == "WH_LEDRGB" || this.data.virtualDevice.model_id == "den trang") {
+    if (this.data.virtualDevice.model_id == "WH_LEDRGB" || this.data.virtualDevice.model_id == "WH_LEDTEMP") {
       if (this.data.virtualDevice.power_on_behavior != this.data.backupDevice.power_on_behavior) {
         changedProperties.power_on_behavior = this.data.virtualDevice.power_on_behavior;
+      }
+      if (this.data.virtualDevice.brightness != this.data.backupDevice.brightness) {
+        changedProperties.brightness = Number(
+          (this.data.virtualDevice.brightness * 2.54).toFixed(0)
+        );
       }
     }
 
     if (this.data.virtualDevice.model_id == "WH_LEDRGB") {
-
       if (this.data.virtualDevice.hex != this.data.backupDevice.hex) {
-        var txt = '{"hex":"' + this.data.virtualDevice.hex + '"}';
+        // var txt = '{"hex":"' + this.data.virtualDevice.hex + '"}';
+        let rgb = this.cognito.hexToRgb(this.data.virtualDevice.hex);
+        let xy = this.cognito.rgb_to_cie(rgb.r, rgb.g, rgb.b);
+        let txt = '{"x":' + xy[0] + ',"y":' + xy[1] + '}';
         changedProperties.color = JSON.parse(txt);
-      }
-      if (
-        this.data.virtualDevice.brightness != this.data.backupDevice.brightness
-      ) {
-        changedProperties.brightness = Number(
-          (this.data.virtualDevice.brightness * 2.54).toFixed(0)
-        );
       }
     }
 

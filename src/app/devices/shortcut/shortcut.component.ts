@@ -6,13 +6,12 @@ import {
 } from "@angular/material/dialog";
 import { ControllerBoardComponent } from "../controller-board/controller-board.component";
 import { GroupControllerBoardComponent } from "../group-controller-board/group-controller-board.component";
-import { AutomationBoardComponent } from "../automation-board/automation-board.component";
 import { CognitoService } from "src/app/services/cognito.service";
 import { BoundText } from "@angular/compiler/src/render3/r3_ast";
 import { PubSub } from "aws-amplify";
 import { RenameGroupBoardComponent } from "../rename-group-board/rename-group-board.component";
-import { NameNewGroupBoardComponent } from "../name-new-group-board/name-new-group-board.component";
-
+import { CreateNewGroupBoardComponent } from "../create-new-group-board/create-new-group-board.component";
+import { CreateNewSceneBoardComponent } from "../create-new-scene-board/create-new-scene-board.component";
 import { CustomMqttService } from '../../services/mqtt.service';
 import { Subscription } from 'rxjs';
 import { IMqttMessage } from "ngx-mqtt";
@@ -25,6 +24,7 @@ export class ShortcutComponent implements OnInit {
   mqttSubscriptions: Subscription[] = [];
   public devices: any;
   public groups: any;
+  public scenes: any;
 
   public deviceAction: any;
   public groupAction: any;
@@ -58,9 +58,9 @@ export class ShortcutComponent implements OnInit {
                   group.isColorLightExist = true;
                 }
                 // đèn trắng
-                // if(member.model_id == "TS0505B" || member.model_id == "WH_LEDRGB") {
-                //   group.isColorLightExist = true;
-                // }
+                if(member.model_id == "WH_LEDTEMP") {
+                  group.isNormalLightExist = true;
+                }
                 if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
                   group.isSwitchExist = true;
                 }
@@ -86,10 +86,9 @@ export class ShortcutComponent implements OnInit {
               if(member.model_id == "WH_LEDRGB" || member.model_id == "TS0505B") {
                 group.isColorLightExist = true;
               }
-              // đèn trắng
-              // if(member.model_id == "TS0505B" || member.model_id == "WH_LEDRGB") {
-              //   group.isColorLightExist = true;
-              // }
+              if(member.model_id == "WH_LEDTEMP") {
+                group.isNormalLightExist = true;
+              }
               if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
                 group.isSwitchExist = true;
               }
@@ -102,6 +101,10 @@ export class ShortcutComponent implements OnInit {
           }
         }
       }
+    });
+
+    this.cognito.currentScenes.subscribe((scenes) => {
+      this.scenes = scenes;
     });
 
     this.cognito.currentBaseTopic.subscribe(baseTopic => this.baseTopic = baseTopic);
@@ -153,12 +156,10 @@ export class ShortcutComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {});
   }
 
-  openDialogAutomationBoard(): void {
-    // const virtualDevice =  Object.assign({}, device)
-    const dialogRef = this.dialog.open(AutomationBoardComponent, {
+  openDialogCreateNewScene(): void {
+    const dialogRef = this.dialog.open(CreateNewSceneBoardComponent, {
       autoFocus: false,
       width: "430px",
-      // data: { virtualDevice }
     });
     dialogRef.afterClosed().subscribe((result) => {
       /* anything */
@@ -227,7 +228,7 @@ export class ShortcutComponent implements OnInit {
   }
 
   openDialogNameNewGroup(): void {
-    const dialogRefEdit = this.dialog.open(NameNewGroupBoardComponent, {
+    const dialogRefEdit = this.dialog.open(CreateNewGroupBoardComponent, {
       width: "430px",
     });
     dialogRefEdit.afterClosed().subscribe((result) => {});

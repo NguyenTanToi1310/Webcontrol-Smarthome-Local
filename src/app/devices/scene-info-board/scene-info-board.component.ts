@@ -7,11 +7,11 @@ import { CustomMqttService } from '../../services/mqtt.service';
 import { Subscription } from 'rxjs';
 import { IMqttMessage } from "ngx-mqtt";
 @Component({
-  selector: 'app-edit-automation-condition',
-  templateUrl: './edit-automation-condition.component.html',
-  styleUrls: ['./edit-automation-condition.component.css']
+  selector: 'app-scene-info-board',
+  templateUrl: './scene-info-board.component.html',
+  styleUrls: ['./scene-info-board.component.css']
 })
-export class EditAutomationConditionComponent implements OnInit {
+export class SceneInfoBoardComponent implements OnInit {
   mqttSubscriptions: Subscription[] = [];
   modeColorLight : any = ""
   favoriteSeason: string = "Mặc định";
@@ -27,7 +27,7 @@ export class EditAutomationConditionComponent implements OnInit {
   });
 
   constructor(
-    public dialogRef: MatDialogRef<EditAutomationConditionComponent>,
+    public dialogRef: MatDialogRef<SceneInfoBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private common: CommonServiceService,
     public dialog: MatDialog,

@@ -50,6 +50,12 @@ export class CognitoService {
   private groupsSource = new BehaviorSubject([]);
   currentGroups = this.groupsSource.asObservable();
 
+  private groupsDataSource = new BehaviorSubject([]); //data of all groups
+  currentGroupsData = this.groupsDataSource.asObservable();
+
+  private scenesSource = new BehaviorSubject([]);
+  currentScenes = this.scenesSource.asObservable();
+
   private baseTopicSource = new BehaviorSubject("");
   currentBaseTopic = this.baseTopicSource.asObservable();
   public baseTopic = "";
@@ -401,12 +407,15 @@ export class CognitoService {
     this.currentDevicesData.subscribe((devicesData) => (list = devicesData));
 
     if (device.model_id == "WH_LEDRGB") {
-      let hex = colorsys.hsvToHex(
-        device.color.hue,
-        device.color.saturation,
-        100
-      );
+      if (device.color == undefined) {
+        let txt = '{"x": 0, "y": 0}';
+        device.color = JSON.parse(txt);
+      }
+      let rgb = this.cie_to_rgb(device.color.x, device.color.y, 254);
+      let hex = this.rgbToHex(rgb[0], rgb[1], rgb[2]);
+      console.log(rgb);
       device.hex = hex;
+      console.log(hex);
     }
     if (device.model_id == "WH_LEDRGB" || device.model_id == "den trang") {
       device.brightness = Number((device.brightness / 2.54).toFixed(0)); //scale to %
@@ -435,10 +444,154 @@ export class CognitoService {
     //   error: (error) => console.error(error),
     //   complete: () => console.log("Done"),
     // });
-    this.mqttSubscriptions[3] = this.clientMqtt.topic("zigbee2mqtt/bridge/groups").subscribe((message: IMqttMessage) => {
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/bridge/groups").subscribe((message: IMqttMessage) => {
       let messageJSON = JSON.parse(message.payload.toString())
       console.log("message: " + message.payload.toString());
-        this.groupsSource.next(messageJSON);
+      this.groupsSource.next(messageJSON);
+      var list = new Array();
+        this.groupsDataSource.next(list);
+
+        for (var group of messageJSON) {
+          this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/" + group.friendly_name).subscribe((message: IMqttMessage) => {
+            let messageJSON = JSON.parse(message.payload.toString())
+            if (list.length == 0) {
+              list.push(messageJSON);
+            }
+            for (var i = 0; i < list.length; i++) {
+              if (list[i].friendly_name == messageJSON.friendly_name) {
+                list[i] = messageJSON;
+                // this.devicesDataSource.next(list);
+                // list.push(data.value);
+                break;
+              }
+            }
+            if (i == list.length) {
+              list.push(messageJSON);
+              this.devicesDataSource.next(list);
+            }
+          });
+        }
     });
+  }
+
+  public getScenes(): any {
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/bridge/scenes").subscribe((message: IMqttMessage) => {   
+      let messageJSON = JSON.parse(message.payload.toString())
+      this.scenesSource.next(messageJSON);
+    });
+  }
+
+  cie_to_rgb(x: number, y: number, brightness: number) {
+    //Set to maximum brightness if no custom value was given (Not the slick ECMAScript 6 way for compatibility reasons)
+    if (brightness === undefined) {
+      brightness = 254;
+    }
+
+    var z = 1.0 - x - y;
+    var Y: number;
+    Y = Number((brightness / 254).toFixed(2));
+    var X = (Y / y) * x;
+    var Z = (Y / y) * z;
+
+    //Convert to RGB using Wide RGB D65 conversion
+    var red = X * 1.656492 - Y * 0.354851 - Z * 0.255038;
+    var green = -X * 0.707196 + Y * 1.655397 + Z * 0.036152;
+    var blue = X * 0.051713 - Y * 0.121364 + Z * 1.01153;
+
+    //If red, green or blue is larger than 1.0 set it back to the maximum of 1.0
+    if (red > blue && red > green && red > 1.0) {
+      green = green / red;
+      blue = blue / red;
+      red = 1.0;
+    } else if (green > blue && green > red && green > 1.0) {
+      red = red / green;
+      blue = blue / green;
+      green = 1.0;
+    } else if (blue > red && blue > green && blue > 1.0) {
+      red = red / blue;
+      green = green / blue;
+      blue = 1.0;
+    }
+
+    //Reverse gamma correction
+    red =
+      red <= 0.0031308
+        ? 12.92 * red
+        : (1.0 + 0.055) * Math.pow(red, 1.0 / 2.4) - 0.055;
+    green =
+      green <= 0.0031308
+        ? 12.92 * green
+        : (1.0 + 0.055) * Math.pow(green, 1.0 / 2.4) - 0.055;
+    blue =
+      blue <= 0.0031308
+        ? 12.92 * blue
+        : (1.0 + 0.055) * Math.pow(blue, 1.0 / 2.4) - 0.055;
+
+    //Convert normalized decimal to decimal
+    red = Math.round(red * 255);
+    green = Math.round(green * 255);
+    blue = Math.round(blue * 255);
+
+    if (isNaN(red)) red = 0;
+
+    if (isNaN(green)) green = 0;
+
+    if (isNaN(blue)) blue = 0;
+
+    return [red, green, blue];
+  }
+  componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  rgbToHex(r, g, b) {
+    return (
+      "#" +
+      this.componentToHex(r) +
+      this.componentToHex(g) +
+      this.componentToHex(b)
+    );
+  }
+
+  rgb_to_cie(red: number, green: number, blue: number) {
+    //Apply a gamma correction to the RGB values, which makes the color more vivid and more the like the color displayed on the screen of your device
+    var red =
+      red > 0.04045
+        ? Math.pow((red + 0.055) / (1.0 + 0.055), 2.4)
+        : red / 12.92;
+    var green =
+      green > 0.04045
+        ? Math.pow((green + 0.055) / (1.0 + 0.055), 2.4)
+        : green / 12.92;
+    var blue =
+      blue > 0.04045
+        ? Math.pow((blue + 0.055) / (1.0 + 0.055), 2.4)
+        : blue / 12.92;
+
+    //RGB values to XYZ using the Wide RGB D65 conversion formula
+    var X = red * 0.664511 + green * 0.154324 + blue * 0.162028;
+    var Y = red * 0.283881 + green * 0.668433 + blue * 0.047685;
+    var Z = red * 0.000088 + green * 0.07231 + blue * 0.986039;
+
+    //Calculate the xy values from the XYZ values
+    var x = Number((X / (X + Y + Z)).toFixed(4));
+    var y = Number((Y / (X + Y + Z)).toFixed(4));
+
+    if (isNaN(x)) x = 0;
+
+    if (isNaN(y)) y = 0;
+
+    return [x, y];
+  }
+
+  hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
   }
 }

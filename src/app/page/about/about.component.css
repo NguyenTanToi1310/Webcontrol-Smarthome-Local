@@ -3,7 +3,7 @@ body{
 }
 .background-device-page {
     height: 90vh;
-    background-image: url("../../../assets/about/bg.jpg");
+    background-image: url(../../../assets/about/bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right top;
@@ -37,7 +37,7 @@ body{
     margin-right:3%;
     text-align: justify;
     /* color: rgb(255, 255, 255) */
-    background-image: url("../../../assets/about/toi.jpg");
+    background-image: url(../../../assets/about/toi.jpg);
     background-size: 100px;
     background-repeat: no-repeat;
     background-position: right center;
@@ -47,9 +47,63 @@ body{
     width: 52%;
     padding-left: 20px;
     text-align: justify;
-    background-image: url("../../../assets/about/toi.jpg");
+    background-image: url(../../../assets/about/toi.jpg);
     background-size: 100px;
     background-repeat: no-repeat;
     background-position: right center;
     border-left: solid #39a1ff;
+}
+
+@media screen and (max-width: 480px){
+    body{
+        position: inherit;
+    }
+    .intro{
+        font-size: 20px;
+        font-weight: normal;
+    }
+    .intro{
+        margin: 0 20px 0 20px;
+        text-align: justify;
+    }
+    .background-device-page{
+        background-image: none;
+    }
+    #logo-lite{
+        scale: 50%;
+        width: 100%;
+        height: auto !important;
+    }
+    .contact-us{
+        padding-top: 20px;
+        padding: 0;
+        margin: 0;
+    }
+    .Toi-info{
+        overflow: auto;
+        width: 100%;
+        padding-left: 120px;
+        text-align: left;
+        background-image: url(../../../assets/about/toi.jpg);
+        background-size: 100px;
+        background-repeat: no-repeat;
+        background-position: left center;
+        border-left: none;
+      }
+      
+    .Quoc-info{
+        overflow: auto;
+        width: 100%;
+        padding-left: 120px;
+        padding-top: 20px;
+        text-align: left;
+        background-image: url(../../../assets/about/toi.jpg);
+        background-size: 100px;
+        background-repeat: no-repeat;
+        background-position: left center;
+        border-left: none;
+    }
+    .contact-us-text{
+        display: none;
+    }
 }

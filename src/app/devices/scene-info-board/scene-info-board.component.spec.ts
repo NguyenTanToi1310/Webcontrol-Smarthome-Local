@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AutomationBoardComponent } from './automation-board.component';
+import { SceneInfoBoardComponent } from './scene-info-board.component';
 
-describe('AutomationBoardComponent', () => {
-  let component: AutomationBoardComponent;
-  let fixture: ComponentFixture<AutomationBoardComponent>;
+describe('SceneInfoBoardComponent', () => {
+  let component: SceneInfoBoardComponent;
+  let fixture: ComponentFixture<SceneInfoBoardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AutomationBoardComponent ]
+      declarations: [ SceneInfoBoardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AutomationBoardComponent);
+    fixture = TestBed.createComponent(SceneInfoBoardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

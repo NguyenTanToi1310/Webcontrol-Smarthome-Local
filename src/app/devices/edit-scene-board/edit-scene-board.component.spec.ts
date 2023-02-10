@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NameNewGroupBoardComponent } from './name-new-group-board.component';
+import { EditSceneBoardComponent } from './edit-scene-board.component';
 
-describe('NameNewGroupBoardComponent', () => {
-  let component: NameNewGroupBoardComponent;
-  let fixture: ComponentFixture<NameNewGroupBoardComponent>;
+describe('EditSceneBoardComponent', () => {
+  let component: EditSceneBoardComponent;
+  let fixture: ComponentFixture<EditSceneBoardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NameNewGroupBoardComponent ]
+      declarations: [ EditSceneBoardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NameNewGroupBoardComponent);
+    fixture = TestBed.createComponent(EditSceneBoardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

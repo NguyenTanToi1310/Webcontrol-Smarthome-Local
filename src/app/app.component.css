@@ -2,6 +2,7 @@
     height: 10vh;
     width:auto;
     margin-left: 20px;
+    cursor: pointer;
 }
 .navbar-collapse{
     color:#FF914D
@@ -67,4 +68,80 @@ button .button-name {
     background-color: white;
     color: #FF914D;
     transition-duration: 0.5s;
+}
+
+.btn-outline-dark:hover {
+    color: white;
+    background-color: #FF914D;
+    transition: 0.5s;
+}
+
+.btn-outline-dark {
+    transform: scale(1.2);
+    outline: none;
+    border: none;
+}
+button:focus {
+    box-shadow: none !important;
+}
+
+.example-button-row-collapse{
+    display: none;
+}
+
+@media screen and (max-width: 480px){
+    .container-fluid{
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #f2f2f2;
+        z-index: 100;
+        padding-bottom: 10px;
+        max-width: 100vw;
+        /* border-radius: 0 0 20px 20px; */
+    }
+    .navbar{
+        padding-top:0;
+        display: contents;
+    }
+    .navbar-brand-name{
+        margin-left: 0px;
+        max-width: 80%;
+        display: flex;
+    }
+    .button-hover{
+        display: block;
+        text-align: right;
+    }
+    .Logined, .userName, .logoutButton{
+        background-color: #FF914D;
+        color: #f2f2f2;
+        font-size: 15px;
+        border-radius: 20px;
+        text-align: center;
+    }
+    .userName:hover, .userName>span{
+        background-color: #f2f2f2;
+        color: #FF914D;
+        transition-duration: 0.5s;
+    }
+    .logoutButton:hover, .logoutButton>span, .loginButton{
+        background-color: #f2f2f2;
+        color: #FF914D;
+        transition-duration: 0.5s;
+    }
+    .navbar-collapse{
+        max-width: 95vw ;
+    }
+    .navbar-toggler{
+        border: none;    
+        max-width: 20%;
+    }
+    .example-button-row-show{
+        display: none;
+    }
+    .example-button-row-collapse{
+        display: block;
+    }
 }

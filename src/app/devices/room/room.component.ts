@@ -6,12 +6,12 @@ import {
 } from "@angular/material/dialog";
 import { CommonServiceService } from "src/app/services/common-service.service";
 import { ControllerBoardComponent } from "../controller-board/controller-board.component";
-import { AutomationBoardComponent } from "../automation-board/automation-board.component";
+import { CreateNewSceneBoardComponent } from "../create-new-scene-board/create-new-scene-board.component";
 import { CognitoService } from "src/app/services/cognito.service";
 import { BoundText } from "@angular/compiler/src/render3/r3_ast";
 import { PubSub } from "aws-amplify";
 import { RenameGroupBoardComponent } from "../rename-group-board/rename-group-board.component";
-import { NameNewGroupBoardComponent } from "../name-new-group-board/name-new-group-board.component";
+import { CreateNewGroupBoardComponent } from "../create-new-group-board/create-new-group-board.component";
 
 import { CustomMqttService } from '../../services/mqtt.service';
 import { Subscription } from 'rxjs';
@@ -134,7 +134,7 @@ export class RoomComponent implements OnInit {
 
   openDialogAutomationBoard(): void {
     // const virtualDevice =  Object.assign({}, device)
-    const dialogRef = this.dialog.open(AutomationBoardComponent, {
+    const dialogRef = this.dialog.open(CreateNewSceneBoardComponent, {
       width: "430px",
       // data: { virtualDevice }
     });
@@ -194,7 +194,7 @@ export class RoomComponent implements OnInit {
   }
 
   openDialogNameNewGroup(): void {
-    const dialogRefEdit = this.dialog.open(NameNewGroupBoardComponent, {
+    const dialogRefEdit = this.dialog.open(CreateNewGroupBoardComponent, {
       width: "430px",
     });
     dialogRefEdit.afterClosed().subscribe((result) => {});

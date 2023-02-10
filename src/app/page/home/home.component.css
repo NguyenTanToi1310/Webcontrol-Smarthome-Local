@@ -1,5 +1,5 @@
 /* .background-home {
-    background-image: url("../../../assets/home-page/background-9.jpg"); 
+    background-image: url(../../../assets/home-page/background-9.jpg); 
     background-attachment: fixed !important;
     background-position: 100%;
     background-repeat: no-repeat;
@@ -201,11 +201,39 @@ body{
     font-weight: bold;
 }
 #footer{
+    margin: 0;
     text-align: center;
     background-color: rgb(73, 73, 73);
     color: white;
     width: 100vw;
-    height: 4vh;
+    height: 30px;
     bottom: 0px;
-    position: absolute;
+    position: fixed;
+}
+
+@media screen and (max-width: 480px){
+    body{
+        position: inherit;
+    }
+    #description{
+        font-size: 20px;
+        font-weight: normal;
+    }
+    #left{
+        width: 100%;
+    }
+    #logo-lite{
+        scale: 50%;
+        width: 100%;
+    }
+    #right{
+        width: 100%;
+    }
+    #bg{
+        width: inherit;
+    }
+    #footer{
+        background-color: white;
+        color: black;
+    }
 }

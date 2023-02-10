@@ -4,7 +4,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PubSub } from 'aws-amplify';
 import { CognitoService } from 'src/app/services/cognito.service';
-import { CommonServiceService } from 'src/app/services/common-service.service';
 
 import { CustomMqttService } from '../../services/mqtt.service';
 import { Subscription } from 'rxjs';
@@ -18,11 +17,11 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-name-new-group-board',
-  templateUrl: './name-new-group-board.component.html',
-  styleUrls: ['./name-new-group-board.component.css']
+  selector: 'app-create-new-group-board',
+  templateUrl: './create-new-group-board.component.html',
+  styleUrls: ['./create-new-group-board.component.css']
 })
-export class NameNewGroupBoardComponent implements OnInit {
+export class CreateNewGroupBoardComponent implements OnInit {
   mqttSubscriptions: Subscription[] = [];
   public baseTopic: any;
 
@@ -39,9 +38,8 @@ export class NameNewGroupBoardComponent implements OnInit {
   }
 
   constructor(
-    public dialogRef: MatDialogRef<NameNewGroupBoardComponent>,
+    public dialogRef: MatDialogRef<CreateNewGroupBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService,
     private readonly clientMqtt: CustomMqttService,
     private cognito: CognitoService,
   ) { }
