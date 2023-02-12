@@ -33,6 +33,7 @@ declare global {
 })
 export class VoiceRecoderComponent implements OnInit {
   mqttSubscriptions: Subscription[] = [];
+  indexSubscriptions: number = 0;
   subCount: number = 0;
   sessionID: string = '';
   //Lets declare Record OBJ
@@ -154,59 +155,53 @@ export class VoiceRecoderComponent implements OnInit {
   }
 
   respondVoice() {
-    console.log("gọi hàm\n");
-    this.mqttSubscriptions[0] = this.clientMqtt
-      .topic("hermes/audioServer/default/playBytes/weboffline")
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt
+      .topic("assistant/error")
       .subscribe((message: IMqttMessage) => {
-        let messageByte = message.payload.toString();
-        console.log("revicedddd\n");
-        console.log(messageByte);
-        playByteArray(messageByte);
+        // let messageByte = message.payload.toString();
+        // console.log("revicedddd\n");
+        // console.log(message.payload.toString());
+        playByteArray(message.payload);
       });
   }
 }
 
 function init() {
   if (!window.AudioContext) {
-    if (!window.AudioContext ) {
-      alert(
-        "Your browser does not support any AudioContext and cannot play back this audio."
-      );
+    if (!window.webkitAudioContext) {
+      alert("Your browser does not support any AudioContext and cannot play back this audio.");
       return;
     }
-    window.AudioContext = window.AudioContext ;
+      window.AudioContext = window.webkitAudioContext;
+    }
+  
+  context = new (window.AudioContext || window.webkitAudioContext)();
+  // context = new AudioContext();
   }
+  
+  function playByteArray(byteArray) {
+    var arrayBuffer = new ArrayBuffer(byteArray.length);
+    var bufferView = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteArray.length; i++) {
+      bufferView[i] = byteArray[i];
+    }
 
-  context = new AudioContext();
-}
-
-function playByteArray( bytes ) {
-  var buffer = new Uint8Array( bytes.length );
-  buffer.set( new Uint8Array(bytes), 0 );
-
-  context.decodeAudioData(buffer.buffer, play);
-}
-
-function play( audioBuffer ) {
-  var source = context.createBufferSource();
-  source.buffer = audioBuffer;
-  source.connect( context.destination );
-  source.start(0);
-}
-
-// function playWave(byteArray) {
-//   var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-//   var myAudioBuffer = audioCtx.createBuffer(1, byteArray.length, 8000);
-//   var nowBuffering = myAudioBuffer.getChannelData(0);
-//   for (var i = 0; i < byteArray.length; i++) {
-//       nowBuffering[i] = byteArray[i];
-//   }
-
-//   var source = audioCtx.createBufferSource();
-//   source.buffer = myAudioBuffer;
-//   source.connect(audioCtx.destination);
-//   source.start();
-// }
+    context.decodeAudioData(arrayBuffer, function(buffer) {
+        buf = buffer;
+        play();
+    });
+  }
+  
+  // Play the loaded file
+  function play() {
+    // Create a source node from the buffer
+    var source = context.createBufferSource();
+    source.buffer = buf;
+    // Connect to the final output node (the speakers)
+    source.connect(context.destination);
+    // Play immediately
+    source.start(0);
+  }
 
 // function buf2hex(buffer) {
 //   // buffer is an ArrayBuffer
