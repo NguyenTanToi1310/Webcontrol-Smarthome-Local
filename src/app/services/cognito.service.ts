@@ -287,9 +287,9 @@ export class CognitoService {
         if (device.friendly_name === "Coordinator") {
           continue;
         }
-        if (device.model_id === "TS0505B") {
-          device.model_id = "WH_LEDRGB";
-        }
+        // if (device.model_id === "TS0505B") {
+        //   device.model_id = "WH_LEDRGB";
+        // }
         device.linkquality = "0";
 
         if (device.friendly_name.includes("/")) {
@@ -367,7 +367,7 @@ export class CognitoService {
         //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name + "/get",
         //   { state: "" }
         // );
-        this.clientMqtt.publish("zigbee2mqtt/" + device.friendly_name + "/get", JSON.stringify({ state: "" }));
+        this.clientMqtt.publish("zigbee2mqtt/" + device.friendly_name + "/customGet", JSON.stringify({ state: "" }));
 
       }
       this.devicesListSource.next(devicesList);
@@ -406,7 +406,7 @@ export class CognitoService {
     var list = new Array();
     this.currentDevicesData.subscribe((devicesData) => (list = devicesData));
 
-    if (device.model_id == "WH_LEDRGB") {
+    if (device.model_id == "WH_LEDRGB" || device.model_id == "TS0505B") {
       if (device.color == undefined) {
         let txt = '{"x": 0, "y": 0}';
         device.color = JSON.parse(txt);
@@ -417,7 +417,11 @@ export class CognitoService {
       device.hex = hex;
       console.log(hex);
     }
-    if (device.model_id == "WH_LEDRGB" || device.model_id == "den trang") {
+    if (
+      device.model_id == "WH_LEDRGB" ||
+      device.model_id == "TS0505B" ||
+      device.model_id == "WH_LEDTEMP"
+    ) {
       device.brightness = Number((device.brightness / 2.54).toFixed(0)); //scale to %
     }
 
@@ -454,6 +458,7 @@ export class CognitoService {
         for (var group of messageJSON) {
           this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/" + group.friendly_name).subscribe((message: IMqttMessage) => {
             let messageJSON = JSON.parse(message.payload.toString())
+            messageJSON.friendly_name = message.topic.toString()
             if (list.length == 0) {
               list.push(messageJSON);
             }
@@ -471,6 +476,12 @@ export class CognitoService {
             }
           });
         }
+        //send this signal to ask gateway to send this group's data
+        // PubSub.publish(
+        //   this.baseTopic + "zigbee2mqtt/" +group.friendly_name+ "/customGet",
+        //   { state: "" }
+        // );
+        this.clientMqtt.publish("zigbee2mqtt/" + group.friendly_name+ "/customGet", JSON.stringify({ state: "" }));
     });
   }
 

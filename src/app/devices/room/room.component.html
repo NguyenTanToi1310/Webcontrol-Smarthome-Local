@@ -138,7 +138,7 @@
                                 <h2>{{member}}</h2>
                             </div>
 
-                            
+
                             <!-- <div class="tag-content">
                                 <h4 class="row d-flex">
                                     ngoại tuyến
@@ -163,7 +163,7 @@
                                             </h4>
                                             <ng-template #elseContact>
                                                 <h4 class="row d-flex ">Cửa mở</h4>
-                                              </ng-template>
+                                            </ng-template>
                                         </div>
                                     </div>
                                     <div *ngIf="deviceData.model_id === 'SNZB-01'">
@@ -173,7 +173,8 @@
                                             </h4>
                                         </div>
                                     </div>
-                                    <div *ngIf="deviceData.model_id === 'WH_LEDRGB'">
+                                    <div
+                                        *ngIf="deviceData.model_id === 'WH_LEDRGB' || deviceData.model_id === 'TS0505B' || deviceData.model_id === 'WH_LEDTEMP'">
                                         <div class="tag-content">
                                             <h4 class="row d-flex"
                                                 *ngIf="deviceData.state === 'ON'; else elseStateDevice">

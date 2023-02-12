@@ -220,7 +220,7 @@
                             </div>
 
 
-                            <div *ngIf="member.model_id === 'WH_LEDRGB' || member.model_id === 'WH_LEDTEMP'">
+                            <div *ngIf="member.model_id === 'WH_LEDRGB' || member.model_id === 'TS0505B' || member.model_id === 'WH_LEDTEMP'">
                                 <div *ngFor="let deviceData of devicesData">
                                     <div *ngIf="deviceData.ieee_address== member.ieee_address">
                                         <div class="tag-header">

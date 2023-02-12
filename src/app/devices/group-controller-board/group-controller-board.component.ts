@@ -19,6 +19,7 @@ import { IMqttMessage } from "ngx-mqtt";
 })
 export class GroupControllerBoardComponent implements OnInit {
   public baseTopic: any;
+  public groupsData: any;
   mqttSubscriptions: Subscription[] = [];
 
   private deviceDataResponse: any = "";
@@ -38,6 +39,34 @@ export class GroupControllerBoardComponent implements OnInit {
     this.cognito.currentBaseTopic.subscribe(
       (baseTopic) => (this.baseTopic = baseTopic)
     );
+
+    this.cognito.currentGroupsData.subscribe(groupsData => {
+      this.groupsData = groupsData;
+      // console.log("groups data (group controller component):\n", this.groupsData);
+      for(var groupData of this.groupsData){
+        if(groupData.friendly_name == this.data.virtualGroup.friendly_name){
+          // this.data.virtualGroup = groupData;
+          if(!!groupData.state){
+            this.data.virtualGroup.state = groupData.state;
+          }
+          console.log(!!groupData.color)
+          if(!!groupData.color){
+            let rgb = this.cognito.cie_to_rgb(groupData.color.x, groupData.color.y, 254);
+            let hex = this.cognito.rgbToHex(rgb[0], rgb[1], rgb[2]);
+            this.data.virtualGroup.hex = hex;
+          }
+          if(!!groupData.brightness){
+            this.data.virtualGroup.brightness_scale100 = Number((groupData.brightness / 2.54).toFixed(0)); //scale to %
+          }
+          if(!!groupData.color_temp){
+            this.data.virtualGroup.color_temp = groupData.color_temp;
+          }
+          break;
+        }
+      }
+      console.log("virtual group data (group controller component):\n", this.data.virtualGroup);
+
+    });
   }
 
   onNoClick(): void {
@@ -53,6 +82,7 @@ export class GroupControllerBoardComponent implements OnInit {
       state?: any;
       color?: { hex?: any };
       brightness?: any;
+      color_temp?: any;
       state_l1?: any;
       state_l2?: any;
       state_l3?: any;
@@ -75,13 +105,20 @@ export class GroupControllerBoardComponent implements OnInit {
     }
 
     if(!!this.data.virtualGroup.hex){
-      var txt = '{"hex":"' + this.data.virtualGroup.hex + '"}';
+      // var txt = '{"hex":"' + this.data.virtualGroup.hex + '"}';
+      let rgb = this.cognito.hexToRgb(this.data.virtualGroup.hex);
+      let xy = this.cognito.rgb_to_cie(rgb.r, rgb.g, rgb.b);
+      let txt = '{"x":' + xy[0] + ',"y":' + xy[1] + '}';
       changedProperties.color = JSON.parse(txt);
     }
     if(this.data.virtualGroup.brightness != null){
       changedProperties.brightness = Number(
-        (this.data.virtualGroup.brightness * 2.54).toFixed(0)
+        (this.data.virtualGroup.brightness_scale100 * 2.54).toFixed(0)
       );
+    }
+
+    if(this.data.virtualGroup.color_temp != null){
+      changedProperties.color_temp = this.data.virtualGroup.color_temp;
     }
 
     // PubSub.publish(

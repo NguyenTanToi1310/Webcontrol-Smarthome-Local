@@ -1,65 +1,79 @@
 <div style="text-align: right">
-    <button mat-button (click)="onNoClick()">X</button>
+  <button mat-button (click)="onNoClick()">X</button>
 </div>
 
 <div class="device-name">
-    <div class="tag-header">
-        <h1>{{data.virtualGroup.friendly_name}}</h1>
-    </div>
+  <div class="tag-header">
+    <h1>{{data.virtualGroup.friendly_name}}</h1>
+  </div>
 </div>
 <div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px; overflow: unset;">
-    <div class="control-device">
-        <div class="onOff" *ngIf="!data.virtualGroup.isSensorExist">
-            <h2 class="onOffText">Bật/Tắt tất cả thiết bị:</h2>
-            <div class="row" class="onOffButton">
-                <div class="col">
-                    <div class="toggle-wrapper2">
-                        <div class="toggle2 dog-rollover2">
-                            <input *ngIf="data.virtualGroup.type !== 'sensor-th'; else sensorType" id="doggo2"
-                                type="checkbox" class="inputCheckbox" checked="data.virtualGroup.state"
-                                [(ngModel)]="data.virtualGroup.state" />
-                            <ng-template #sensorType>
-                                <input id="doggo2" type="checkbox" class="inputCheckbox"
-                                    checked="data.virtualGroup.active" [(ngModel)]="data.virtualGroup.active" />
-                            </ng-template>
-                            <label class="toggle-item2" for="doggo2">
-                                <div class="dog2">
-                                    <div class="face2"></div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
+  <div class="control-device">
+    <div class="onOff" *ngIf="!data.virtualGroup.isSensorExist">
+      <h2 class="onOffText">Bật/Tắt tất cả thiết bị:</h2>
+      <div class="row" class="onOffButton">
+        <div class="col">
+          <div class="toggle-wrapper2">
+            <div class="toggle2 dog-rollover2">
+              <input *ngIf="data.virtualGroup.type !== 'sensor-th'; else sensorType" id="doggo2" type="checkbox"
+                class="inputCheckbox" checked="data.virtualGroup.state" [(ngModel)]="data.virtualGroup.state" />
+              <ng-template #sensorType>
+                <input id="doggo2" type="checkbox" class="inputCheckbox" checked="data.virtualGroup.active"
+                  [(ngModel)]="data.virtualGroup.active" />
+              </ng-template>
+              <label class="toggle-item2" for="doggo2">
+                <div class="dog2">
+                  <div class="face2"></div>
                 </div>
+              </label>
             </div>
-            <br>
+          </div>
         </div>
+      </div>
+      <br>
+    </div>
 
-        <div *ngIf="!data.virtualGroup.isSensorExist && !data.virtualGroup.isSwitchExist">
-            <div>
-                <h2>Điều chỉnh độ sáng:</h2>
-            </div>
-            <div class="row">
-                <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0"
-                    max="100" value="{{ data.virtualGroup.brightness }}" [(ngModel)]="data.virtualGroup.brightness"
-                    aria-label="units">
-                </mat-slider>
-            </div>
-        </div>
+    <div *ngIf="!data.virtualGroup.isSensorExist && !data.virtualGroup.isSwitchExist">
+      <div class="row onOffText" style="width:100%">
+        <h2>Điều chỉnh độ sáng:</h2>
+      </div>
+      <br/>
+      <div >
+        <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
+          value="{{ data.virtualGroup.brightness_scale100 }}" [(ngModel)]="data.virtualGroup.brightness_scale100" aria-label="units">
+        </mat-slider>
+      </div>
+    </div>
+  </div>
 
+  <div
+    *ngIf="!data.virtualGroup.isSensorExist && !data.virtualGroup.isSwitchExist && !data.virtualGroup.isColorNoneTemperatureLightExist">
+    <div>
+      <div class="row onOffText" style="width:100%">
+        <h2>Điều chỉnh nhiệt độ màu:</h2>
+      </div>
+      <br/>
+      <div>
+        <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0" max="500"
+          value="{{ data.virtualGroup.color_temp }}" [(ngModel)]="data.virtualGroup.color_temp" aria-label="units">
+        </mat-slider>
+      </div>
+    </div>
+  </div>
 
-        <div
-            *ngIf="!data.virtualGroup.isSensorExist && !data.virtualGroup.isSwitchExist && !data.virtualGroup.isNormalLightExist">
-            <div class="onOff">
-                <h2 class="onOffText">Thiết lập màu đèn:</h2>
-                <div class="row" class="onOffButton" style="text-align: center; width:40% !important; height: 45px;">
-                    <input type="color" id="head" name="head" value="data.virtualGroup.hex"
-                        [(ngModel)]="data.virtualGroup.hex" style="width: 100%; height: 35px" />
-                    <!-- <div>{{ data.virtualGroup.hex }}</div> -->
-                </div>
-            </div>
-        </div>
+  <div
+    *ngIf="!data.virtualGroup.isSensorExist && !data.virtualGroup.isSwitchExist && !data.virtualGroup.isTemperatureLightExist">
+    <div class="onOff">
+      <h2 class="onOffText">Thiết lập màu đèn:</h2>
+      <div class="row" class="onOffButton" style="text-align: center; width:40% !important; height: 45px;">
+        <input type="color" id="head" name="head" value="data.virtualGroup.hex" [(ngModel)]="data.virtualGroup.hex"
+          style="width: 100%; height: 35px" />
+        <!-- <div>{{ data.virtualGroup.hex }}</div> -->
+      </div>
+    </div>
+  </div>
 
-        <!-- <div *ngIf="data.virtualGroup.model_id === 'ZM-L03E-Z'">
+  <!-- <div *ngIf="data.virtualGroup.model_id === 'ZM-L03E-Z'">
         <div class="onOff">
           <h2 class="onOffText">Bật/Tắt công tắc 1: </h2>
           <div class="row" class="onOffButton">
@@ -136,7 +150,7 @@
         <br />
       </div> -->
 
-        <!-- <div *ngIf="data.virtualGroup.model_id === 'WH_SWITCH4'">
+  <!-- <div *ngIf="data.virtualGroup.model_id === 'WH_SWITCH4'">
         <div class="onOff">
           <h2 class="onOffText">Bật/Tắt công tắc 1: </h2>
           <div class="row" class="onOffButton">
@@ -225,10 +239,10 @@
         </div>
       </div>
         </div> -->
-    </div>
+</div>
 
-    <br>
-    <!-- <div class="notification-edit d-flex justify-content-center">
+<br>
+<!-- <div class="notification-edit d-flex justify-content-center">
         <div class="spinner-border text-primary" role="status" *ngIf="result.status == 'processing'; else resultTrue">
         </div>
         <ng-template #resultTrue>
@@ -246,8 +260,7 @@
         <button *ngIf="result.status == 'processing'" disabled mat-button>Đồng ý</button>
         <button *ngIf="result.status == false" mat-button (click)="onNoClick()">Đóng</button>
     </div> -->
-    <div mat-dialog-actions style="float: right;">
-      <button mat-button (click)="onNoClick()">Hủy</button>
-      <button mat-button (click)="onYesClick()" cdkFocusInitial>Đồng ý</button>
-  </div>
+<div mat-dialog-actions style="float: right;">
+  <button mat-button (click)="onNoClick()">Hủy</button>
+  <button mat-button (click)="onYesClick()" cdkFocusInitial>Đồng ý</button>
 </div>

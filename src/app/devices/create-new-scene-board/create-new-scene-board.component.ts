@@ -53,6 +53,12 @@ export class CreateNewSceneBoardComponent implements OnInit {
           this.devices[index].hex = "#ffffff";
           this.devices[index].brightness = 0;
         }
+        if(device.model_id == "TS0505B") {
+          this.devices[index].state = false;
+          this.devices[index].hex = "#ffffff";
+          this.devices[index].brightness = 0;
+          this.devices[index].color_temp = 0;
+        }
         if(device.model_id == "WH_LEDTEMP") {
           this.devices[index].state = false;
           this.devices[index].brightness = 0;
@@ -101,12 +107,13 @@ export class CreateNewSceneBoardComponent implements OnInit {
           let xy = this.cognito.rgb_to_cie(rgb.r, rgb.g, rgb.b);
           let txt = '{"x":' + xy[0] + ',"y":' + xy[1] + '}';
           let color = JSON.parse(txt);
-          members[index].state = state,
-          members[index].color = color,
-          members[index].brightness = brightness
+          members[index].state = state;
+          members[index].color = color;
+          members[index].brightness = brightness;
           //console.log(members[index]);
         }
-        if(device.model_id == 'WH_LEDTEMP') {
+        
+        if(device.model_id == 'TS0505B') {
           let state = "";
           if(device.state == true) {
             state = "ON"
@@ -114,8 +121,29 @@ export class CreateNewSceneBoardComponent implements OnInit {
             state = "OFF"
           }
           let brightness = (device.brightness * 2.54).toFixed(0)
-          members[index].state = state,
-          members[index].brightness = brightness
+          let rgb = this.cognito.hexToRgb(device.hex);
+          let xy = this.cognito.rgb_to_cie(rgb.r, rgb.g, rgb.b);
+          let txt = '{"x":' + xy[0] + ',"y":' + xy[1] + '}';
+          let color = JSON.parse(txt);
+          members[index].state = state;
+          members[index].color = color;
+          members[index].brightness = brightness;
+          members[index].color_temp = device.color_temp;
+          //console.log(members[index]);
+        }
+
+        if(device.model_id == 'WH_LEDTEMP') {
+          let state = "";
+          if(device.state == true) {
+            state = "ON"
+          } else {
+            state = "OFF"
+          }
+          let brightness = (device.brightness * 2.54).toFixed(0);
+          members[index].state = state;
+          members[index].brightness = brightness;
+          members[index].color_temp = device.color_temp;
+
           //console.log(members[index]);
         }
         if(device.model_id == 'ZM-L03E-Z') {
@@ -176,7 +204,6 @@ export class CreateNewSceneBoardComponent implements OnInit {
         index++;
       }
     }
-    // this.dialogRef.close();
     let scene = {
       "name": this.newSceneFormGroup.value.nameFormControl,
       "members": members
@@ -186,6 +213,7 @@ export class CreateNewSceneBoardComponent implements OnInit {
       this.checkIfSceneNameValid = true;
       // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/scene/add", scene);
       this.clientMqtt.publish("zigbee2mqtt/bridge/request/scene/add", JSON.stringify(scene))
+      this.dialogRef.close();
     } else {
       this.checkIfSceneNameValid = false;
     }

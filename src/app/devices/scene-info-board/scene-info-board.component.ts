@@ -1,7 +1,8 @@
 import { Component,Inject, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CommonServiceService } from 'src/app/services/common-service.service';
+import { EditSceneBoardComponent } from '../edit-scene-board/edit-scene-board.component';
+import { CognitoService } from 'src/app/services/cognito.service';
 
 import { CustomMqttService } from '../../services/mqtt.service';
 import { Subscription } from 'rxjs';
@@ -13,42 +14,27 @@ import { IMqttMessage } from "ngx-mqtt";
 })
 export class SceneInfoBoardComponent implements OnInit {
   mqttSubscriptions: Subscription[] = [];
-  modeColorLight : any = ""
-  favoriteSeason: string = "Mặc định";
-  seasons: string[] = ['Mặc định', 'Tuỳ Chỉnh'];
-
-  isChecked = true;
-  formGroup = this._formBuilder.group({
-    whiteLight: '',
-    colorLight: '',
-    switch1: '',
-    switch2: '',
-    switch3: '',
-  });
 
   constructor(
     public dialogRef: MatDialogRef<SceneInfoBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private common: CommonServiceService,
     public dialog: MatDialog,
     private readonly clientMqtt: CustomMqttService,
+    private cognito: CognitoService,
     private _formBuilder: FormBuilder
   ) { }
   
   ngOnInit(){ 
-    if(this.data.virtualDevice.type === "fan") {
-      this.data.virtualDevice.fanspeed = "S2"
-    } else if (this.data.virtualDevice.type === "color-light") {
-      if (this.data.virtualDevice.burning) {
-        this.modeColorLight = "burning"
-      } else if (this.data.virtualDevice.sleep) {
-        this.modeColorLight = "sleep"
-      } else if (this.data.virtualDevice.rainbow) {
-        this.modeColorLight = "rainbow"
-      } else if (this.data.virtualDevice.party) {
-        this.modeColorLight = "party"
-      } else {
-        this.modeColorLight = "none"  // khong co mode nao duoc chon se chon mode none
+    for (let member of this.data.virtualScene.members) {
+      if (member.model_id == 'WH_LEDRGB' || member.model_id == 'TS0505B')
+      {
+        member.brightness_scale_100 = Number((member.brightness / 2.54).toFixed(0));
+        let rgb = this.cognito.cie_to_rgb(member.color.x, member.color.y, 254);
+        member.hex = this.cognito.rgbToHex(rgb[0], rgb[1], rgb[2]);
+      }
+      if (member.model_id == 'WH_LEDTEMP')
+      {
+        member.brightness_scale_100 = Number((member.brightness / 2.54).toFixed(0));
       }
     }
   }
@@ -57,61 +43,32 @@ export class SceneInfoBoardComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  setModeColorLight(mode : string){
-    switch (mode) {
-      case 'sleep':
-        this.modeColorLight = "sleep"
-        break
-      case 'burning':
-        this.modeColorLight = "burning"
-        break
-      case 'rainbow':
-        this.modeColorLight = "rainbow"
-        break
-      case 'party':
-        this.modeColorLight = "party"
-        break
-      default:
-        this.modeColorLight = "none"  // khong co mode nao duoc chon se sáng màu được chọn
-    }
+  async onYesClick() {
+    this.dialogRef.close();
   }
 
-  async onYesClick() {
-    if (this.data.virtualDevice.type === "color-light") {
-      if (this.modeColorLight === "burning") {
-        this.data.virtualDevice.burning = true
-        this.data.virtualDevice.sleep = false
-        this.data.virtualDevice.rainbow = false
-        this.data.virtualDevice.party = false
-      } else if (this.modeColorLight === "sleep") {
-        this.data.virtualDevice.burning = false
-        this.data.virtualDevice.sleep = true
-        this.data.virtualDevice.rainbow = false
-        this.data.virtualDevice.party = false
-      } else if (this.modeColorLight === "rainbow") {
-        this.data.virtualDevice.burning = false
-        this.data.virtualDevice.sleep = false
-        this.data.virtualDevice.rainbow = true
-        this.data.virtualDevice.party = false
-      } else if (this.modeColorLight === "party") {
-        this.data.virtualDevice.burning = false
-        this.data.virtualDevice.sleep = false
-        this.data.virtualDevice.rainbow = false
-        this.data.virtualDevice.party = true
-      } else if (this.modeColorLight === "none") {
-        this.data.virtualDevice.burning = false
-        this.data.virtualDevice.sleep = false
-        this.data.virtualDevice.rainbow = false
-        this.data.virtualDevice.party = false
-      }
-    }
-  }
 
   formatLabel(value: number) {
     return value;
   }
 
-  alertFormValues(formGroup: FormGroup) {
-    alert(JSON.stringify(formGroup.value, null, 2));
+  requestDeleteDevice(): void {
+    // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/scene/remove", {"name": this.data.virtualScene.name});
+    this.clientMqtt.publish("zigbee2mqtt/bridge/request/scene/remove", JSON.stringify({"name": this.data.virtualScene.name}))
+
+  }
+
+  openDialogEditScene(): void {
+    const virtualScene = Object.assign({}, this.data.virtualScene);
+    const backupScene = Object.assign({}, this.data.virtualScene);
+    const dialogRef = this.dialog.open(EditSceneBoardComponent, {
+      autoFocus: false,
+      width: "430px",
+      data: { virtualScene, backupScene },
+    });
+    this.dialogRef.close();
+    dialogRef.afterClosed().subscribe((result) => {
+      /* anything */
+    });
   }
 }

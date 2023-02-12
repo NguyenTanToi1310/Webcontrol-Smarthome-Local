@@ -9,6 +9,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
+
 import * as RecordRTC from "recordrtc";
 // declare var MediaRecorder: any;
 
@@ -17,6 +18,14 @@ import * as RecordRTC from "recordrtc";
 //   id: number;
 // }
 
+window.onload = init;
+var context; // Audio context
+var buf; // Audio buffer
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+}
 @Component({
   selector: "app-voice-recoder",
   templateUrl: "./voice-recoder.component.html",
@@ -34,7 +43,6 @@ export class VoiceRecoderComponent implements OnInit {
   url;
   error;
 
-
   public baseTopic: any;
 
   constructor(
@@ -43,6 +51,7 @@ export class VoiceRecoderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.respondVoice();
     // this.mqttSubscriptions[0] = this.clientMqtt.topic('hermes/asr/textCaptured').subscribe((message: IMqttMessage) => {
     //   let messageJSON = JSON.parse(message.payload.toString())
     //   console.log("message: " + messageJSON.text);
@@ -118,7 +127,6 @@ export class VoiceRecoderComponent implements OnInit {
         this.clientMqtt.publish("hermes/asr/stopListening", JSON.stringify({"siteId": "default", "sessionId": this.sessionID}))
       });
       // this.clientMqtt.publish("tantoi13", blob)
-
     });
   }
   /**
@@ -144,7 +152,61 @@ export class VoiceRecoderComponent implements OnInit {
     }
       return text;
   }
+
+  respondVoice() {
+    console.log("gọi hàm\n");
+    this.mqttSubscriptions[0] = this.clientMqtt
+      .topic("hermes/audioServer/default/playBytes/weboffline")
+      .subscribe((message: IMqttMessage) => {
+        let messageByte = message.payload.toString();
+        console.log("revicedddd\n");
+        console.log(messageByte);
+        playByteArray(messageByte);
+      });
+  }
 }
+
+function init() {
+  if (!window.AudioContext) {
+    if (!window.AudioContext ) {
+      alert(
+        "Your browser does not support any AudioContext and cannot play back this audio."
+      );
+      return;
+    }
+    window.AudioContext = window.AudioContext ;
+  }
+
+  context = new AudioContext();
+}
+
+function playByteArray( bytes ) {
+  var buffer = new Uint8Array( bytes.length );
+  buffer.set( new Uint8Array(bytes), 0 );
+
+  context.decodeAudioData(buffer.buffer, play);
+}
+
+function play( audioBuffer ) {
+  var source = context.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect( context.destination );
+  source.start(0);
+}
+
+// function playWave(byteArray) {
+//   var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+//   var myAudioBuffer = audioCtx.createBuffer(1, byteArray.length, 8000);
+//   var nowBuffering = myAudioBuffer.getChannelData(0);
+//   for (var i = 0; i < byteArray.length; i++) {
+//       nowBuffering[i] = byteArray[i];
+//   }
+
+//   var source = audioCtx.createBufferSource();
+//   source.buffer = myAudioBuffer;
+//   source.connect(audioCtx.destination);
+//   source.start();
+// }
 
 // function buf2hex(buffer) {
 //   // buffer is an ArrayBuffer
@@ -155,4 +217,3 @@ export class VoiceRecoderComponent implements OnInit {
 // function hex2bin(hex) {
 //   return ("00000000" + parseInt(hex, 16).toString(2)).substr(-8);
 // }
-

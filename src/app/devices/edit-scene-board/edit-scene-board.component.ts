@@ -62,9 +62,16 @@ export class EditSceneBoardComponent implements OnInit {
           this.devices[index].hex = "#ffffff";
           this.devices[index].brightness = 0;
         }
+        if (device.model_id == "TS0505B") {
+          this.devices[index].state = false;
+          this.devices[index].hex = "#ffffff";
+          this.devices[index].brightness = 0;
+          this.devices[index].color_temp = 0;
+        }
         if (device.model_id == "WH_LEDTEMP") {
           this.devices[index].state = false;
           this.devices[index].brightness = 0;
+          this.devices[index].color_temp = 0;
         }
         if (device.model_id == "ZM-L03E-Z") {
           this.devices[index].state_left = false;
@@ -82,24 +89,51 @@ export class EditSceneBoardComponent implements OnInit {
           if (member.friendly_name == this.devices[index].friendly_name) {
             this.devices[index].checked = true;
             if (device.model_id == "WH_LEDRGB") {
-              member.state == "ON" ? this.devices[index].state = true : this.devices[index].state = false;
+              member.state == "ON"
+                ? (this.devices[index].state = true)
+                : (this.devices[index].state = false);
               this.devices[index].hex = member.hex;
               this.devices[index].brightness = member.brightness_scale_100;
             }
-            if (device.model_id == "WH_LEDTEMP") {
-              member.state == "ON" ? this.devices[index].state = true : this.devices[index].state = false;
+            if (device.model_id == "TS0505B") {
+              member.state == "ON"
+                ? (this.devices[index].state = true)
+                : (this.devices[index].state = false);
+              this.devices[index].hex = member.hex;
               this.devices[index].brightness = member.brightness_scale_100;
+              this.devices[index].color_temp = member.color_temp;
+            }
+            if (device.model_id == "WH_LEDTEMP") {
+              member.state == "ON"
+                ? (this.devices[index].state = true)
+                : (this.devices[index].state = false);
+              this.devices[index].brightness = member.brightness_scale_100;
+              this.devices[index].color_temp = member.color_temp;
             }
             if (device.model_id == "ZM-L03E-Z") {
-              member.state_left == "ON" ? this.devices[index].state_left = true : this.devices[index].state_left = false;
-              member.state_center == "ON" ? this.devices[index].state_center = true : this.devices[index].state_center = false;
-              member.state_right == "ON" ? this.devices[index].state_right = true : this.devices[index].state_right = false;
+              member.state_left == "ON"
+                ? (this.devices[index].state_left = true)
+                : (this.devices[index].state_left = false);
+              member.state_center == "ON"
+                ? (this.devices[index].state_center = true)
+                : (this.devices[index].state_center = false);
+              member.state_right == "ON"
+                ? (this.devices[index].state_right = true)
+                : (this.devices[index].state_right = false);
             }
             if (device.model_id == "WH_SWITCH4") {
-              member.state_l1 == "ON" ? this.devices[index].state_l1 = true : this.devices[index].state_l1 = false;
-              member.state_l2 == "ON" ? this.devices[index].state_l2 = true : this.devices[index].state_l2 = false;
-              member.state_l3 == "ON" ? this.devices[index].state_l3 = true : this.devices[index].state_l3 = false;
-              member.state_l4 == "ON" ? this.devices[index].state_l4 = true : this.devices[index].state_l4 = false;
+              member.state_l1 == "ON"
+                ? (this.devices[index].state_l1 = true)
+                : (this.devices[index].state_l1 = false);
+              member.state_l2 == "ON"
+                ? (this.devices[index].state_l2 = true)
+                : (this.devices[index].state_l2 = false);
+              member.state_l3 == "ON"
+                ? (this.devices[index].state_l3 = true)
+                : (this.devices[index].state_l3 = false);
+              member.state_l4 == "ON"
+                ? (this.devices[index].state_l4 = true)
+                : (this.devices[index].state_l4 = false);
             }
           }
         }
@@ -136,9 +170,27 @@ export class EditSceneBoardComponent implements OnInit {
           let xy = this.cognito.rgb_to_cie(rgb.r, rgb.g, rgb.b);
           let txt = '{"x":' + xy[0] + ',"y":' + xy[1] + "}";
           let color = JSON.parse(txt);
-          (members[index].state = state),
-            (members[index].color = color),
-            (members[index].brightness = brightness);
+          members[index].state = state;
+          members[index].color = color;
+          members[index].brightness = brightness;
+          //console.log(members[index]);
+        }
+        if (device.model_id == "TS0505B") {
+          let state = "";
+          if (device.state == true) {
+            state = "ON";
+          } else {
+            state = "OFF";
+          }
+          let brightness = (device.brightness * 2.54).toFixed(0);
+          let rgb = this.cognito.hexToRgb(device.hex);
+          let xy = this.cognito.rgb_to_cie(rgb.r, rgb.g, rgb.b);
+          let txt = '{"x":' + xy[0] + ',"y":' + xy[1] + "}";
+          let color = JSON.parse(txt);
+          members[index].state = state;
+          members[index].color = color;
+          members[index].brightness = brightness;
+          members[index].color_temp = device.color_temp;
           //console.log(members[index]);
         }
         if (device.model_id == "WH_LEDTEMP") {
@@ -149,8 +201,9 @@ export class EditSceneBoardComponent implements OnInit {
             state = "OFF";
           }
           let brightness = (device.brightness * 2.54).toFixed(0);
-          (members[index].state = state),
-            (members[index].brightness = brightness);
+          members[index].state = state;
+          members[index].brightness = brightness;
+          members[index].color_temp = device.color_temp;
           //console.log(members[index]);
         }
         if (device.model_id == "ZM-L03E-Z") {

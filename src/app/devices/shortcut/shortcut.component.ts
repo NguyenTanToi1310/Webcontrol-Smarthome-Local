@@ -49,17 +49,21 @@ export class ShortcutComponent implements OnInit {
     this.cognito.currentDevicesData.subscribe(
       (devicesData) => {
         this.devicesData = devicesData
+        this.selectedDevices = this.devicesData;
         for (var device of this.devicesData) {
           for (var group of this.groups) {
             for (var member of group.members) {
                 if (device.ieee_address === member.ieee_address) {
                   member.model_id = device.model_id;
-                if(member.model_id == "WH_LEDRGB" || member.model_id == "TS0505B") {
-                  group.isColorLightExist = true;
+                if(member.model_id == "TS0505B") {
+                  group.isColorTemperatureLightExist = true;
+                }
+                if(member.model_id == "WH_LEDRGB") {
+                  group.isColorNoneTemperatureLightExist = true;
                 }
                 // đèn trắng
                 if(member.model_id == "WH_LEDTEMP") {
-                  group.isNormalLightExist = true;
+                  group.isTemperatureLightExist = true;
                 }
                 if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
                   group.isSwitchExist = true;
@@ -83,11 +87,15 @@ export class ShortcutComponent implements OnInit {
           for (var device of this.devicesData) {
             if (device.ieee_address === member.ieee_address) {
               member.model_id = device.model_id;
-              if(member.model_id == "WH_LEDRGB" || member.model_id == "TS0505B") {
-                group.isColorLightExist = true;
+              if(member.model_id == "TS0505B") {
+                group.isColorTemperatureLightExist = true;
               }
+              if(member.model_id == "WH_LEDRGB") {
+                group.isColorNoneTemperatureLightExist = true;
+              }
+              // đèn trắng
               if(member.model_id == "WH_LEDTEMP") {
-                group.isNormalLightExist = true;
+                group.isTemperatureLightExist = true;
               }
               if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
                 group.isSwitchExist = true;

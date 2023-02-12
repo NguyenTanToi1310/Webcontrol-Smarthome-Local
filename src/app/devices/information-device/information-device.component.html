@@ -40,13 +40,18 @@
                                     </button>
                                 </div>
                                 <!-- control button-->
-                                <button id="dieukhienBotton" mat-flat-button
-                                    (click)="wakeupDevice(device)">Kích hoạt</button>
+                                <button id="dieukhienBotton" mat-flat-button (click)="wakeupDevice(device)">Kích
+                                    hoạt</button>
                             </div>
                         </div>
                         <ng-template #DATA_SHOW>
                             <div *ngFor="let deviceData of devicesData; let j = index">
                                 <div class="tag-content" *ngIf="device.friendly_name == deviceData.topic">
+                                    <h2 class="row d-flex" *ngIf="deviceData.errorState=='error'" style="color: red; font-size: larger;">Thiết bị bị lỗi</h2>
+                                    <h2 class="row d-flex" *ngIf="deviceData.errorState_l1=='error'" style="color: red; font-size: larger;">Công tắc 1 bị lỗi</h2>
+                                    <h2 class="row d-flex" *ngIf="deviceData.errorState_l2=='error'" style="color: red; font-size: larger;">Công tắc 2 bị lỗi</h2>
+                                    <h2 class="row d-flex" *ngIf="deviceData.errorState_l3=='error'" style="color: red; font-size: larger;">Công tắc 3 bị lỗi</h2>
+                                    <h2 class="row d-flex" *ngIf="deviceData.errorState_l4=='error'" style="color: red; font-size: larger;">Công tắc 4 bị lỗi</h2>
                                     <div *ngIf="deviceData.model_id === 'WH_SENSOR'">
                                         <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
                                         <h2 class="row d-flex">Pin: {{deviceData.battery}}%</h2>
@@ -55,8 +60,9 @@
                                     </div>
                                     <div *ngIf="deviceData.model_id === 'TS0203'">
                                         <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
-                                        <h2 class="row d-flex" *ngIf="deviceData.battery_low == false; else elseBatteryLow">
-                                                Pin: {{deviceData.battery}}%
+                                        <h2 class="row d-flex"
+                                            *ngIf="deviceData.battery_low == false; else elseBatteryLow">
+                                            Pin: {{deviceData.battery}}%
                                         </h2>
                                         <ng-template #elseBatteryLow>
                                             <h2 class="row d-flex" class="color-state">
@@ -79,8 +85,7 @@
                                         <h2 class="row d-flex">Pin: {{deviceData.battery}}%</h2>
                                         <h2 class="row d-flex">Hành động: {{deviceData.action}}</h2>
                                     </div>
-                                    <div
-                                        *ngIf="deviceData.model_id === 'WH_LEDRGB' || deviceData.model_id === 'TS0505B'">
+                                    <div *ngIf="deviceData.model_id === 'WH_LEDRGB'">
                                         <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
                                         <h2 class="row d-flex" *ngIf="deviceData.state === 'ON'; else elseStateDevice">
                                             Trạng
@@ -96,8 +101,7 @@
                                                 {{deviceData.hex}}</div>
                                         </h2>
                                     </div>
-                                    <div
-                                        *ngIf="deviceData.model_id === 'WH_LEDTEMP'">
+                                    <div *ngIf="deviceData.model_id === 'TS0505B'">
                                         <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
                                         <h2 class="row d-flex" *ngIf="deviceData.state === 'ON'; else elseStateDevice">
                                             Trạng
@@ -107,6 +111,24 @@
                                             <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
                                         </ng-template>
                                         <h2 class="row d-flex">Độ sáng: {{deviceData.brightness}}%</h2>
+                                        <h2 class="row d-flex">Nhiệt độ màu: {{ deviceData.color_temp }}</h2>
+                                        <h2 class="row d-flex" class="color-state">Màu đèn:
+                                            <div class="color-state-box"
+                                                [ngStyle]="{'background-color': deviceData.hex}">
+                                                {{deviceData.hex}}</div>
+                                        </h2>
+                                    </div>
+                                    <div *ngIf="deviceData.model_id === 'WH_LEDTEMP'">
+                                        <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
+                                        <h2 class="row d-flex" *ngIf="deviceData.state === 'ON'; else elseStateDevice">
+                                            Trạng
+                                            thái:
+                                            Đang bật</h2>
+                                        <ng-template #elseStateDevice>
+                                            <h2 class="row d-flex ">Trạng thái: Đang tắt</h2>
+                                        </ng-template>
+                                        <h2 class="row d-flex">Độ sáng: {{deviceData.brightness}}%</h2>
+                                        <h2 class="row d-flex">Nhiệt độ màu: {{ deviceData.color_temp }}</h2>
                                     </div>
                                     <div *ngIf="deviceData.model_id === 'ZM-L03E-Z'">
                                         <h2 class="row d-flex">Cường độ tín hiệu: {{deviceData.linkquality}}</h2>
@@ -160,17 +182,17 @@
                                                 (click)="openDialogShareEdit(deviceData, 'share')">
                                                 <mat-icon>share</mat-icon>
                                             </button>
-    
+
                                             <button class="btn btn-outline-dark"
                                                 (click)="openDialogShareEdit(deviceData, 'edit')">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
-    
+
                                             <button class="btn btn-outline-dark" (click)="handleDevice(deviceData)"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModalDeleteDevice">
                                                 <mat-icon>delete</mat-icon>
                                             </button>
-    
+
                                             <!-- Modal, confirm delete -->
                                             <div class="modal fade" id="exampleModalDeleteDevice" tabindex="-1"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -200,8 +222,8 @@
                                             </div>
                                         </div>
                                         <!-- control button-->
-                                            <button style="border: blue;" id="dieukhienBotton" mat-flat-button
-                                                (click)="openDialogControl(deviceData)">Điều khiển</button>
+                                        <button style="border: blue;" id="dieukhienBotton" mat-flat-button
+                                            (click)="openDialogControl(deviceData)">Điều khiển</button>
                                     </div>
                                 </div>
                             </div>

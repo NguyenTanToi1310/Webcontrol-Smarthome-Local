@@ -23,20 +23,46 @@
           <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
           <input type="color" id="head" name="head" value="device.hex"
               [(ngModel)]="device.hex" style="width: 10%; height:20px; margin-left: 20px;" />
-          <span style="width: 100px !important;">
+          <div>Độ sáng:
             <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
               value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
             </mat-slider>
-          </span>
+          </div>
+        </div>
+
+        <div *ngIf="device.model_id == 'TS0505B' && device.checked == true">
+          <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
+          <input type="color" id="head" name="head" value="device.hex"
+              [(ngModel)]="device.hex" style="width: 10%; height:20px; margin-left: 20px;" />
+          <div>Độ sáng:
+            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
+              value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
+            </mat-slider>
+          </div>
+          <div>Nhiệt độ màu:
+            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0" max="500"
+              value="device.color_temp" [(ngModel)]="device.color_temp" aria-label="units">
+            </mat-slider>
+          </div>
         </div>
 
         <div *ngIf="device.model_id == 'WH_LEDTEMP' && device.checked == true">
           <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
-          <span style="width: 100px !important;">
+          <!-- <span style="width: 100px !important;">
             <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
               value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
             </mat-slider>
-          </span>
+          </span> -->
+          <div>Độ sáng:
+            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
+              value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
+            </mat-slider>
+          </div>
+          <div>Nhiệt độ màu:
+            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0" max="500"
+              value="device.color_temp" [(ngModel)]="device.color_temp" aria-label="units">
+            </mat-slider>
+          </div>
         </div>
 
         <div *ngIf="device.model_id == 'ZM-L03E-Z' && device.checked == true">

@@ -172,6 +172,30 @@
       </div>
       <hr />
     </div>
+
+    <div *ngIf="data.virtualDevice.model_id === 'TS0505B'">
+      <div class="tag-header">
+        <h1>{{data.virtualDevice.name}}</h1>
+      </div>
+      <hr />
+      <div class="tag-content">
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.state; else elseStateDevice">
+          Trạng thái: Đang bật
+        </h2>
+        <ng-template #elseStateDevice>
+          <h2 class="row d-flex">Trạng thái: Đang tắt</h2>
+        </ng-template>
+        <h2 class="row d-flex">Cường độ tín hiệu: {{data.virtualDevice.linkquality}}</h2>
+        <h2 class="row d-flex">Độ sáng: {{ data.virtualDevice.brightness }}%</h2>
+        <h2 class="row d-flex">Nhiệt độ màu: {{ data.virtualDevice.color_temp }}</h2>
+        <h2 class="row d-flex">Mã màu: {{ data.virtualDevice.hex }}</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'previous'">Hành vi bật
+          nguồn: khôi phục</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'on'">Hành vi bật nguồn: bật</h2>
+        <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'off'">Hành vi bật nguồn: tắt</h2>
+      </div>
+      <hr />
+    </div>
     
     <div *ngIf="data.virtualDevice.model_id === 'WH_LEDTEMP'">
       <div class="tag-header">
@@ -187,6 +211,7 @@
         </ng-template>
         <h2 class="row d-flex">Cường độ tín hiệu: {{data.virtualDevice.linkquality}}</h2>
         <h2 class="row d-flex">Độ sáng: {{ data.virtualDevice.brightness }}%</h2>
+        <h2 class="row d-flex">Nhiệt độ màu: {{ data.virtualDevice.color_temp }}</h2>
         <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'previous'">Hành vi bật
           nguồn: khôi phục</h2>
         <h2 class="row d-flex" *ngIf="data.virtualDevice.power_on_behavior === 'on'">Hành vi bật nguồn: bật</h2>
@@ -238,7 +263,8 @@
       <!-- <div *ngIf="data.virtualDevice.type !== 'switch' && data.virtualDevice.type !== 'sensor-th' && data.virtualDevice.type !== 'fan' && data.virtualDevice.type !== 'lock' && data.virtualDevice.type !== 'smart-door-sensor' && data.virtualDevice.type !== 'smart-plug'"> -->
       <div *ngIf="
         data.virtualDevice.model_id === 'WH_LEDTEMP' ||
-        data.virtualDevice.model_id === 'WH_LEDRGB'
+        data.virtualDevice.model_id === 'WH_LEDRGB'  || 
+        data.virtualDevice.model_id == 'TS0505B'
       ">
         <div class="row onOffText" style="width:100%">
           <h2>Điều chỉnh độ sáng:</h2>
@@ -249,9 +275,8 @@
             value="{{ data.virtualDevice.brightness }}" [(ngModel)]="data.virtualDevice.brightness" aria-label="units">
           </mat-slider>
         </div>
-      </div>
 
-      <div *ngIf="data.virtualDevice.model_id === 'WH_LEDRGB'">
+      <div *ngIf="data.virtualDevice.model_id === 'WH_LEDRGB'|| data.virtualDevice.model_id == 'TS0505B'">
         <div class="onOff">
           <h2 class="onOffText">Thiết lập màu đèn:</h2>
           <div class="row" class="onOffButton" style="text-align: center; width:40% !important; height: 45px;">
@@ -261,6 +286,19 @@
           </div>
         </div>
       </div>
+
+      <span *ngIf="data.virtualDevice.model_id === 'WH_LEDTEMP' || data.virtualDevice.model_id == 'TS0505B'">
+        <div class="row onOffText" style="width:100%" >
+          <h2>Điều chỉnh nhiệt độ màu:</h2>
+        </div>
+        <br/>
+        <div>
+          <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0" max="500"
+            value="{{ data.virtualDevice.color_temp }}" [(ngModel)]="data.virtualDevice.color_temp" aria-label="units">
+          </mat-slider>
+        </div>
+      </span>
+    </div>
 
       <div *ngIf="data.virtualDevice.model_id === 'ZM-L03E-Z'">
         <div class="onOff">

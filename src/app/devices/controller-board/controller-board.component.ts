@@ -53,7 +53,7 @@ export class ControllerBoardComponent implements OnInit {
       (baseTopic) => (this.baseTopic = baseTopic)
     );
 
-    if (this.data.backupDevice.model_id == "WH_LEDRGB" || this.data.backupDevice.model_id == "WH_LEDTEMP") {
+    if (this.data.backupDevice.model_id == "WH_LEDRGB" || this.data.backupDevice.model_id == "WH_LEDTEMP" || this.data.backupDevice.model_id == 'TS0505B') {
       if (this.data.backupDevice.state == "ON") {
         this.data.virtualDevice.state = true;
         this.data.backupDevice.state = true;
@@ -131,6 +131,7 @@ export class ControllerBoardComponent implements OnInit {
       power_on_behavior?: any;
       color?: { hex?: any };
       brightness?: any;
+      color_temp?: any;
       state_l1?: any;
       state_l2?: any;
       state_l3?: any;
@@ -153,7 +154,7 @@ export class ControllerBoardComponent implements OnInit {
       }
     }
 
-    if (this.data.virtualDevice.model_id == "WH_LEDRGB" || this.data.virtualDevice.model_id == "WH_LEDTEMP") {
+    if (this.data.virtualDevice.model_id == "WH_LEDRGB" || this.data.virtualDevice.model_id == "WH_LEDTEMP" || this.data.backupDevice.model_id == 'TS0505B') {
       if (this.data.virtualDevice.power_on_behavior != this.data.backupDevice.power_on_behavior) {
         changedProperties.power_on_behavior = this.data.virtualDevice.power_on_behavior;
       }
@@ -164,7 +165,7 @@ export class ControllerBoardComponent implements OnInit {
       }
     }
 
-    if (this.data.virtualDevice.model_id == "WH_LEDRGB") {
+    if (this.data.virtualDevice.model_id == "WH_LEDRGB" || this.data.backupDevice.model_id == 'TS0505B') {
       if (this.data.virtualDevice.hex != this.data.backupDevice.hex) {
         // var txt = '{"hex":"' + this.data.virtualDevice.hex + '"}';
         let rgb = this.cognito.hexToRgb(this.data.virtualDevice.hex);
@@ -174,6 +175,10 @@ export class ControllerBoardComponent implements OnInit {
       }
     }
 
+    if (this.data.virtualDevice.model_id == "WH_LEDTEMP" || this.data.backupDevice.model_id == 'TS0505B') {
+      changedProperties.color_temp = this.data.virtualDevice.color_temp;
+    }
+    
     if (this.data.virtualDevice.model_id == "WH_SWITCH4") {
       if (this.data.virtualDevice.state_l1 != this.data.backupDevice.state_l1) {
         if (this.data.virtualDevice.state_l1 == true) {
