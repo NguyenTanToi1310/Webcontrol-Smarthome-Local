@@ -217,7 +217,7 @@ export class ShortcutComponent implements OnInit {
 
   }
 
-  private requestDeleteRoom() {
+  private requestDeleteGroup() {
     var payload = {
       id: this.groupAction.friendly_name,
     };
