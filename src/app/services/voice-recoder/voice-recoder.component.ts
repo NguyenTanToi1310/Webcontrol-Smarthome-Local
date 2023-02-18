@@ -36,6 +36,8 @@ export class VoiceRecoderComponent implements OnInit {
   indexSubscriptions: number = 0;
   subCount: number = 0;
   sessionID: string = '';
+  public innerHtml: string = "";
+
   //Lets declare Record OBJ
   record;
   //Will use this flag for toggeling recording
@@ -75,6 +77,7 @@ export class VoiceRecoderComponent implements OnInit {
    * Start recording.
    */
   initiateRecording() {
+    this.innerHtml = "";
     this.recording = true;
     let mediaConstraints = {
       video: false,
@@ -162,7 +165,8 @@ export class VoiceRecoderComponent implements OnInit {
         // console.log("revicedddd\n");
         // console.log(message.payload.toString());
         playByteArray(message.payload);
-      });
+        this.innerHtml = "Vui lòng thử lại...";
+    });
   }
 }
 

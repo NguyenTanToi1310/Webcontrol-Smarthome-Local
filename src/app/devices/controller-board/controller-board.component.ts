@@ -18,6 +18,10 @@ interface power_on_behavior {
   value: string;
   viewValue: string;
 }
+interface action {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: "app-controller-board",
@@ -40,6 +44,11 @@ export class ControllerBoardComponent implements OnInit {
     {value: 'off', viewValue: 'Tắt'},
     {value: 'previous', viewValue: 'Khôi phục'},
   ];
+  actions: action[] = [
+    {value: 'long', viewValue: 'long'},
+    {value: 'single', viewValue: 'single'},
+    {value: 'double', viewValue: 'double'},
+  ]
 
   constructor(
     public dialogRef: MatDialogRef<ControllerBoardComponent>,
@@ -143,6 +152,7 @@ export class ControllerBoardComponent implements OnInit {
       state_left?: any;
       state_center?: any;
       state_right?: any;
+      action?: any;
     };
     const changedProperties: device = {};
 
@@ -151,6 +161,12 @@ export class ControllerBoardComponent implements OnInit {
         changedProperties.state = "ON";
       }else{
         changedProperties.state = "OFF";
+      }
+    }
+
+    if (this.data.virtualDevice.model_id == "WB01") {
+      if(this.data.virtualDevice.action != this.data.backupDevice.action){
+        changedProperties.action = this.data.virtualDevice.action;
       }
     }
 
@@ -176,7 +192,9 @@ export class ControllerBoardComponent implements OnInit {
     }
 
     if (this.data.virtualDevice.model_id == "WH_LEDTEMP" || this.data.backupDevice.model_id == 'TS0505B') {
-      changedProperties.color_temp = this.data.virtualDevice.color_temp;
+      if (this.data.virtualDevice.color_temp != this.data.backupDevice.color_temp) { 
+        changedProperties.color_temp = this.data.virtualDevice.color_temp;
+      }
     }
     
     if (this.data.virtualDevice.model_id == "WH_SWITCH4") {
@@ -273,7 +291,7 @@ export class ControllerBoardComponent implements OnInit {
       this.deviceDataResponse = messageJSON;
       this.result.status = true;
       clearTimeout(this.myTimeout);
-      // this.dialogRef.close();
+      this.dialogRef.close();
       // tempSub.unsubscribe();         ???????????????????
     });
 

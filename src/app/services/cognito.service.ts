@@ -486,7 +486,7 @@ export class CognitoService {
   }
 
   public getScenes(): any {
-    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/bridge/scenes").subscribe((message: IMqttMessage) => {   
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("scene/getList").subscribe((message: IMqttMessage) => {   
       let messageJSON = JSON.parse(message.payload.toString())
       this.scenesSource.next(messageJSON);
     });

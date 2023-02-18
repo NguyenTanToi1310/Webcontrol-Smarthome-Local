@@ -5,7 +5,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PubSub } from 'aws-amplify';
 import { CognitoService } from 'src/app/services/cognito.service';
 import { CommonServiceService } from 'src/app/services/common-service.service';
-
+import { CustomMqttService } from '../../services/mqtt.service';
+import { Subscription } from 'rxjs';
+import { IMqttMessage } from "ngx-mqtt";
 interface rooms {
   value: string;
   viewValue: string;
@@ -25,7 +27,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./edit-board.component.css']
 })
 export class EditBoardComponent implements OnInit {
-  
+  mqttSubscriptions: Subscription[] = [];
+
   matcher = new MyErrorStateMatcher();
   public baseTopic: any;
   rooms: rooms[] = [
@@ -49,7 +52,8 @@ export class EditBoardComponent implements OnInit {
     public dialogRef: MatDialogRef<EditBoardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private common: CommonServiceService,
-    private cognito: CognitoService,
+    private cognito: CognitoService,    
+    private readonly clientMqtt: CustomMqttService,
   ) { }
 
   ngOnInit(): void {
@@ -83,21 +87,31 @@ export class EditBoardComponent implements OnInit {
         "to": new_friendly_name,
         "homeassistant_rename":true
       };
-      PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/device/rename", payload);
+      // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/device/rename", payload);
+      this.clientMqtt.publish("zigbee2mqtt/bridge/request/device/rename", JSON.stringify(payload))
 
-      PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/response/device/rename").subscribe({
-        next: (data) => {
-          console.log(data);
-          console.log(data.value.status);
+      // PubSub.subscribe(this.baseTopic+"zigbee2mqtt/bridge/response/device/rename").subscribe({
+      //   next: (data) => {
+      //     console.log(data);
+      //     console.log(data.value.status);
           
-          if(data.value.status == "ok") {
-            this.result.status = true;
-          }else{
-            this.result.status = false;
-          }
-        },
-        error: (error) => console.error(error),
-        complete: () => console.log("Done"),
+      //     if(data.value.status == "ok") {
+      //       this.result.status = true;
+      //     }else{
+      //       this.result.status = false;
+      //     }
+      //   },
+      //   error: (error) => console.error(error),
+      //   complete: () => console.log("Done"),
+      // });
+      this.mqttSubscriptions[0] = this.clientMqtt.topic("zigbee2mqtt/bridge/response/device/rename").subscribe((message: IMqttMessage) => {
+        let messageJSON = JSON.parse(message.payload.toString())
+        console.log("message: " + messageJSON.text);
+        if(messageJSON.status == "ok") {
+          this.result.status = true;
+        }else{
+          this.result.status = false;
+        }
       });
     } else {
       this.result = {
@@ -105,5 +119,4 @@ export class EditBoardComponent implements OnInit {
       }
     }
   }
-
 }

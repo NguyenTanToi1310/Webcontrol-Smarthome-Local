@@ -217,7 +217,7 @@ export class ShortcutComponent implements OnInit {
 
   }
 
-  private requestDeleteRoom() {
+  private requestDeleteGroup() {
     var payload = {
       id: this.groupAction.friendly_name,
     };
@@ -261,16 +261,78 @@ export class ShortcutComponent implements OnInit {
 
   submitSelectedDevices(): void {
     for (let device of this.selectedDevices) {
-      if (device.checked == true) {
-        var payload = {
+      if (device.model_id != "WH_SWITCH4" && device.model_id != "ZM-L03E-Z" && device.checked == true) {
+        let payload = {
           group: this.groupAction.friendly_name,
           device: device.topic,
         };
-        // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/group/members/add", payload);
         this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
-
         device.checked = false;
       }
+      if (device.model_id == "WH_SWITCH4") {
+        if(device.checked_endpoint1 == true) {
+          let payload = {
+            group: this.groupAction.friendly_name,
+            device: device.topic + "/1",
+          };
+          this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+          device.checked_endpoint1 = false;
+        }
+        if(device.checked_endpoint2 == true) {
+          let payload = {
+            group: this.groupAction.friendly_name,
+            device: device.topic + "/2",
+          };
+          this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+          device.checked_endpoint2 = false;
+        }
+        if(device.checked_endpoint3 == true) {
+          let payload = {
+            group: this.groupAction.friendly_name,
+            device: device.topic + "/3",
+          };
+          this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+          device.checked_endpoint3 = false;
+        }
+        if(device.checked_endpoint4 == true) {
+          let payload = {
+            group: this.groupAction.friendly_name,
+            device: device.topic + "/4",
+          };
+          this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+          device.checked_endpoint4 = false;
+        }
+      }
+      if (device.model_id == "ZM-L03E-Z") {
+        if(device.checked_endpoint1 == true) {
+          let payload = {
+            group: this.groupAction.friendly_name,
+            device: device.topic + "/1",
+          };
+          this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+          device.checked_endpoint1 = false;
+        }
+        if(device.checked_endpoint2 == true) {
+          let payload = {
+            group: this.groupAction.friendly_name,
+            device: device.topic + "/2",
+          };
+          this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+          device.checked_endpoint2 = false;
+        }
+        if(device.checked_endpoint3 == true) {
+          let payload = {
+            group: this.groupAction.friendly_name,
+            device: device.topic + "/3",
+          };
+          this.clientMqtt.publish("zigbee2mqtt/bridge/request/group/members/add", JSON.stringify(payload));
+          device.checked_endpoint3 = false;
+        }
+      }
     }
+  }
+
+  runScene(scene: any): void {
+    PubSub.publish(this.baseTopic+"scene/call", {"name": scene.name});
   }
 }
