@@ -1,10 +1,11 @@
 export const environment = {
   production: true,
   hmr: false,
-	mqtt: {
-		server: 'localhost',
-		protocol: "ws",
-		port: 9001
+  mqtt: {
+		server: '192.168.137.8',
+		protocol: "wss",
+		port: 443,
+    path: "/myws"
 	},
   cognito: {
     region: 'ap-southeast-1',

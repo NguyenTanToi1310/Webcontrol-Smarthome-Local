@@ -33,7 +33,7 @@
             "ulid", "zen-push", "lodash", "@aws-amplify/core", "url", "@aws-crypto/crc32", "isomorphic-unfetch",
             "crypto-js/lib-typedarrays", "crypto-js/hmac-sha256", "crypto", "camelcase-keys", "aws-sdk"
           ],
-            "outputPath": "public",
+            "outputPath": "deploy",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -73,7 +73,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
