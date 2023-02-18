@@ -8,8 +8,8 @@ import { MqttOverWSProvider } from "@aws-amplify/pubsub/lib/Providers";
 import { environment } from "../../environments/environment";
 import { Stringifiable } from "query-string";
 import { connect } from "http2";
-import { CustomMqttService } from '../services/mqtt.service';
-import { Subscription } from 'rxjs';
+import { CustomMqttService } from "../services/mqtt.service";
+import { Subscription } from "rxjs";
 import { IMqttMessage } from "ngx-mqtt";
 // import { ColorConverter } from "cie-rgb-color-converter"
 const ColorConverter = require("cie-rgb-color-converter");
@@ -77,7 +77,7 @@ export class CognitoService {
     //   error: (error) => console.error(error),
     //   complete: () => console.log("Done"),
     // });
-    
+
     // PubSub.publish("web-to-broker", { "msg": "Website hello broker" });
     // this.baseTopicSource.next(this.baseTopic);
   }
@@ -106,7 +106,7 @@ export class CognitoService {
     // return Auth.signIn(user.email, user.password).then(() => {
     //   this.authenticationSubject.next(true);
     // });
-    if(user.email == "admin" && user.password == "admin"){
+    if (user.email == "admin" && user.password == "admin") {
       this.authenticationSubject.next(true);
       return;
     }
@@ -182,7 +182,7 @@ export class CognitoService {
 
   public startConnection() {
     // PubSub.publish(this.baseTopic + "publicweb/connect", "");
-    this.clientMqtt.publish("publicweb/connect", JSON.stringify({"NA": "NA"}))
+    this.clientMqtt.publish("publicweb/connect", JSON.stringify({ NA: "NA" }));
   }
 
   // public subscribe() {
@@ -273,105 +273,118 @@ export class CognitoService {
     //   error: (error) => console.error(error),
     //   complete: () => console.log("Done"),
     // });
-    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/bridge/devices").subscribe((message: IMqttMessage) => {
-      let messageJSON = JSON.parse(message.payload.toString())
-      console.log("message: " + message.payload.toString());
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt
+      .topic("zigbee2mqtt/bridge/devices")
+      .subscribe((message: IMqttMessage) => {
+        let messageJSON = JSON.parse(message.payload.toString());
+        console.log("message: " + message.payload.toString());
 
-      var list = new Array();
-      this.devicesDataSource.next(list);
+        var list = new Array();
+        this.devicesDataSource.next(list);
 
-      var roomsList = [["living-room"], ["kitchen-room"], ["bed-room"]];
+        var roomsList = [["living-room"], ["kitchen-room"], ["bed-room"]];
 
-      let devicesList = messageJSON;
-      for (var device of devicesList) {
-        if (device.friendly_name === "Coordinator") {
-          continue;
-        }
-        // if (device.model_id === "TS0505B") {
-        //   device.model_id = "WH_LEDRGB";
-        // }
-        device.linkquality = "0";
-
-        if (device.friendly_name.includes("/")) {
-          device.room = device.friendly_name.substring(0, device.friendly_name.lastIndexOf("/"));
-          device.name = device.friendly_name.substring(device.friendly_name.indexOf("/") + 1, device.friendly_name.length);
-        } else {
-          device.room = "";
-          device.name = device.friendly_name;
-        }
-        for (let [index, room] of roomsList.entries()) {
-          if (device.room == room[0]) {
-            //room[0] = "living-room" or "kitchen-room" or "bed-room"
-            roomsList[index].push(device.name);
+        let devicesList = messageJSON;
+        for (var device of devicesList) {
+          if (device.friendly_name === "Coordinator") {
+            continue;
           }
-        }
-        // console.log(".............\n", roomsList);
-        this.roomsListSource.next(roomsList);
+          // if (device.model_id === "TS0505B") {
+          //   device.model_id = "WH_LEDRGB";
+          // }
+          device.linkquality = "0";
 
-        // PubSub.subscribe(
-        //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name
-        // ).subscribe({
-        //   next: (data) => {
-        //     data.value.topic = data.value[
-        //       Object.getOwnPropertySymbols(data.value)[0]
-        //     ]
-        //       .split(this.baseTopic + "zigbee2mqtt/")
-        //       .pop(); //insert topic (removed prefix) into this object
-
-        //     for (var tempDevice of devicesList) {
-        //       if (tempDevice.friendly_name == data.value.topic) {
-        //         data.value.model_id = tempDevice.model_id;
-        //         data.value.ieee_address = tempDevice.ieee_address;
-        //         data.value.room = data.value.topic.substring(
-        //           0,
-        //           data.value.topic.lastIndexOf("/")
-        //         );
-        //         data.value.name = data.value.topic.substring(
-        //           data.value.topic.indexOf("/") + 1,
-        //           data.value.topic.length
-        //         );
-        //       }
-        //     }
-        //     this.deviceDataSource.next(data.value);
-        //     this.getDevicesData(data.value);
-        //   },
-        //   error: (error) => console.error(error),
-        //   complete: () => console.log("Done"),
-        // });
-        this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/" + device.friendly_name).subscribe((message: IMqttMessage) => {
-          let messageJSON = JSON.parse(message.payload.toString())
-          console.log("message: " + message.payload.toString());
-          messageJSON.topic = message.topic.toString()
-            .split(this.baseTopic + "zigbee2mqtt/")
-            .pop(); //insert topic (removed prefix) into this object
-          console.log(messageJSON.topic);
-          for (var tempDevice of devicesList) {
-            if (tempDevice.friendly_name == messageJSON.topic) {
-              messageJSON.model_id = tempDevice.model_id;
-              messageJSON.ieee_address = tempDevice.ieee_address;
-              messageJSON.room = messageJSON.topic.substring(
-                0,
-                messageJSON.topic.lastIndexOf("/")
-              );
-              messageJSON.name = messageJSON.topic.substring(
-                messageJSON.topic.indexOf("/") + 1,
-                messageJSON.topic.length
-              );
+          if (device.friendly_name.includes("/")) {
+            device.room = device.friendly_name.substring(
+              0,
+              device.friendly_name.lastIndexOf("/")
+            );
+            device.name = device.friendly_name.substring(
+              device.friendly_name.indexOf("/") + 1,
+              device.friendly_name.length
+            );
+          } else {
+            device.room = "";
+            device.name = device.friendly_name;
+          }
+          for (let [index, room] of roomsList.entries()) {
+            if (device.room == room[0]) {
+              //room[0] = "living-room" or "kitchen-room" or "bed-room"
+              roomsList[index].push(device.name);
             }
           }
-          this.deviceDataSource.next(messageJSON);
-          this.getDevicesData(messageJSON);
-        });
+          // console.log(".............\n", roomsList);
+          this.roomsListSource.next(roomsList);
 
-        // PubSub.publish(
-        //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name + "/get",
-        //   { state: "" }
-        // );
-        this.clientMqtt.publish("zigbee2mqtt/" + device.friendly_name + "/customGet", JSON.stringify({ state: "" }));
+          // PubSub.subscribe(
+          //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name
+          // ).subscribe({
+          //   next: (data) => {
+          //     data.value.topic = data.value[
+          //       Object.getOwnPropertySymbols(data.value)[0]
+          //     ]
+          //       .split(this.baseTopic + "zigbee2mqtt/")
+          //       .pop(); //insert topic (removed prefix) into this object
 
-      }
-      this.devicesListSource.next(devicesList);
-    });
+          //     for (var tempDevice of devicesList) {
+          //       if (tempDevice.friendly_name == data.value.topic) {
+          //         data.value.model_id = tempDevice.model_id;
+          //         data.value.ieee_address = tempDevice.ieee_address;
+          //         data.value.room = data.value.topic.substring(
+          //           0,
+          //           data.value.topic.lastIndexOf("/")
+          //         );
+          //         data.value.name = data.value.topic.substring(
+          //           data.value.topic.indexOf("/") + 1,
+          //           data.value.topic.length
+          //         );
+          //       }
+          //     }
+          //     this.deviceDataSource.next(data.value);
+          //     this.getDevicesData(data.value);
+          //   },
+          //   error: (error) => console.error(error),
+          //   complete: () => console.log("Done"),
+          // });
+          this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt
+            .topic("zigbee2mqtt/" + device.friendly_name)
+            .subscribe((message: IMqttMessage) => {
+              let messageJSON = JSON.parse(message.payload.toString());
+              console.log("message: " + message.payload.toString());
+              messageJSON.topic = message.topic
+                .toString()
+                .split(this.baseTopic + "zigbee2mqtt/")
+                .pop(); //insert topic (removed prefix) into this object
+              console.log(messageJSON.topic);
+              for (var tempDevice of devicesList) {
+                if (tempDevice.friendly_name == messageJSON.topic) {
+                  messageJSON.model_id = tempDevice.model_id;
+                  messageJSON.ieee_address = tempDevice.ieee_address;
+                  messageJSON.room = messageJSON.topic.substring(
+                    0,
+                    messageJSON.topic.lastIndexOf("/")
+                  );
+                  messageJSON.name = messageJSON.topic.substring(
+                    messageJSON.topic.indexOf("/") + 1,
+                    messageJSON.topic.length
+                  );
+                }
+              }
+              this.deviceDataSource.next(messageJSON);
+              this.getDevicesData(messageJSON);
+            });
+
+          // PubSub.publish(
+          //   this.baseTopic + "zigbee2mqtt/" + device.friendly_name + "/get",
+          //   { state: "" }
+          // );
+          this.clientMqtt.publish(
+            "zigbee2mqtt/" + device.friendly_name + "/customGet",
+            JSON.stringify({ state: "" })
+          );
+        }
+        this.devicesListSource.next(devicesList);
+      });
   }
 
   // public updateNewJoinedDEvice(device: any): any {
@@ -448,48 +461,61 @@ export class CognitoService {
     //   error: (error) => console.error(error),
     //   complete: () => console.log("Done"),
     // });
-    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/bridge/groups").subscribe((message: IMqttMessage) => {
-      let messageJSON = JSON.parse(message.payload.toString())
-      console.log("message: " + message.payload.toString());
-      this.groupsSource.next(messageJSON);
-      var list = new Array();
+    console.log("group ne");
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt
+      .topic("zigbee2mqtt/bridge/groups")
+      .subscribe((message: IMqttMessage) => {
+        console.log("group z");
+        let messageJSON = JSON.parse(message.payload.toString());
+        console.log("message: " + message.payload.toString());
+        this.groupsSource.next(messageJSON);
+        var list = new Array();
         this.groupsDataSource.next(list);
-
-        for (var group of messageJSON) {
-          this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("zigbee2mqtt/" + group.friendly_name).subscribe((message: IMqttMessage) => {
-            let messageJSON = JSON.parse(message.payload.toString())
-            messageJSON.friendly_name = message.topic.toString()
-            if (list.length == 0) {
-              list.push(messageJSON);
-            }
-            for (var i = 0; i < list.length; i++) {
-              if (list[i].friendly_name == messageJSON.friendly_name) {
-                list[i] = messageJSON;
-                // this.devicesDataSource.next(list);
-                // list.push(data.value);
-                break;
-              }
-            }
-            if (i == list.length) {
-              list.push(messageJSON);
-              this.devicesDataSource.next(list);
-            }
-          });
+        if (message.payload.toString() != "[]") {
+          for (var group of messageJSON) {
+            this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt
+              .topic("zigbee2mqtt/" + group.friendly_name)
+              .subscribe((message: IMqttMessage) => {
+                console.log(message.topic.toString());
+                let messageJSON = JSON.parse(message.payload.toString());
+                messageJSON.friendly_name = message.topic.toString();
+                if (list.length == 0) {
+                  list.push(messageJSON);
+                }
+                for (var i = 0; i < list.length; i++) {
+                  if (list[i].friendly_name == messageJSON.friendly_name) {
+                    list[i] = messageJSON;
+                    // this.devicesDataSource.next(list);
+                    // list.push(data.value);
+                    break;
+                  }
+                }
+                if (i == list.length) {
+                  list.push(messageJSON);
+                  this.devicesDataSource.next(list);
+                }
+              });
+          }
         }
         //send this signal to ask gateway to send this group's data
         // PubSub.publish(
         //   this.baseTopic + "zigbee2mqtt/" +group.friendly_name+ "/customGet",
         //   { state: "" }
         // );
-        this.clientMqtt.publish("zigbee2mqtt/" + group.friendly_name+ "/customGet", JSON.stringify({ state: "" }));
-    });
+        this.clientMqtt.publish(
+          "zigbee2mqtt/" + group.friendly_name + "/customGet",
+          JSON.stringify({ state: "" })
+        );
+      });
   }
 
   public getScenes(): any {
-    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt.topic("scene/getList").subscribe((message: IMqttMessage) => {   
-      let messageJSON = JSON.parse(message.payload.toString())
-      this.scenesSource.next(messageJSON);
-    });
+    this.mqttSubscriptions[this.indexSubscriptions++] = this.clientMqtt
+      .topic("scene/getList")
+      .subscribe((message: IMqttMessage) => {
+        let messageJSON = JSON.parse(message.payload.toString());
+        this.scenesSource.next(messageJSON);
+      });
   }
 
   cie_to_rgb(x: number, y: number, brightness: number) {
