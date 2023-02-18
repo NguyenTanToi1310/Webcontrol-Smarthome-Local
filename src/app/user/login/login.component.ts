@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     //   this.statusLogin = "SIGNIN_OK";
     //   this.loginStatusSource.next(true);
     // }
-    this.cognitoService.startConnection();
+    // this.cognitoService.startConnection();
     this.cognitoService.getDeviceListAndEachDeviceData();
     this.cognitoService.getGroupsData();
 

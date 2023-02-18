@@ -14,6 +14,7 @@ import { IMqttMessage } from "ngx-mqtt";
 })
 export class SceneInfoBoardComponent implements OnInit {
   mqttSubscriptions: Subscription[] = [];
+  public devices: any;
 
   constructor(
     public dialogRef: MatDialogRef<SceneInfoBoardComponent>,
@@ -25,16 +26,31 @@ export class SceneInfoBoardComponent implements OnInit {
   ) { }
   
   ngOnInit(){ 
-    for (let member of this.data.virtualScene.members) {
+    this.cognito.currentDevicesList.subscribe((devicesList) => {
+      this.devices = devicesList;
+      for(let member of this.data.virtualScene.member) {
+        for(let device of this.devices) {
+          if(device.ieee_address == this.data.virtualScene.condition.trigger.ieee_address) {
+            this.data.virtualScene.condition.trigger.name = device.name
+          }
+          if(device.ieee_address == member.ieee_address)
+          {
+            member.name = device.name
+          }
+        }
+      }
+    });
+
+    for (let member of this.data.virtualScene.member) {
       if (member.model_id == 'WH_LEDRGB' || member.model_id == 'TS0505B')
       {
-        member.brightness_scale_100 = Number((member.brightness / 2.54).toFixed(0));
-        let rgb = this.cognito.cie_to_rgb(member.color.x, member.color.y, 254);
-        member.hex = this.cognito.rgbToHex(rgb[0], rgb[1], rgb[2]);
+        member.state.brightness_scale_100 = Number((member.state.brightness / 2.54).toFixed(0));
+        let rgb = this.cognito.cie_to_rgb(member.state.color.x, member.state.color.y, 254);
+        member.state.hex = this.cognito.rgbToHex(rgb[0], rgb[1], rgb[2]);
       }
       if (member.model_id == 'WH_LEDTEMP')
       {
-        member.brightness_scale_100 = Number((member.brightness / 2.54).toFixed(0));
+        member.state.brightness_scale_100 = Number((member.state.brightness / 2.54).toFixed(0));
       }
     }
   }
@@ -54,7 +70,7 @@ export class SceneInfoBoardComponent implements OnInit {
 
   requestDeleteDevice(): void {
     // PubSub.publish(this.baseTopic+"zigbee2mqtt/bridge/request/scene/remove", {"name": this.data.virtualScene.name});
-    this.clientMqtt.publish("zigbee2mqtt/bridge/request/scene/remove", JSON.stringify({"name": this.data.virtualScene.name}))
+    this.clientMqtt.publish("scene/remove", JSON.stringify({"name": this.data.virtualScene.name}))
 
   }
 

@@ -7,27 +7,73 @@
 <div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px">
   <div>
     <div class="tag-content">
-      <div *ngFor="let member of data.virtualScene.members">
-        <hr>
-        <h1>{{member.name}}</h1>
+      <div style="font-size: 25px;">Điều kiện kích hoạt:</div>
+      <div *ngIf="data.virtualScene.condition.type=='device'">
+        <h2>Thiết bị: {{data.virtualScene.condition.trigger.name}}</h2>
+        <div *ngIf="data.virtualScene.condition.trigger.model_id === 'WH_SWITCH4'">
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l1 && data.virtualScene.condition.trigger.state.state_l1 =='ON'); else elseTat">Trạng thái: Công tắc 1 bật</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l1 && data.virtualScene.condition.trigger.state.state_l1 =='OFF'); else elseTat">Trạng thái: Công tắc 1 tắt</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l2 && data.virtualScene.condition.trigger.state.state_l2 =='ON'); else elseTat">Trạng thái: Công tắc 2 bật</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l2 && data.virtualScene.condition.trigger.state.state_l2 =='OFF'); else elseTat">Trạng thái: Công tắc 2 tắt</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l3 && data.virtualScene.condition.trigger.state.state_l3 =='ON'); else elseTat">Trạng thái: Công tắc 3 bật</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l3 && data.virtualScene.condition.trigger.state.state_l3 =='OFF'); else elseTat">Trạng thái: Công tắc 3 tắt</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l4 && data.virtualScene.condition.trigger.state.state_l3 =='ON'); else elseTat">Trạng thái: Công tắc 4 bật</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l4 && data.virtualScene.condition.trigger.state.state_l3 =='OFF'); else elseTat">Trạng thái: Công tắc 4 tắt</div>
+        </div>
+        <div *ngIf="data.virtualScene.condition.trigger.model_id === 'ZM-L03E-Z'">
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_left && data.virtualScene.condition.trigger.state.state_left =='ON'); else elseTat">Trạng thái: Công tắc 1 bật</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_left && data.virtualScene.condition.trigger.state.state_left =='OFF'); else elseTat">Trạng thái: Công tắc 1 tắt</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_center && data.virtualScene.condition.trigger.state.state_center =='ON'); else elseTat">Trạng thái: Công tắc 2 bật</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_center && data.virtualScene.condition.trigger.state.state_center =='OFF'); else elseTat">Trạng thái: Công tắc 2 tắt</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_right && data.virtualScene.condition.trigger.state.state_right =='ON'); else elseTat">Trạng thái: Công tắc 3 bật</div>
+          <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_right && data.virtualScene.condition.trigger.state.state_right =='OFF'); else elseTat">Trạng thái: Công tắc 3 tắt</div>
+        </div>
+        <div *ngIf="data.virtualScene.condition.trigger.model_id === 'WH_LEDTEMP' || data.virtualScene.condition.trigger.model_id === 'TS0505B' || data.virtualScene.condition.trigger.model_id === 'WH_LEDRGB'">
+          <div *ngIf="(data.virtualScene.condition.trigger.state.state =='ON'); else elseTat">Bật</div>
+          <div *ngIf="(data.virtualScene.condition.trigger.state.state =='OFF'); else elseTat">Tắt</div>
+        </div>
+        <div *ngIf="data.virtualScene.condition.trigger.model_id === 'WB01'">
+          <div>{{data.virtualScene.condition.trigger.state.action}}</div>
+        </div>
+      </div>
+      <div *ngIf="data.virtualScene.condition.type=='time'">
+        <div>Thời gian: {{data.virtualScene.condition.trigger.time}}</div>
+        <div>Lặp lại: 
+          <span *ngFor="let day of data.virtualScene.condition.trigger.day">
+            <span *ngIf="day == '2'">Thứ 2</span>
+            <span *ngIf="day == '3'"> Thứ 3</span>
+            <span *ngIf="day == '4'"> Thứ 4</span>
+            <span *ngIf="day == '5'"> Thứ 5</span>
+            <span *ngIf="day == '6'"> Thứ 6</span>
+            <span *ngIf="day == '7'"> Thứ 7</span>
+            <span *ngIf="day == '8'"> Chủ nhật</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="tag-content">
+      <div style="font-size: 25px;">Nội dung câu lệnh:</div>
+      <div *ngFor="let member of data.virtualScene.member">
+        <h2>{{member.name}}</h2>
         <div *ngIf="member.model_id === 'WH_SWITCH4'">
           <div class="tag-content">
             <h2 class="row d-flex" class="color-state">
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state_l1=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state_l1=='ON'; else elseTat">Bật</div>
+                [ngStyle]="{'background-color':member.state.state_l1=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state_l1=='ON'; else elseTat">Bật</div>
               </div>
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state_l2=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state_l2=='ON'; else elseTat">Bật</div>
+                [ngStyle]="{'background-color':member.state.state_l2=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state_l2=='ON'; else elseTat">Bật</div>
               </div>
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state_l3=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state_l3=='ON'; else elseTat">Bật</div>
+                [ngStyle]="{'background-color':member.state.state_l3=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state_l3=='ON'; else elseTat">Bật</div>
               </div>
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state_l4=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state_l4=='ON'; else elseTat">Bật</div>
+                [ngStyle]="{'background-color':member.state.state_l4=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state_l4=='ON'; else elseTat">Bật</div>
               </div>
               <ng-template #elseTat>
                 <div>Tắt</div>
@@ -40,16 +86,16 @@
           <div class="tag-content">
             <h2 class="row d-flex" class="color-state">
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state_left=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state_left=='ON'; else elseTat">Bật</div>
+                [ngStyle]="{'background-color':member.state.state_left=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state_left=='ON'; else elseTat">Bật</div>
               </div>
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state_center=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state_center=='ON'; else elseTat">Bật</div>
+                [ngStyle]="{'background-color':member.state.state_center=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state_center=='ON'; else elseTat">Bật</div>
               </div>
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state_right=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state_right=='ON'; else elseTat">Bật</div>
+                [ngStyle]="{'background-color':member.state.state_right=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state_right=='ON'; else elseTat">Bật</div>
               </div>
               <ng-template #elseTat>
                 <div>Tắt</div>
@@ -68,8 +114,13 @@
           </div>
         </div>
 
-        <div *ngIf="member.model_id === 'SNZB-01'">
+        <div *ngIf="member.model_id === 'WB01'">
           <div class="tag-content">
+            <h2 class="row d-flex" class="color-state">
+              <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':'#B2BEB5'}">
+                {{member.state.action}}
+              </div>
+            </h2>
           </div>
         </div>
 
@@ -77,17 +128,17 @@
           <div class="tag-content">
             <h2 class="row d-flex" class="color-state">
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state=='ON'; else elseStateDevice">Bật</div>
+                [ngStyle]="{'background-color':member.state.state=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state=='ON'; else elseStateDevice">Bật</div>
                 <ng-template #elseStateDevice>
                   <div>Tắt</div>
                 </ng-template>
               </div>
               <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':'#B2BEB5' }">
-                {{ member.brightness_scale_100 }}%
+                {{ member.state.brightness_scale_100 }}%
               </div>
-              <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':member.hex}">
-                {{member.hex }}</div>
+              <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':member.state.hex}">
+                {{member.state.hex }}</div>
             </h2>
           </div>
         </div>
@@ -96,20 +147,20 @@
           <div class="tag-content">
             <h2 class="row d-flex" class="color-state">
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state=='ON'; else elseStateDevice">Bật</div>
+                [ngStyle]="{'background-color':member.state.state=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state=='ON'; else elseStateDevice">Bật</div>
                 <ng-template #elseStateDevice>
                   <div>Tắt</div>
                 </ng-template>
               </div>
               <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':'#B2BEB5' }">
-                {{ member.brightness_scale_100 }}%
+                {{ member.state.brightness_scale_100 }}%
               </div>
               <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':'#B2BEB5' }">
-                {{ member.color_temp }}
+                {{ member.state.color_temp }}
               </div>
-              <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':member.hex}">
-                {{member.hex }}</div>
+              <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':member.state.hex}">
+                {{member.state.hex }}</div>
             </h2>
           </div>
         </div>
@@ -118,23 +169,23 @@
           <div class="tag-content">
             <h2 class="row d-flex" class="color-state">
               <div class="color-state-box color-state-box-switch4"
-                [ngStyle]="{'background-color':member.state=='ON' ? '#50C878' : '#B2BEB5' }">
-                <div *ngIf="member.state=='ON'; else elseStateDevice">Bật</div>
+                [ngStyle]="{'background-color':member.state.state=='ON' ? '#50C878' : '#B2BEB5' }">
+                <div *ngIf="member.state.state=='ON'; else elseStateDevice">Bật</div>
                 <ng-template #elseStateDevice>
                   <div>Tắt</div>
                 </ng-template>
               </div>
               <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':'#B2BEB5' }">
-                {{ member.brightness_scale_100 }}%
+                {{ member.state.brightness_scale_100 }}%
               </div>
               <div class="color-state-box color-state-box-switch4" [ngStyle]="{'background-color':'#B2BEB5' }">
-                {{ member.color_temp }}
+                {{ member.state.color_temp }}
               </div>
             </h2>
           </div>
         </div>
       </div>
-      <hr>
+      <br/><br/>
     </div>
   </div>
 </div>

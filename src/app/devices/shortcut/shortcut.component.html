@@ -136,14 +136,14 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title" id="exampleModalLabel">
-                                            Bạn có muốn xóa phòng này không ?
+                                            Bạn có muốn xóa nhóm này không ?
                                         </h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body" style="text-align: left">
                                         <h2>
-                                            Tên phòng:
+                                            Tên nhóm:
                                             <span *ngIf="groupAction">{{
                                                 groupAction.friendly_name
                                                 }}</span>
@@ -204,7 +204,7 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="member.model_id === 'SNZB-01'">
+                            <div *ngIf="member.model_id === 'WB01'">
                                 <div *ngFor="let deviceData of devicesData">
                                     <div *ngIf="deviceData.ieee_address== member.ieee_address">
                                         <div class="tag-header">

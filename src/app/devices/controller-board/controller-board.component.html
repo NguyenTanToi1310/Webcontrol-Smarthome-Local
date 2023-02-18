@@ -137,7 +137,7 @@
       <hr />
     </div>
 
-    <div *ngIf="data.virtualDevice.model_id === 'SNZB-01'">
+    <div *ngIf="data.virtualDevice.model_id === 'WB01'">
       <div class="tag-header">
         <h1>{{data.virtualDevice.name}}</h1>
       </div>
@@ -221,8 +221,8 @@
     </div>
 
     <div class="control-device"
-      *ngIf="data.virtualDevice.model_id != 'WH_SENSOR' && data.virtualDevice.model_id != 'TS0203' && data.virtualDevice.model_id != 'SNZB-01'">
-      <div *ngIf="data.virtualDevice.model_id != 'WH_SWITCH4' && data.virtualDevice.model_id != 'ZM-L03E-Z'">
+      *ngIf="data.virtualDevice.model_id != 'WH_SENSOR' && data.virtualDevice.model_id != 'TS0203'">
+      <div *ngIf="data.virtualDevice.model_id != 'WH_SWITCH4' && data.virtualDevice.model_id != 'ZM-L03E-Z' && data.virtualDevice.model_id != 'WB01'">
         <div class="onOff">
           <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
           <div class="row" class="onOffButton">
@@ -525,6 +525,21 @@
           </mat-form-field>
         </div>
         <br />
+      </div>
+
+      <div *ngIf="data.virtualDevice.model_id === 'WB01'">
+        <div class="onOff">
+          <h2 class="onOffText">Hành động:</h2>
+          <mat-form-field class="row" class="onOffButton" appearance="fill"
+            style="width:40% !important; height: 45px;">
+            <mat-label>Hành động</mat-label>
+            <mat-select [(value)]="data.virtualDevice.action">
+              <mat-option *ngFor="let action of actions" [value]="action.value">
+                {{action.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
 
       <div *ngIf="0">

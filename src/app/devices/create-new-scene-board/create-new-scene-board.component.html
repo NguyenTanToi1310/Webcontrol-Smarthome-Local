@@ -8,76 +8,213 @@
 <div class="container" mat-dialog-content style="margin-left: 15px; margin-right: 15px">
   <div>
     <div class="tag-content">
-      <div class="form-group">
-        <form action="" [formGroup]="newSceneFormGroup">
+      <div class="nhapten" [ngStyle]="{'display': step==0 ? 'block' : 'none' }">
+        <div class="form-group">
+          <form action="" [formGroup]="newSceneFormGroup">
             <small id="nameHelp" class="form-text text-muted">Nhập tên câu lệnh</small>
             <input type="text" class="form-control" formControlName="nameFormControl" for aria-describedby="nameHelp">
-        </form>
+          </form>
+        </div>
       </div>
-      <br />
-      <div *ngFor="let device of devices">
-        <input style="accent-color: #3f51b5;" type="checkbox" [(ngModel)]="device.checked" />
-        <span> {{device.name}}</span>
+      
 
-        <div *ngIf="device.model_id == 'WH_LEDRGB' && device.checked == true">
-          <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
-          <input type="color" id="head" name="head" value="device.hex"
-              [(ngModel)]="device.hex" style="width: 10%; height:20px; margin-left: 20px;" />
-          <div>Độ sáng:
-            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
-              value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
-            </mat-slider>
+      <div class="dieukienkichhoat" [ngStyle]="{'display': step==1 ? 'block' : 'none' }">
+        <h2>Điều kiện kích hoạt</h2>
+        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+        [(ngModel)]="type_trigger">
+          <mat-radio-button color="primary" class="example-radio-button" value="time">
+            Hẹn giờ
+          </mat-radio-button>
+          <br/>
+          <div class = "kichhoatbyTime" *ngIf="type_trigger=='time'">
+            <div class="24hr-example">
+              <form class="example-form" [formGroup]="timePickerFormGroup" (ngSubmit)="next_step()">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Thời gian</mat-label>
+                  <input matInput formControlName="timePickerFormControl" placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="timepicker" [format]="24" readonly>
+                  <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                </mat-form-field>
+              </form>
+  
+              <mat-form-field appearance="fill" style="width:100% !important;">
+                <mat-label>Lặp lại</mat-label>
+                <mat-select [(ngModel)]="selected_days" (ngModelChange)="selected_days" name="selected_days" multiple>
+                  <mat-option *ngFor="let day of days" [value]="day.value">
+                      {{day.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
+          <br />
+          <mat-radio-button color="primary" class="example-radio-button" value="device">
+            Thiết bị
+          </mat-radio-button>
+          <br/>
+          <div class = "kichhoatbyDevice" *ngIf="type_trigger=='device'">
+            <mat-form-field appearance="fill" style="width:100% !important;">
+              <mat-label>Điều kiện kích hoạt</mat-label>
+              <mat-select [(value)]="triggerDevice">
+                <mat-option *ngFor="let device of devices" [value]="device" style="height: 100%;">
+                  {{device.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div
+              *ngIf="triggerDevice?.model_id == 'WH_LEDRGB' || triggerDevice?.model_id == 'TS0505B' || triggerDevice?.model_id == 'WH_LEDTEMP'">
+              <mat-slide-toggle color="primary" [(ngModel)]="triggerDevice.state"></mat-slide-toggle>
+            </div>
+            <div
+              *ngIf="triggerDevice?.model_id == 'WB01'">
+              <mat-form-field class="row" class="onOffButton" appearance="fill"
+              style="width:40% !important; height: 45px;">
+              <mat-label>Hành động</mat-label>
+              <mat-select [(value)]="triggerDevice.action">
+                <mat-option *ngFor="let action of actions" [value]="action.value">
+                  {{action.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            </div>
+    
+            <div *ngIf="triggerDevice?.model_id == 'ZM-L03E-Z'">
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                [(ngModel)]="selected_endpoint">
+                <mat-radio-button color="primary" class="example-radio-button" value="state_left">
+                  <mat-slide-toggle [(ngModel)]="triggerDevice.state_left" color="primary"
+                    style="margin-left: 20px;"></mat-slide-toggle>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button color="primary" class="example-radio-button" value="state_center">
+                  <mat-slide-toggle [(ngModel)]="triggerDevice.state_center" color="primary"
+                    style="margin-left: 20px;"></mat-slide-toggle>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button color="primary" class="example-radio-button" value="state_right">
+                  <mat-slide-toggle [(ngModel)]="triggerDevice.state_right" color="primary"
+                    style="margin-left: 20px;"></mat-slide-toggle>
+                </mat-radio-button>
+                <br />
+              </mat-radio-group>
+            </div>
+    
+            <div *ngIf="triggerDevice?.model_id == 'WH_SWITCH4'">
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                [(ngModel)]="selected_endpoint">
+                <mat-radio-button color="primary" class="example-radio-button" value="state_l1">
+                  <mat-slide-toggle [(ngModel)]="triggerDevice.state_l1" color="primary"
+                    style="margin-left: 20px;"></mat-slide-toggle>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button color="primary" class="example-radio-button" value="state_l2">
+                  <mat-slide-toggle [(ngModel)]="triggerDevice.state_l2" color="primary"
+                    style="margin-left: 20px;"></mat-slide-toggle>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button color="primary" class="example-radio-button" value="state_l3">
+                  <mat-slide-toggle [(ngModel)]="triggerDevice.state_l3" color="primary"
+                    style="margin-left: 20px;"></mat-slide-toggle>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button color="primary" class="example-radio-button" value="state_l4">
+                  <mat-slide-toggle [(ngModel)]="triggerDevice.state_l4" color="primary"
+                    style="margin-left: 20px;"></mat-slide-toggle>
+                </mat-radio-button>
+                <br />
+              </mat-radio-group>
+            </div>
+          </div>
+          <br />
+        </mat-radio-group>
+      </div>
 
-        <div *ngIf="device.model_id == 'TS0505B' && device.checked == true">
-          <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
-          <input type="color" id="head" name="head" value="device.hex"
-              [(ngModel)]="device.hex" style="width: 10%; height:20px; margin-left: 20px;" />
-          <div>Độ sáng:
-            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
-              value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
-            </mat-slider>
-          </div>
-          <div>Nhiệt độ màu:
-            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0" max="500"
-              value="device.color_temp" [(ngModel)]="device.color_temp" aria-label="units">
-            </mat-slider>
-          </div>
-        </div>
+      <div class="noidungcaulenh" [ngStyle]="{'display': step==2 ? 'block' : 'none' }">
+        <h4 class="getMembers">Nội dung câu lệnh: </h4>
+        <div *ngFor="let device of devices">
+          <input style="accent-color: #3f51b5;" type="checkbox" [(ngModel)]="device.checked" />
+          <span> {{device.name}}</span>
 
-        <div *ngIf="device.model_id == 'WH_LEDTEMP' && device.checked == true">
-          <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
-          <!-- <span style="width: 100px !important;">
+          <div *ngIf="device.model_id == 'WH_LEDRGB' && device.checked == true">
+            <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
+            <input type="color" id="head" name="head" value="device.hex" [(ngModel)]="device.hex"
+              style="width: 10%; height:20px; margin-left: 20px;" />
+            <div>Độ sáng:
+              <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0"
+                max="100" value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
+              </mat-slider>
+            </div>
+          </div>
+
+          <div *ngIf="device.model_id == 'TS0505B' && device.checked == true">
+            <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
+            <input type="color" id="head" name="head" value="device.hex" [(ngModel)]="device.hex"
+              style="width: 10%; height:20px; margin-left: 20px;" />
+            <div>Độ sáng:
+              <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0"
+                max="100" value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
+              </mat-slider>
+            </div>
+            <div>Nhiệt độ màu:
+              <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0"
+                max="500" value="device.color_temp" [(ngModel)]="device.color_temp" aria-label="units">
+              </mat-slider>
+            </div>
+          </div>
+
+          <div *ngIf="device.model_id == 'WH_LEDTEMP' && device.checked == true">
+            <mat-slide-toggle color="primary" [(ngModel)]="device.state"></mat-slide-toggle>
+            <!-- <span style="width: 100px !important;">
             <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
               value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
             </mat-slider>
           </span> -->
-          <div>Độ sáng:
-            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0" max="100"
-              value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
-            </mat-slider>
+            <div>Độ sáng:
+              <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="0"
+                max="100" value="device.brightness" [(ngModel)]="device.brightness" aria-label="units">
+              </mat-slider>
+            </div>
+            <div>Nhiệt độ màu:
+              <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0"
+                max="500" value="device.color_temp" [(ngModel)]="device.color_temp" aria-label="units">
+              </mat-slider>
+            </div>
           </div>
-          <div>Nhiệt độ màu:
-            <mat-slider color="primary" thumbLabel [displayWith]="formatLabel" tickInterval="1" step="10" min="0" max="500"
-              value="device.color_temp" [(ngModel)]="device.color_temp" aria-label="units">
-            </mat-slider>
+
+          <div *ngIf="device.model_id == 'ZM-L03E-Z' && device.checked == true">
+            <mat-slide-toggle [(ngModel)]="device.state_left" color="primary"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="device.state_center" color="primary"
+              style="margin-left: 20px;"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="device.state_right" color="primary"
+              style="margin-left: 20px;"></mat-slide-toggle>
           </div>
-        </div>
 
-        <div *ngIf="device.model_id == 'ZM-L03E-Z' && device.checked == true">
-          <mat-slide-toggle [(ngModel)]="device.state_left" color="primary"></mat-slide-toggle>
-          <mat-slide-toggle [(ngModel)]="device.state_center" color="primary" style="margin-left: 20px;"></mat-slide-toggle>
-          <mat-slide-toggle [(ngModel)]="device.state_right" color="primary" style="margin-left: 20px;"></mat-slide-toggle>
-        </div>
+          <div *ngIf="device.model_id == 'WH_SWITCH4' && device.checked == true">
+            <mat-slide-toggle [(ngModel)]="device.state_l1" color="primary"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="device.state_l2" color="primary"
+              style="margin-left: 20px;"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="device.state_l3" color="primary"
+              style="margin-left: 20px;"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="device.state_l4" color="primary"
+              style="margin-left: 20px;"></mat-slide-toggle>
+          </div>
 
-        <div *ngIf="device.model_id == 'WH_SWITCH4' && device.checked == true">
-          <mat-slide-toggle [(ngModel)]="device.state_l1" color="primary"></mat-slide-toggle>
-          <mat-slide-toggle [(ngModel)]="device.state_l2" color="primary" style="margin-left: 20px;"></mat-slide-toggle>
-          <mat-slide-toggle [(ngModel)]="device.state_l3" color="primary" style="margin-left: 20px;"></mat-slide-toggle>
-          <mat-slide-toggle [(ngModel)]="device.state_l4" color="primary" style="margin-left: 20px;"></mat-slide-toggle>
+          <div *ngIf="device.model_id == 'WB01' && device.checked == true">
+            <mat-form-field class="row" class="onOffButton" appearance="fill"
+                style="width:40% !important; height: 45px;">
+                <mat-label>Hành động</mat-label>
+                <mat-select [(value)]="device.action">
+                  <mat-option *ngFor="let action of actions" [value]="action.value">
+                    {{action.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+
         </div>
       </div>
+
+
+
     </div>
   </div>
 </div>
@@ -87,5 +224,6 @@
 </div>
 <div mat-dialog-actions style="float: right;">
   <button mat-button (click)="onNoClick()">Huỷ</button>
-  <button mat-button (click)="onYesClick()">Đồng ý</button>
+  <button mat-button *ngIf="step<2" (click)="next_step()">Tiếp</button>
+  <button mat-button *ngIf="step==2" (click)="onYesClick()">Đồng ý</button>
 </div>
