@@ -67,7 +67,7 @@
                                         <ul style="list-style-type: none; font-size: 18px">
                                             <li *ngFor="let device of selectedDevices; let i = index">
                                                 <div
-                                                    *ngIf="device.model_id != 'WH_SWITCH4' &&  device.model_id != 'ZM-L03E-Z'">
+                                                    *ngIf="device.model_id != 'WH_SWITCH4' &&  device.model_id != 'TS0003'">
                                                     <span *ngIf="device.added == false">
                                                         <input type="checkbox" [(ngModel)]="device.checked" />
                                                         {{ device.name }}
@@ -95,7 +95,7 @@
                                                         <br />
                                                     </span>
                                                 </div>
-                                                <div *ngIf="device.model_id == 'ZM-L03E-Z'">
+                                                <div *ngIf="device.model_id == 'TS0003'">
                                                     <span *ngIf="device.added_endpoint1 == false">
                                                         <input type="checkbox" [(ngModel)]="device.checked_endpoint1" />
                                                         {{ device.name }}/1
@@ -272,7 +272,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div *ngIf="member.model_id === 'ZM-L03E-Z'">
+                            <div *ngIf="member.model_id === 'TS0003'">
                                 <div *ngFor="let deviceData of devicesData">
                                     <div *ngIf="deviceData.ieee_address== member.ieee_address">
                                         <div class="tag-header">
@@ -332,7 +332,7 @@
                                                     Loại thiết bị:
                                                     <span *ngIf="deviceAction">
                                                         <span
-                                                            *ngIf="deviceAction.model_id != 'WH_SWITCH4' &&  deviceAction.model_id != 'ZM-L03E-Z'; else elseSwitchDevice">
+                                                            *ngIf="deviceAction.model_id != 'WH_SWITCH4' &&  deviceAction.model_id != 'TS0003'; else elseSwitchDevice">
                                                             {{deviceAction.name}}
                                                         </span>
                                                         <ng-template #elseSwitchDevice>

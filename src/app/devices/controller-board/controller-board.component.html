@@ -65,7 +65,7 @@
       <hr />
     </div>
 
-    <div *ngIf="data.virtualDevice.model_id === 'ZM-L03E-Z'">
+    <div *ngIf="data.virtualDevice.model_id === 'TS0003'">
       <div class="tag-header">
         <h1>{{data.virtualDevice.name}}</h1>
       </div>
@@ -222,7 +222,7 @@
 
     <div class="control-device"
       *ngIf="data.virtualDevice.model_id != 'WH_SENSOR' && data.virtualDevice.model_id != 'TS0203'">
-      <div *ngIf="data.virtualDevice.model_id != 'WH_SWITCH4' && data.virtualDevice.model_id != 'ZM-L03E-Z' && data.virtualDevice.model_id != 'WB01'">
+      <div *ngIf="data.virtualDevice.model_id != 'WH_SWITCH4' && data.virtualDevice.model_id != 'TS0003' && data.virtualDevice.model_id != 'WB01'">
         <div class="onOff">
           <h2 class="onOffText">Bật/Tắt thiết bị:</h2>
           <div class="row" class="onOffButton">
@@ -300,7 +300,7 @@
       </span>
     </div>
 
-      <div *ngIf="data.virtualDevice.model_id === 'ZM-L03E-Z'">
+      <div *ngIf="data.virtualDevice.model_id === 'TS0003'">
         <div class="onOff">
           <h2 class="onOffText">Bật/Tắt công tắc 1: </h2>
           <div class="row" class="onOffButton">

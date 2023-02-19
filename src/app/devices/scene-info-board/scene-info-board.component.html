@@ -20,7 +20,7 @@
           <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l4 && data.virtualScene.condition.trigger.state.state_l3 =='ON'); else elseTat">Trạng thái: Công tắc 4 bật</div>
           <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_l4 && data.virtualScene.condition.trigger.state.state_l3 =='OFF'); else elseTat">Trạng thái: Công tắc 4 tắt</div>
         </div>
-        <div *ngIf="data.virtualScene.condition.trigger.model_id === 'ZM-L03E-Z'">
+        <div *ngIf="data.virtualScene.condition.trigger.model_id === 'TS0003'">
           <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_left && data.virtualScene.condition.trigger.state.state_left =='ON'); else elseTat">Trạng thái: Công tắc 1 bật</div>
           <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_left && data.virtualScene.condition.trigger.state.state_left =='OFF'); else elseTat">Trạng thái: Công tắc 1 tắt</div>
           <div *ngIf="(!!data.virtualScene.condition.trigger.state.state_center && data.virtualScene.condition.trigger.state.state_center =='ON'); else elseTat">Trạng thái: Công tắc 2 bật</div>
@@ -82,7 +82,7 @@
           </div>
         </div>
 
-        <div *ngIf="member.model_id === 'ZM-L03E-Z'">
+        <div *ngIf="member.model_id === 'TS0003'">
           <div class="tag-content">
             <h2 class="row d-flex" class="color-state">
               <div class="color-state-box color-state-box-switch4"

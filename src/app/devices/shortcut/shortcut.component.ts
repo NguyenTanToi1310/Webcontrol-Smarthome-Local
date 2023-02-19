@@ -65,7 +65,7 @@ export class ShortcutComponent implements OnInit {
                 if(member.model_id == "WH_LEDTEMP") {
                   group.isTemperatureLightExist = true;
                 }
-                if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
+                if(member.model_id == "WH_SWITCH4" || member.model_id == "TS0003") {
                   group.isSwitchExist = true;
                 }
                 if(member.model_id == "WH_SENSOR" || member.model_id == "TS0203") {
@@ -97,7 +97,7 @@ export class ShortcutComponent implements OnInit {
               if(member.model_id == "WH_LEDTEMP") {
                 group.isTemperatureLightExist = true;
               }
-              if(member.model_id == "WH_SWITCH4" || member.model_id == "ZM-L03E-Z") {
+              if(member.model_id == "WH_SWITCH4" || member.model_id == "TS0003") {
                 group.isSwitchExist = true;
               }
               if(member.model_id == "WH_SENSOR" || member.model_id == "TS0203") {
@@ -261,7 +261,7 @@ export class ShortcutComponent implements OnInit {
 
   submitSelectedDevices(): void {
     for (let device of this.selectedDevices) {
-      if (device.model_id != "WH_SWITCH4" && device.model_id != "ZM-L03E-Z" && device.checked == true) {
+      if (device.model_id != "WH_SWITCH4" && device.model_id != "TS0003" && device.checked == true) {
         let payload = {
           group: this.groupAction.friendly_name,
           device: device.topic,
@@ -303,7 +303,7 @@ export class ShortcutComponent implements OnInit {
           device.checked_endpoint4 = false;
         }
       }
-      if (device.model_id == "ZM-L03E-Z") {
+      if (device.model_id == "TS0003") {
         if(device.checked_endpoint1 == true) {
           let payload = {
             group: this.groupAction.friendly_name,

@@ -101,7 +101,7 @@ export class ControllerBoardComponent implements OnInit {
         this.data.backupDevice.state_l4 = false;
       }
     }
-    if (this.data.backupDevice.model_id == "ZM-L03E-Z") {
+    if (this.data.backupDevice.model_id == "TS0003") {
       if (this.data.backupDevice.state_left == "ON") {
         this.data.virtualDevice.state_left = true;
         this.data.backupDevice.state_left = true;
@@ -240,7 +240,7 @@ export class ControllerBoardComponent implements OnInit {
       }
     }
 
-    if (this.data.virtualDevice.model_id == "ZM-L03E-Z") {
+    if (this.data.virtualDevice.model_id == "TS0003") {
       if (this.data.virtualDevice.state_left != this.data.backupDevice.state_left) {
         if (this.data.virtualDevice.state_left == true) {
           changedProperties.state_left = "ON";

@@ -47,7 +47,11 @@ export class GroupControllerBoardComponent implements OnInit {
         if(groupData.friendly_name == this.data.virtualGroup.friendly_name){
           // this.data.virtualGroup = groupData;
           if(!!groupData.state){
-            this.data.virtualGroup.state = groupData.state;
+            if(groupData.state == "ON") {
+              this.data.virtualGroup.state = true;
+            } else {
+              this.data.virtualGroup.state = false;
+            }
           }
           console.log(!!groupData.color)
           if(!!groupData.color){
@@ -111,7 +115,7 @@ export class GroupControllerBoardComponent implements OnInit {
       let txt = '{"x":' + xy[0] + ',"y":' + xy[1] + '}';
       changedProperties.color = JSON.parse(txt);
     }
-    if(this.data.virtualGroup.brightness != null){
+    if(this.data.virtualGroup.brightness_scale100 != null){
       changedProperties.brightness = Number(
         (this.data.virtualGroup.brightness_scale100 * 2.54).toFixed(0)
       );

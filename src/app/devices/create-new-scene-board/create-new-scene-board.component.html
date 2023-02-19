@@ -77,7 +77,7 @@
             </mat-form-field>
             </div>
     
-            <div *ngIf="triggerDevice?.model_id == 'ZM-L03E-Z'">
+            <div *ngIf="triggerDevice?.model_id == 'TS0003'">
               <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
                 [(ngModel)]="selected_endpoint">
                 <mat-radio-button color="primary" class="example-radio-button" value="state_left">
@@ -180,7 +180,7 @@
             </div>
           </div>
 
-          <div *ngIf="device.model_id == 'ZM-L03E-Z' && device.checked == true">
+          <div *ngIf="device.model_id == 'TS0003' && device.checked == true">
             <mat-slide-toggle [(ngModel)]="device.state_left" color="primary"></mat-slide-toggle>
             <mat-slide-toggle [(ngModel)]="device.state_center" color="primary"
               style="margin-left: 20px;"></mat-slide-toggle>

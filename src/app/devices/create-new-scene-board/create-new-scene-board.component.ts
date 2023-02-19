@@ -95,7 +95,7 @@ export class CreateNewSceneBoardComponent implements OnInit {
           this.devices[index].state = false;
           this.devices[index].brightness = 0;
         }
-        if (device.model_id == "ZM-L03E-Z") {
+        if (device.model_id == "TS0003") {
           this.devices[index].state_left = false;
           this.devices[index].state_center = false;
           this.devices[index].state_right = false;
@@ -200,7 +200,7 @@ export class CreateNewSceneBoardComponent implements OnInit {
 
           //console.log(members[index]);
         }
-        if (device.model_id == "ZM-L03E-Z") {
+        if (device.model_id == "TS0003") {
           let state_left = "";
           let state_center = "";
           let state_right = "";
@@ -300,7 +300,7 @@ export class CreateNewSceneBoardComponent implements OnInit {
           action: action,
         };
       }
-      if (this.triggerDevice.model_id == "ZM-L03E-Z") {
+      if (this.triggerDevice.model_id == "TS0003") {
         let state_left = "";
         let state_center = "";
         let state_right = "";

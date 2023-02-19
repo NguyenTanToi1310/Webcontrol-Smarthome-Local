@@ -73,7 +73,7 @@ export class EditSceneBoardComponent implements OnInit {
           this.devices[index].brightness = 0;
           this.devices[index].color_temp = 0;
         }
-        if (device.model_id == "ZM-L03E-Z") {
+        if (device.model_id == "TS0003") {
           this.devices[index].state_left = false;
           this.devices[index].state_center = false;
           this.devices[index].state_right = false;
@@ -110,7 +110,7 @@ export class EditSceneBoardComponent implements OnInit {
               this.devices[index].brightness = member.brightness_scale_100;
               this.devices[index].color_temp = member.color_temp;
             }
-            if (device.model_id == "ZM-L03E-Z") {
+            if (device.model_id == "TS0003") {
               member.state_left == "ON"
                 ? (this.devices[index].state_left = true)
                 : (this.devices[index].state_left = false);
@@ -206,7 +206,7 @@ export class EditSceneBoardComponent implements OnInit {
           members[index].color_temp = device.color_temp;
           //console.log(members[index]);
         }
-        if (device.model_id == "ZM-L03E-Z") {
+        if (device.model_id == "TS0003") {
           let state_left = "";
           let state_center = "";
           let state_right = "";
